@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.buddha.icbi.mapper.mapper.product.ProductTagMapper">
+	
+	<!-- 查询产品标签集合 -->
+	<select id="selectTagName" resultType="String">
+		SELECT tag_name FROM product_tag
+		WHERE 1=1
+		AND member_id = #{memberId}
+	</select>
+
+
+</mapper>

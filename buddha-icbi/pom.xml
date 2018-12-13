@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.buddha</groupId>
+	<artifactId>buddha-icbi</artifactId>
+	<version>1.0-RELEASES</version>
+	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.0.5.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
+	<repositories>
+		<repository>
+			<id>alimaven</id>
+			<name>aliyun maven</name>
+			<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+		</repository>
+		<repository>
+			<id>releases</id>
+			<name>buddha maven</name>
+			<url>http://39.98.166.140:8081/nexus/repository/maven-releases/</url>
+		</repository>
+	</repositories>
+
+	<properties>
+		<!-- 编码方式 -->
+		<encoding>UTF-8</encoding>
+		<skipTest>true</skipTest>
+		<version-maven-surefire-plugin>2.14.1</version-maven-surefire-plugin>
+
+		<!-- maven相关 -->
+		<maven.source.version>3.0.0</maven.source.version>
+		<maven.compiler.version>3.6.0</maven.compiler.version>
+		<maven.resources.version>2.7</maven.resources.version>
+		<tomcat7.maven.version>2.2</tomcat7.maven.version>
+
+		<!-- jdk相关版本 -->
+		<jdk.version>1.8</jdk.version>
+
+		<!-- 其他 -->
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+
+		<!-- 时间处理 -->
+		<joda-time.version>2.10</joda-time.version>
+
+		<!-- json组件 -->
+		<com.alibaba.fastjson.version>1.2.46</com.alibaba.fastjson.version>
+
+		<!-- 文件上传 -->
+		<commons-fileupload.version>1.3.3</commons-fileupload.version>
+		<commons-io.version>2.6</commons-io.version>
+
+		<commons-lang.version>2.6</commons-lang.version>
+		<commons-logging.version>1.2</commons-logging.version>
+		<commons-codec.version>1.6</commons-codec.version>
+		<commons-pool.version>2.6.0</commons-pool.version>
+
+		<!-- mybatis -->
+		<mybatis-plus-boot-starter.version>3.0.6</mybatis-plus-boot-starter.version>
+		<HikariCP.version>3.2.0</HikariCP.version>
+
+		<!-- pinyin 拼音操作 -->
+		<pinyin.version>2.5.1</pinyin.version>
+
+		<!-- 个推 sdk -->
+		<getui.version>4.0.1.17</getui.version>
+
+		<!-- 阿里云oss服务 -->
+		<aliyun.oss.version>3.1.0</aliyun.oss.version>
+
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.buddha</groupId>
+			<artifactId>buddha-component-common</artifactId>
+			<version>1.0-RELEASES</version>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<pluginManagement>
+			<plugins>
+				<plugin><!-- java编译插件 -->
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven.compiler.version}</version>
+					<configuration>
+						<source>${jdk.version}</source>
+						<target>${jdk.version}</target>
+						<encoding>${encoding}</encoding>
+					</configuration>
+				</plugin>
+				<plugin><!-- 资源拷贝插件 -->
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>${maven.resources.version}</version>
+					<configuration>
+						<encoding>${encoding}</encoding>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<modules>
+		<module>buddha-icbi-pojo</module>
+    <module>buddha-icbi-common</module>
+    <module>buddha-icbi-mapper</module>
+    <module>buddha-icbi-api</module>
+	</modules>
+</project>
