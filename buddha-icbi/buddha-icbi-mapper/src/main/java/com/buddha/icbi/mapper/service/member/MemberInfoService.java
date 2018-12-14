@@ -1,10 +1,12 @@
 package com.buddha.icbi.mapper.service.member;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.convert.QueryMapper;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -15,6 +17,7 @@ import com.buddha.component.common.util.EmojiUtils;
 import com.buddha.component.common.util.StringUtils;
 import com.buddha.icbi.common.bean.LoginUserInfoBean;
 import com.buddha.icbi.common.dto.MemberInfoDto;
+import com.buddha.icbi.common.dto.MemberLocationDto;
 import com.buddha.icbi.common.param.company.CompanyInfoParam;
 import com.buddha.icbi.common.param.member.MemberInfoParam;
 import com.buddha.icbi.mapper.mapper.company.CompanyInfoMapper;
@@ -104,7 +107,6 @@ public class MemberInfoService extends ServiceImpl<MemberInfoMapper, MemberInfo>
 		Date curDate = new Date();
 		// 判断是否已存在用户信息
 		QueryWrapper<MemberInfo> queryWrapper = new QueryWrapper<MemberInfo>(new MemberInfo());
-		log.info("queryWrapper value is ===>>"+queryWrapper);
 		queryWrapper.getEntity().setOpenId(param.getOpenId());
 		MemberInfo qMember = this.getOne(queryWrapper);
 		if(null != qMember) {
@@ -247,14 +249,54 @@ public class MemberInfoService extends ServiceImpl<MemberInfoMapper, MemberInfo>
 	 * @return
 	 */
 	public List<MemberInfo> listMember(MemberInfoParam param) {
-		String openId = param.getOpenId();
 		// 查询
-		List<MemberInfo> list = memberMapper.selectListMember(param);
+		QueryWrapper<MemberInfo> queryWrapper = new QueryWrapper<MemberInfo>(new MemberInfo());
+		List<MemberInfo> list = memberMapper.selectList(queryWrapper);
 		if(null == list || list.size() == 0) {
 			log.info("数据库暂无用户");
 			throw new BaseException(ResultStatusEnum.DATA_NOT_EXIST,"数据库暂无用户");
 		}
 		return list;
+	}
+	/**
+	 * 附近会员
+	 * @param param
+	 * @return
+	 */
+	public List<MemberLocationDto> listMemberLocation(MemberInfoParam param) {
+		// 查询
+		QueryWrapper<MemberInfo> queryWrapper = new QueryWrapper<MemberInfo>(new MemberInfo());
+		List<MemberInfo> list = memberMapper.selectList(queryWrapper);
+		if(null == list || list.size() == 0) {
+			log.info("数据库暂无用户");
+			throw new BaseException(ResultStatusEnum.DATA_NOT_EXIST,"数据库暂无用户");
+		}
+		// 封装对象
+		List<MemberLocationDto> dtoList = new ArrayList<MemberLocationDto>();
+		for (MemberInfo member : list) {
+			// 获取公司信息
+			QueryWrapper<CompanyInfo> companyQuery = new QueryWrapper<CompanyInfo>(new CompanyInfo());
+			companyQuery.getEntity().setMemberId(member.getId());
+			CompanyInfo company  = companyMapper.selectOne(companyQuery);
+			if(null == company) {
+				log.info("公司信息为空");
+				throw new BaseException(ResultStatusEnum.DATA_NOT_EXIST,"公司信息为空");
+			}
+			MemberLocationDto dto = new MemberLocationDto();
+			dto.setAddress(company.getAddress());
+			dto.setHeight(32);
+			dto.setWidth(32);
+			dto.setIconPath(member.getRealAvatar());
+			dto.setId(member.getId());
+			// 
+			dto.setLongitude(company.getLongitude());
+			dto.setLatitude(company.getLatitude());
+			//
+			dto.setName(company.getCompanyName());
+			// 放置list
+			dtoList.add(dto);
+		}
+		return dtoList;
 	}
 	
 }

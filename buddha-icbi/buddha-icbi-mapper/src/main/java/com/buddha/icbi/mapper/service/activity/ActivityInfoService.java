@@ -1,8 +1,14 @@
 package com.buddha.icbi.mapper.service.activity;
 
+import java.util.Date;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.buddha.component.common.enums.CancelEnum;
+import com.buddha.icbi.common.enums.ActivityInfoStatus;
+import com.buddha.icbi.common.param.activity.ActivityInfoParam;
 import com.buddha.icbi.mapper.mapper.activity.ActivityInfoMapper;
 import com.buddha.icbi.pojo.activity.ActivityInfo;
 
@@ -27,5 +33,23 @@ import com.buddha.icbi.pojo.activity.ActivityInfo;
  */
 @Service
 public class ActivityInfoService extends ServiceImpl<ActivityInfoMapper, ActivityInfo> {
+	
+	/**
+	 * 保存活动信息
+	 * @param param
+	 */
+	public void saveActivity(ActivityInfoParam param) {
+		// 
+		Date curDate = new Date();
+		ActivityInfo activity = new ActivityInfo();
+		BeanUtils.copyProperties(param, activity);
+		activity.setUpdateTime(curDate);
+		activity.setCreateTime(curDate);
+		// 登记中
+		activity.setStatus(ActivityInfoStatus.ENROLLMENT.getValue());
+		// 正常进行
+		activity.setIsCancel(CancelEnum.NORMAL.getValue());
+		super.save(activity);
+	}
 	
 }

@@ -23,6 +23,10 @@ import lombok.Setter;
 @Setter
 public class ActivityInfoParam extends BaseParam{
 	
+	/**
+	 * 会员id
+	 */
+	private String memberId;
 	 /**
      * 活动主题
      */

@@ -1,8 +1,12 @@
 package com.buddha.icbi.mapper.service.product;
 
+import java.util.Date;
+
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.buddha.icbi.common.param.product.ProductImageParam;
 import com.buddha.icbi.mapper.mapper.product.ProductImageMapper;
 import com.buddha.icbi.pojo.product.ProductImage;
 
@@ -27,5 +31,28 @@ import com.buddha.icbi.pojo.product.ProductImage;
  */
 @Service
 public class ProductImageService extends ServiceImpl<ProductImageMapper, ProductImage> {
+	
+	/**
+	 * 保存产品图片
+	 * @param param
+	 */
+	public void saveImage(ProductImageParam param) {
+		//  
+		Date curDate = new Date();
+		// 删除产品图片
+		QueryWrapper<ProductImage> queryWrapper = new QueryWrapper<ProductImage>(new ProductImage());
+		queryWrapper.getEntity().setMemberId(param.getMemberId());
+		super.remove(queryWrapper);
+		// 遍历
+		String[] imgUrlArr = param.getImgUrlArr();
+		for (String imgUrl : imgUrlArr) {
+			ProductImage image = new ProductImage();
+			image.setImgUrl(imgUrl);
+			image.setMemberId(param.getMemberId());
+			image.setCreateTime(curDate);
+			image.setUpdateTime(curDate);
+			super.save(image);
+		}
+	}
 	
 }

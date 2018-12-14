@@ -45,6 +45,11 @@ public class ActivityInfo extends PojoModel<ActivityInfo> {
     @TableId(value = "id", type = IdType.UUID)
 	private String id;
     /**
+     * 会员id
+     */
+	@TableField("member_id")
+	private String memberId;
+    /**
      * 活动主题
      */
 	private String theme;
@@ -100,11 +105,6 @@ public class ActivityInfo extends PojoModel<ActivityInfo> {
      */
 	@TableField("is_del")
 	private Integer isDel;
-    /**
-     * 创建人id 即发起人
-     */
-	@TableField("create_id")
-	private String createId;
     /**
      * 创建时间
      */

@@ -20,6 +20,7 @@ import com.buddha.component.wechat.service.WechatService;
 import com.buddha.icbi.api.controller.base.WebBaseController;
 import com.buddha.icbi.common.bean.LoginUserInfoBean;
 import com.buddha.icbi.common.dto.MemberInfoDto;
+import com.buddha.icbi.common.dto.MemberLocationDto;
 import com.buddha.icbi.common.param.member.MemberInfoParam;
 import com.buddha.icbi.mapper.service.member.MemberInfoService;
 import com.buddha.icbi.pojo.member.MemberInfo;
@@ -115,10 +116,6 @@ public class MemberInfoController extends WebBaseController{
 				log.info("openId参数为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"openId参数为空");
 			}
-			/*if(StringUtils.isNull(param.getUnionId())) {
-				log.info("unionId参数为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"unionId参数为空");
-			}*/
 			// 保存用户数据
 			memberService.saveMemberInfo(param);
 			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS);
@@ -197,9 +194,9 @@ public class MemberInfoController extends WebBaseController{
 	@RequestMapping(value = "list-member",method = RequestMethod.POST)
 	public ResultJson listMember(@RequestBody MemberInfoParam param) {
 		try {
-			if(StringUtils.isNull(param.getOpenId())) {
-				log.info("openId为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"openId为空");
+			if(StringUtils.isNull(param.getId())) {
+				log.info("会员Id为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"会员Id为空");
 			}
 			// 会员列表
 			List<MemberInfo> members = memberService.listMember(param);
@@ -209,5 +206,24 @@ public class MemberInfoController extends WebBaseController{
 			return new ResultJson(e);
 		}
 	}
-	
+	/**
+	 * 首页附近会员列表
+	 * @param param
+	 * @return
+	 */
+	@PostMapping("list-member-location")
+	public ResultJson listMemberLocation(@RequestBody MemberInfoParam param) {
+		try {
+			if(StringUtils.isNull(param.getId())) {
+				log.info("会员Id为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"会员Id为空");
+			}
+			// 附近会员列表
+			List<MemberLocationDto> dtoList = memberService.listMemberLocation(param);
+			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, dtoList);
+		} catch (Exception e) {
+			log.error("系统异常，请检查", e);
+			return new ResultJson(e);
+		}
+	}
 }

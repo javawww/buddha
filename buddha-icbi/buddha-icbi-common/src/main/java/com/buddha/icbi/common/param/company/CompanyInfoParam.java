@@ -24,6 +24,11 @@ import lombok.Setter;
 public class CompanyInfoParam extends BaseParam{
 	
 	/**
+	 * 会员id
+	 */
+	private String memberId;
+	
+	/**
 	 * 纬度，范围为 -90~90，负数表示南纬
 	 */
 	private BigDecimal latitude;
