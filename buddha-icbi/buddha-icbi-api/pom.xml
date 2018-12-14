@@ -29,24 +29,19 @@
 		<dependency>
 			<groupId>com.buddha</groupId>
 			<artifactId>buddha-component-redis</artifactId>
-			<version>1.0-RELEASES</version>
+			<version>1.0.1.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>com.buddha</groupId>
 			<artifactId>buddha-component-wechat</artifactId>
-			<version>1.0-RELEASES</version>
+			<version>1.0.1.RELEASE</version>
 		</dependency>
-		<dependency>
-			<groupId>com.buddha</groupId>
-			<artifactId>buddha-icbi-common</artifactId>
-			<version>1.0-RELEASES</version>
-		</dependency>
+		
 		<dependency>
 			<groupId>com.buddha</groupId>
 			<artifactId>buddha-icbi-mapper</artifactId>
 			<version>1.0-RELEASES</version>
 		</dependency>
-		
 		<!-- buddha end -->
 
 		<dependency>
