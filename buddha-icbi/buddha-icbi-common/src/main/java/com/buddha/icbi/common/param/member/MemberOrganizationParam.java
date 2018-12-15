@@ -20,7 +20,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MemberOrganizationParam extends BaseParam{
-
+	
+	/**
+	 * 会员id
+	 */
+	private String memberId;
 	 /**
      * 名称 某某商会 某某协会 某某母公司
      */

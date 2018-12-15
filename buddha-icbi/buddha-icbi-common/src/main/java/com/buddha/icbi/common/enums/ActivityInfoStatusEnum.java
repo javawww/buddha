@@ -3,7 +3,7 @@ package com.buddha.icbi.common.enums;
 import lombok.Getter;
 
 @Getter
-public enum ActivityInfoStatus {
+public enum ActivityInfoStatusEnum {
 	/**
 	 *  1-报名中 
 	 */
@@ -31,7 +31,7 @@ public enum ActivityInfoStatus {
 	 */
 	private final String desc;
 
-	private ActivityInfoStatus(Integer value, String desc) {
+	private ActivityInfoStatusEnum(Integer value, String desc) {
 		this.value = value;
 		this.desc = desc;
 	}
@@ -42,11 +42,11 @@ public enum ActivityInfoStatus {
 	 * @param value
 	 * @return
 	 */
-	public static ActivityInfoStatus getStatusEnum(Integer value) {
+	public static ActivityInfoStatusEnum getStatusEnum(Integer value) {
 		if (value == null) {
 			return null;
 		}
-		for (ActivityInfoStatus enums : ActivityInfoStatus.values()) {
+		for (ActivityInfoStatusEnum enums : ActivityInfoStatusEnum.values()) {
 			if (value == enums.getValue()) {
 				return enums;
 			}

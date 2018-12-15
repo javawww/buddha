@@ -128,23 +128,4 @@ public class MemberInfoParam extends BaseParam {
 	 * 客户端ip地址
 	 */
 	private String clientIp;
-	/**
-	 * 公司信息参数
-	 */
-	private CompanyInfoParam companyParam;
-
-	/**
-	 * 商会 协会 母公司
-	 */
-	private List<MemberOrganizationParam> organizationParam;
-
-	/**
-	 * 会员商品图片地址
-	 */
-	private List<String> productImages;
-
-	/**
-	 * 会员行业标签 多个标签，分割
-	 */
-	private String productTags;
 }
