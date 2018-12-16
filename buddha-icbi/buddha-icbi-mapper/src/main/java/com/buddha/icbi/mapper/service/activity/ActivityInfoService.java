@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.buddha.component.common.enums.CancelEnum;
-import com.buddha.icbi.common.enums.ActivityInfoStatus;
+import com.buddha.icbi.common.enums.ActivityInfoStatusEnum;
 import com.buddha.icbi.common.param.activity.ActivityInfoParam;
 import com.buddha.icbi.mapper.mapper.activity.ActivityInfoMapper;
 import com.buddha.icbi.pojo.activity.ActivityInfo;
@@ -46,7 +46,7 @@ public class ActivityInfoService extends ServiceImpl<ActivityInfoMapper, Activit
 		activity.setUpdateTime(curDate);
 		activity.setCreateTime(curDate);
 		// 登记中
-		activity.setStatus(ActivityInfoStatus.ENROLLMENT.getValue());
+		activity.setStatus(ActivityInfoStatusEnum.ENROLLMENT.getValue());
 		// 正常进行
 		activity.setIsCancel(CancelEnum.NORMAL.getValue());
 		super.save(activity);

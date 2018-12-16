@@ -57,9 +57,17 @@ public class CompanyInfo extends PojoModel<CompanyInfo> {
 	 */
 	private BigDecimal longitude;
 	/**
+	 * 位置名称
+	 */
+	private String name;
+	/**
 	 * 具体办公地点
 	 */
 	private String address;
+	/**
+	 * 楼层
+	 */
+	private String floor;
 	/**
 	 * 座机号
 	 */

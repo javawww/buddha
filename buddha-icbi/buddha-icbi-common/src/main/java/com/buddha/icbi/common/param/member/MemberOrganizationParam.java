@@ -25,6 +25,10 @@ public class MemberOrganizationParam extends BaseParam{
 	 * 会员id
 	 */
 	private String memberId;
+	/**
+	 * 审核人id
+	 */
+	private String auditId;
 	 /**
      * 名称 某某商会 某某协会 某某母公司
      */
@@ -34,7 +38,11 @@ public class MemberOrganizationParam extends BaseParam{
      */
 	private Integer type;
     /**
-     * 状态 1-未认证 2-已认证
+     * 状态 0-待审核 1-审核通过 2-审核拒绝
      */
 	private Integer status;
+	/**
+	 * 拒绝原因
+	 */
+	private String refuse;
 }

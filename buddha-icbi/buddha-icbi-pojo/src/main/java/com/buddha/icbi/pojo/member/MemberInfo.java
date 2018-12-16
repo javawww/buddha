@@ -175,5 +175,4 @@ public class MemberInfo extends PojoModel<MemberInfo> {
 	protected Serializable pkVal() {
 		return this.id;
 	}
-
 }

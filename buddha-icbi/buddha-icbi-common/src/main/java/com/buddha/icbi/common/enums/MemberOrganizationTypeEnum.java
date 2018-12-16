@@ -3,21 +3,21 @@ package com.buddha.icbi.common.enums;
 import lombok.Getter;
 
 @Getter
-public enum ActivityInfoStatusEnum {
+public enum MemberOrganizationTypeEnum {
 	/**
-	 *  1-报名中 
+	 * 商会
 	 */
-	ENROLLMENT(1, "报名中"),
+	COMMERCE(1, "商会"),
 	
 	/**
-	 * 2-进行中 
+	 * 协会
 	 */
-	PROCESSING(2, "进行中"),
+	SOCIETY(2, "协会"),
 
 	/**
-	 * 3-已结束
+	 * 母公司
 	 */
-	ALREADY_OVER(3, "已结束"),
+	PARENT_COMPANY(3, "母公司"),
 	
 	;
 
@@ -31,7 +31,7 @@ public enum ActivityInfoStatusEnum {
 	 */
 	private final String desc;
 
-	private ActivityInfoStatusEnum(Integer value, String desc) {
+	private MemberOrganizationTypeEnum(Integer value, String desc) {
 		this.value = value;
 		this.desc = desc;
 	}
@@ -42,11 +42,11 @@ public enum ActivityInfoStatusEnum {
 	 * @param value
 	 * @return
 	 */
-	public static ActivityInfoStatusEnum getStatusEnum(Integer value) {
+	public static MemberOrganizationTypeEnum getTypeEnum(Integer value) {
 		if (value == null) {
 			return null;
 		}
-		for (ActivityInfoStatusEnum enums : ActivityInfoStatusEnum.values()) {
+		for (MemberOrganizationTypeEnum enums : MemberOrganizationTypeEnum.values()) {
 			if (value == enums.getValue()) {
 				return enums;
 			}

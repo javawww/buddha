@@ -14,7 +14,7 @@ import com.buddha.component.common.enums.CancelEnum;
 import com.buddha.component.common.enums.ResultStatusEnum;
 import com.buddha.component.common.util.StringUtils;
 import com.buddha.icbi.api.controller.base.WebBaseController;
-import com.buddha.icbi.common.enums.ActivityInfoStatus;
+import com.buddha.icbi.common.enums.ActivityInfoStatusEnum;
 import com.buddha.icbi.common.param.activity.ActivityInfoParam;
 import com.buddha.icbi.mapper.service.activity.ActivityInfoService;
 import com.buddha.icbi.pojo.activity.ActivityInfo;
@@ -144,7 +144,7 @@ public class ActivityInfoController extends WebBaseController{
 				log.info("活动数据不存在");
 				return new ResultJson(ResultStatusEnum.DATA_NOT_EXIST,"活动数据不存在");
 			}
-			if(activity.getStatus().intValue() != ActivityInfoStatus.ENROLLMENT.getValue().intValue()) {
+			if(activity.getStatus().intValue() != ActivityInfoStatusEnum.ENROLLMENT.getValue().intValue()) {
 				log.info("活动非报名中,不能取消");
 				return new ResultJson(ResultStatusEnum.COMMON_FAIL,"活动非报名中,不能取消");
 			}

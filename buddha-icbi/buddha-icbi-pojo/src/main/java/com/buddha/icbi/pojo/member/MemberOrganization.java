@@ -48,6 +48,12 @@ public class MemberOrganization extends PojoModel<MemberOrganization> {
      */
 	@TableField("member_id")
 	private String memberId;
+	
+	/**
+	 * 审核人id
+	 */
+	@TableField("audit_id")
+	private String auditId;
     /**
      * 名称 某某商会 某某协会 某某母公司
      */
@@ -57,9 +63,13 @@ public class MemberOrganization extends PojoModel<MemberOrganization> {
      */
 	private Integer type;
     /**
-     * 状态 1-未认证 2-已认证
+     * 状态 0-待审核 1-审核通过 2-审核拒绝
      */
 	private Integer status;
+	/**
+	 * 拒绝原因
+	 */
+	private String refuse;
     /**
      * 是否删除 1-正常 2-删除
      */

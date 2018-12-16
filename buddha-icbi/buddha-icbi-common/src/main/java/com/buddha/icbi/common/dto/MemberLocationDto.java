@@ -32,7 +32,8 @@ public class MemberLocationDto implements Serializable{
 	private Integer height;// 图片高度
 	private Integer width;// 图片宽度
 	private String iconPath;// 图片地址
-	private String id;// 会员id
+	private Integer id;// 索引id
+	private String memberId;// 会员id
 	private BigDecimal latitude;// 位置
 	private BigDecimal longitude;// 位置
 	private String name;// 姓名

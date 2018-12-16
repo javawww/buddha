@@ -1,10 +1,8 @@
 package com.buddha.icbi.common.param.member;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import com.buddha.component.common.param.base.BaseParam;
-import com.buddha.icbi.common.param.company.CompanyInfoParam;
 
 import lombok.Getter;
 import lombok.Setter;

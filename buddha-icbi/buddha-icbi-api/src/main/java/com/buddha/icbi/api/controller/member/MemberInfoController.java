@@ -1,7 +1,9 @@
 package com.buddha.icbi.api.controller.member;
 
+import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +21,6 @@ import com.buddha.component.wechat.bean.Code2SessionBean;
 import com.buddha.component.wechat.service.WechatService;
 import com.buddha.icbi.api.controller.base.WebBaseController;
 import com.buddha.icbi.common.bean.LoginUserInfoBean;
-import com.buddha.icbi.common.dto.MemberInfoDto;
 import com.buddha.icbi.common.dto.MemberLocationDto;
 import com.buddha.icbi.common.param.member.MemberInfoParam;
 import com.buddha.icbi.mapper.service.member.MemberInfoService;
@@ -125,19 +126,22 @@ public class MemberInfoController extends WebBaseController{
 		}
 	}
 	/**
-	 * 更新会员名片数据
+	 * 更新会员信息
 	 * @param param
 	 * @return
 	 */
 	@RequestMapping(value = "update",method = RequestMethod.POST)
-	public ResultJson updateBusCard(@RequestBody MemberInfoParam param) {
+	public ResultJson updateMember(@RequestBody MemberInfoParam param) {
 		try {
-			if(StringUtils.isNull(param.getOpenId())) {
-				log.info("openId为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"openId为空");
+			if(StringUtils.isNull(param.getId())) {
+				log.info("会员id为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"会员id为空");
 			}
-			// 更新用户数据
-			memberService.updateMemberInfo(param);
+			// 更新
+			MemberInfo member = memberService.getById(param.getId());
+			BeanUtils.copyProperties(param, member);
+			member.setUpdateTime(new Date());
+			memberService.updateById(member);
 			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS);
 		} catch (Exception e) {
 			log.error("系统异常，请检查", e);
@@ -145,25 +149,6 @@ public class MemberInfoController extends WebBaseController{
 		}
 	}
 	
-	/**
-	 * 更新会员所属组织：商会、协会、母公司
-	 * @param param
-	 * @return
-	 */
-	@RequestMapping(value = "update-organization",method = RequestMethod.POST)
-	public ResultJson updateOrganization(@RequestBody MemberInfoParam param) {
-		try {
-			if(StringUtils.isNull(param.getOpenId())) {
-				log.info("openId为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"openId为空");
-			}
-			
-			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS);
-		} catch (Exception e) {
-			log.error("系统异常，请检查", e);
-			return new ResultJson(e);
-		}
-	}
 	
 	/**
 	 * 查看详情
@@ -173,13 +158,13 @@ public class MemberInfoController extends WebBaseController{
 	@RequestMapping(value = "detail",method = RequestMethod.POST)
 	public ResultJson detailMemberInfo(@RequestBody MemberInfoParam param) {
 		try {
-			if(StringUtils.isNull(param.getOpenId())) {
-				log.info("openId为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"openId为空");
+			if(StringUtils.isNull(param.getId())) {
+				log.info("会员id为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"会员id为空");
 			}
 			// 会员详情数据
-			MemberInfoDto memberDto = memberService.detailMemberInfo(param);
-			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS,memberDto);
+			MemberInfo member = memberService.detailMemberInfo(param);
+			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS,member);
 		} catch (Exception e) {
 			log.error("系统异常，请检查", e);
 			return new ResultJson(e);

@@ -100,7 +100,7 @@ public class CompanyInfoController extends WebBaseController{
 	}
 	
 	/**
-	 * 更新会员信息
+	 * 更新
 	 * @param param
 	 * @return
 	 */
