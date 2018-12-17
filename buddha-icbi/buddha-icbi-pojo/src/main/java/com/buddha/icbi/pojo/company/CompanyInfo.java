@@ -94,6 +94,11 @@ public class CompanyInfo extends PojoModel<CompanyInfo> {
 	@TableField("company_logo")
 	private String companyLogo;
 	/**
+	 * 公司环境照片
+	 */
+	@TableField("company_env_img")
+	private String companyEnvImg;
+	/**
 	 * 企业网址
 	 */
 	@TableField("company_website")

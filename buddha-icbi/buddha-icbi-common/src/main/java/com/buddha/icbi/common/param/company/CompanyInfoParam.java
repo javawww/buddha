@@ -69,6 +69,10 @@ public class CompanyInfoParam extends BaseParam{
 	 */
 	private String companyLogo;
 	/**
+	 * 公司环境照片
+	 */
+	private String companyEnvImg;
+	/**
 	 * 企业网址
 	 */
 	private String companyWebsite;
