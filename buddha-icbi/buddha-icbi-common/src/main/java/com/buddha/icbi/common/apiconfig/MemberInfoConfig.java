@@ -31,4 +31,20 @@ public interface MemberInfoConfig {
 	 * 会员列表
 	 */
 	public static final String MEMBER_INFO_LIST_MEMBER = "member-info/list-member";
+	
+	/**
+	 * 待审核列表
+	 */
+	public static final String MEMBER_INFO_WAIT_AUDIT = "member-info/wait-audit";
+	/**
+	 * 审核通过
+	 */
+	public static final String MEMBER_INFO_PASS = "member-info/pass";
+	/**
+	 * 审核拒绝
+	 */
+	public static final String MEMBER_INFO_REJECT = "member-info/reject";
+	
+	
+	
 }

@@ -82,7 +82,7 @@ public class MemberInfo extends PojoModel<MemberInfo> {
 	private Integer isAdmin;
 
 	/**
-	 * 是否认证 1-待认证 2-认证通过 3-认证驳回
+	 * 是否认证 0-待认证 1-认证通过 2-认证驳回
 	 */
 	@TableField("is_certification")
 	private Integer isCertification;

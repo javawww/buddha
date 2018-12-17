@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.buddha.component.common.bean.ResultJson;
 import com.buddha.component.common.enums.ResultStatusEnum;
 import com.buddha.component.common.param.wechat.Code2SessionParam;
@@ -22,6 +23,8 @@ import com.buddha.component.wechat.service.WechatService;
 import com.buddha.icbi.api.controller.base.WebBaseController;
 import com.buddha.icbi.common.bean.LoginUserInfoBean;
 import com.buddha.icbi.common.dto.MemberLocationDto;
+import com.buddha.icbi.common.enums.AuditEnum;
+import com.buddha.icbi.common.enums.IsAdminEnum;
 import com.buddha.icbi.common.param.member.MemberInfoParam;
 import com.buddha.icbi.mapper.service.member.MemberInfoService;
 import com.buddha.icbi.pojo.member.MemberInfo;
@@ -211,4 +214,107 @@ public class MemberInfoController extends WebBaseController{
 			return new ResultJson(e);
 		}
 	}
+	
+	/**
+	 * 待审核列表
+	 * @param param
+	 * @return
+	 */
+	@PostMapping("wait-audit")
+	public ResultJson waitAuditList(@RequestBody MemberInfoParam param) {
+		try {
+			if(StringUtils.isNull(param.getId())) {
+				log.info("会员Id为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"会员Id为空");
+			}
+			// 会员对象
+			MemberInfo member = memberService.getById(param.getId());
+			if(null == member) {
+				log.info("会员不存在");
+				return new ResultJson(ResultStatusEnum.DATA_NOT_EXIST,"会员不存在");
+			}
+			if(member.getIsAdmin() == IsAdminEnum.ORDINARY_MEMBER.getValue()) {
+				log.info("权限不足");
+				return new ResultJson(ResultStatusEnum.NOT_AUTHOR,"权限不足");
+			}
+			// 待审核列表
+			QueryWrapper<MemberInfo> queryWrapper = super.getQueryWrapper(MemberInfo.class);
+			queryWrapper.getEntity().setIsCertification(AuditEnum.AUDITING.getValue());
+			queryWrapper.orderByDesc(true, "create_time");
+			List<MemberInfo> list = memberService.list(queryWrapper);
+			if(StringUtils.isEmpty(list)) {
+				log.info("待审核列表为空");
+				return new ResultJson(ResultStatusEnum.DATA_NOT_EXIST,"待审核列表为空");
+			}
+			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, list);
+		} catch (Exception e) {
+			log.error("系统异常，请检查", e);
+			return new ResultJson(e);
+		}
+	}
+	
+	/**
+	 * 审核通过
+	 * @param param
+	 * @return
+	 */
+	@PostMapping("pass")
+	public ResultJson passCertification(@RequestBody MemberInfoParam param) {
+		try {
+			if(StringUtils.isNull(param.getId())) {
+				log.info("会员Id为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"会员Id为空");
+			}
+			// 会员对象
+			MemberInfo member = memberService.getById(param.getId());
+			if(null == member) {
+				log.info("会员不存在");
+				return new ResultJson(ResultStatusEnum.DATA_NOT_EXIST,"会员不存在");
+			}
+			if(member.getIsCertification() == AuditEnum.AUDITED.getValue()) {
+				log.info("不能重复通过");
+				return new ResultJson(ResultStatusEnum.COMMON_FAIL,"不能重复通过");
+			}
+			member.setIsCertification(AuditEnum.AUDITED.getValue());
+			member.setUpdateTime(new Date());
+			memberService.updateById(member);
+			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS);
+		} catch (Exception e) {
+			log.error("系统异常，请检查", e);
+			return new ResultJson(e);
+		}
+	}
+	
+	/**
+	 * 审核拒绝
+	 * @param param
+	 * @return
+	 */
+	@PostMapping("reject")
+	public ResultJson rejectCertification(@RequestBody MemberInfoParam param) {
+		try {
+			if(StringUtils.isNull(param.getId())) {
+				log.info("会员Id为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"会员Id为空");
+			}
+			// 会员对象
+			MemberInfo member = memberService.getById(param.getId());
+			if(null == member) {
+				log.info("会员不存在");
+				return new ResultJson(ResultStatusEnum.DATA_NOT_EXIST,"会员不存在");
+			}
+			if(member.getIsCertification() == AuditEnum.REFUSE.getValue()) {
+				log.info("不能重复拒绝");
+				return new ResultJson(ResultStatusEnum.COMMON_FAIL,"不能重复拒绝");
+			}
+			member.setIsCertification(AuditEnum.REFUSE.getValue());
+			member.setUpdateTime(new Date());
+			memberService.updateById(member);
+			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS);
+		} catch (Exception e) {
+			log.error("系统异常，请检查", e);
+			return new ResultJson(e);
+		}
+	}
+	
 }
