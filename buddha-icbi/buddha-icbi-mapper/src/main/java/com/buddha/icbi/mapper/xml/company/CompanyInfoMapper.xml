@@ -2,4 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.buddha.icbi.mapper.mapper.company.CompanyInfoMapper">
 
+	<!-- 查询附近公司信息 -->
+	<select id="nearByCompanyList" resultType="com.buddha.icbi.pojo.company.CompanyInfo">
+		SELECT *,
+			ROUND(
+			SQRT(
+			    POW(69.1 * (latitude - #{latitude}), 2) +
+			    POW(69.1 * (#{longitude} - longitude) * COS(latitude / 57.3), 2)) 
+			,3) AS distance
+			FROM company_info 
+			WHERE 1=1 
+			<if test="mids.size() > 0">
+				AND member_id IN
+				<foreach collection="mids" index="index" item="item" open="(" separator="," close=")">
+			       #{item}
+			    </foreach> 
+			</if>
+			HAVING distance &lt; #{distance}
+			ORDER BY distance ASC
+	</select>
 </mapper>

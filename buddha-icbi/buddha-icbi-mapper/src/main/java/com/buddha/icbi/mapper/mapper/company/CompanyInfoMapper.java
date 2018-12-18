@@ -1,5 +1,10 @@
 package com.buddha.icbi.mapper.mapper.company;
 
+import java.math.BigDecimal;
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.buddha.icbi.pojo.company.CompanyInfo;
 
@@ -24,4 +29,13 @@ import com.buddha.icbi.pojo.company.CompanyInfo;
  */
 public interface CompanyInfoMapper extends BaseMapper<CompanyInfo> {
 
+	/**
+	 * 附近公司信息
+	 * @param latitude
+	 * @param longitude
+	 * @param distance
+	 * @param mids
+	 * @return
+	 */
+	public List<CompanyInfo> nearByCompanyList(@Param("latitude") BigDecimal latitude,@Param("longitude") BigDecimal longitude,@Param("distance") BigDecimal distance,@Param("mids") List<String> mids);
 }

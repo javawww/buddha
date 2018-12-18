@@ -123,5 +123,13 @@ public class CompanyInfo extends PojoModel<CompanyInfo> {
 	protected Serializable pkVal() {
 		return this.id;
 	}
+	
+	// --------额外属性（entity对应表结构之外的属性） start------------------------------
+	/**
+	 * 距离 单位公里
+	 */
+	@TableField(exist = false)
+	private BigDecimal distance;
+	// --------额外属性（entity对应表结构之外的属性） end--------------------------------
 
 }
