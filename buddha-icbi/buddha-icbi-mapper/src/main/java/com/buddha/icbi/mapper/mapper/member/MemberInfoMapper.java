@@ -3,6 +3,8 @@ package com.buddha.icbi.mapper.mapper.member;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultType;
+import org.apache.ibatis.annotations.Select;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.buddha.icbi.common.param.member.MemberInfoParam;
@@ -33,5 +35,14 @@ public interface MemberInfoMapper extends BaseMapper<MemberInfo> {
 	public void updateMemberInfo(@Param("member") MemberInfo member);
 
 	public List<MemberInfo> selectListMember(@Param("param") MemberInfoParam param);
+	
+	/**
+	 * 获取认证通过mids
+	 * @param isCertification
+	 * @return
+	 */
+	@Select("SELECT id FROM member_info  WHERE 1=1 AND is_certification = #{isCertification} AND `status` = 1")
+	@ResultType(String.class)
+	public List<String> selectCertification(@Param("isCertification") Integer isCertification);
 
 }

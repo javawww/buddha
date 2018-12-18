@@ -206,6 +206,14 @@ public class MemberInfoController extends WebBaseController{
 				log.info("会员Id为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"会员Id为空");
 			}
+			if(StringUtils.isEmpty(param.getLatitude())) {
+				log.info("纬度为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"纬度为空");
+			}
+			if(StringUtils.isEmpty(param.getLongitude())) {
+				log.info("经度为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"经度为空");
+			}
 			// 附近会员列表
 			List<MemberLocationDto> dtoList = memberService.listMemberLocation(param);
 			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, dtoList);

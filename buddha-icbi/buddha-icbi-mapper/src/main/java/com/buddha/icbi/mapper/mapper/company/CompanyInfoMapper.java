@@ -38,4 +38,6 @@ public interface CompanyInfoMapper extends BaseMapper<CompanyInfo> {
 	 * @return
 	 */
 	public List<CompanyInfo> nearByCompanyList(@Param("latitude") BigDecimal latitude,@Param("longitude") BigDecimal longitude,@Param("distance") BigDecimal distance,@Param("mids") List<String> mids);
+	
+	public List<CompanyInfo> foreachTest(@Param("mids") List<String> mids);
 }

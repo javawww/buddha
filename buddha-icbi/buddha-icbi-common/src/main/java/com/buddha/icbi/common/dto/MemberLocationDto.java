@@ -37,4 +37,5 @@ public class MemberLocationDto implements Serializable{
 	private BigDecimal latitude;// 位置
 	private BigDecimal longitude;// 位置
 	private String name;// 姓名
+	private BigDecimal distance;// 距离
 }

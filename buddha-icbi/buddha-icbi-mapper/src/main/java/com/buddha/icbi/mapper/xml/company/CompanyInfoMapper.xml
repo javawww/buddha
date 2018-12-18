@@ -3,14 +3,16 @@
 <mapper namespace="com.buddha.icbi.mapper.mapper.company.CompanyInfoMapper">
 
 	<!-- 查询附近公司信息 -->
-	<select id="nearByCompanyList" resultType="com.buddha.icbi.pojo.company.CompanyInfo">
-		SELECT *,
-			ROUND(
-			SQRT(
-			    POW(69.1 * (latitude - #{latitude}), 2) +
-			    POW(69.1 * (#{longitude} - longitude) * COS(latitude / 57.3), 2)) 
-			,3) AS distance
+	<select id="nearByCompanyList" resultType="com.buddha.icbi.pojo.company.CompanyInfo" parameterType="java.util.List">
+		SELECT *, ROUND( SQRT(POW(69.1 * (latitude - #{latitude}), 2) + POW(69.1 * (#{longitude} - longitude) * COS(latitude / 57.3), 2) ),2) AS distance
 			FROM company_info 
+			WHERE 1=1 
+			HAVING distance &lt;= #{distance}
+			ORDER BY distance ASC
+	</select>
+	
+	<select id="foreachTest" resultType="com.buddha.icbi.pojo.company.CompanyInfo" parameterType="java.util.List">
+		SELECT * FROM company_info 
 			WHERE 1=1 
 			<if test="mids.size() > 0">
 				AND member_id IN
@@ -18,7 +20,5 @@
 			       #{item}
 			    </foreach> 
 			</if>
-			HAVING distance &lt; #{distance}
-			ORDER BY distance ASC
 	</select>
 </mapper>
