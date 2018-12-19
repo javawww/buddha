@@ -14,7 +14,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
  /**
  * 
- * 线下活动信息-数据库实体对象
+ * 线下活动信息模板表-数据库实体对象
  *
  * #############################################################################
  *
@@ -27,13 +27,13 @@ import lombok.EqualsAndHashCode;
  * 
  * 
  * @作者 系统生成
- * @时间 2018-12-03
+ * @时间 2018-12-19
  * @版权 深圳市佛系青年互联网科技有限公司(www.fxqn.xin)
  */
-@TableName("activity_info")
+@TableName("activity_info_tpl")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ActivityInfo extends PojoModel<ActivityInfo> {
+public class ActivityInfoTpl extends PojoModel<ActivityInfoTpl> {
 
     private static final long serialVersionUID = 1L;
 
@@ -45,14 +45,23 @@ public class ActivityInfo extends PojoModel<ActivityInfo> {
     @TableId(value = "id", type = IdType.UUID)
 	private String id;
     /**
-     * 会员id
+     * 模板名称
      */
-	@TableField("member_id")
-	private String memberId;
+	@TableField("tpl_name")
+	private String tplName;
+    /**
+     * 模板编号
+     */
+	@TableField("tpl_code")
+	private String tplCode;
     /**
      * 活动主题
      */
 	private String theme;
+    /**
+     * 活动内容介绍
+     */
+	private String content;
     /**
      * 参与数量
      */
@@ -86,10 +95,6 @@ public class ActivityInfo extends PojoModel<ActivityInfo> {
      */
 	@TableField("charge_type")
 	private Integer chargeType;
-    /**
-     * 活动内容介绍
-     */
-	private String content;
     /**
      * 是否取消 1-正常 2-取消
      */

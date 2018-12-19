@@ -12,10 +12,9 @@ import com.buddha.component.common.bean.mybatis.PojoModel;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-/**
+ /**
  * 
- * 公司信息-数据库实体对象
+ * 公司信息模板-数据库实体对象
  *
  * #############################################################################
  *
@@ -28,47 +27,54 @@ import lombok.EqualsAndHashCode;
  * 
  * 
  * @作者 系统生成
- * @时间 2018-12-10
+ * @时间 2018-12-19
  * @版权 深圳市佛系青年互联网科技有限公司(www.fxqn.xin)
  */
-@TableName("company_info")
+@TableName("company_info_tpl")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class CompanyInfo extends PojoModel<CompanyInfo> {
+public class CompanyInfoTpl extends PojoModel<CompanyInfoTpl> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * 主键
-	 */
-	@TableId(value = "id", type = IdType.UUID)
+
+
+    /**
+     * 主键
+     */
+    @TableId(value = "id", type = IdType.UUID)
 	private String id;
-	/**
-	 * 会员id
-	 */
-	@TableField("member_id")
-	private String memberId;
-	/**
-	 * 纬度，范围为 -90~90，负数表示南纬
-	 */
+    /**
+     * 模板名称
+     */
+	@TableField("tpl_name")
+	private String tplName;
+    /**
+     * 模板编号
+     */
+	@TableField("tpl_code")
+	private String tplCode;
+    /**
+     * 纬度，范围为 -90~90，负数表示南纬
+     */
 	private BigDecimal latitude;
-	/**
-	 * 经度，范围为 -180~180，负数表示西经
-	 */
+    /**
+     * 经度，范围为 -180~180，负数表示西经
+     */
 	private BigDecimal longitude;
-	/**
-	 * 位置名称
-	 */
+    /**
+     * 名称
+     */
 	private String name;
-	/**
-	 * 具体办公地点
-	 */
+    /**
+     * 地图位置
+     */
 	private String address;
-	/**
-	 * 楼层
-	 */
+    /**
+     * 办公室楼层
+     */
 	private String floor;
-	/**
+    /**
      * 真实头像
      */
 	@TableField("real_avatar")
@@ -97,12 +103,12 @@ public class CompanyInfo extends PojoModel<CompanyInfo> {
      * 个人手机号
      */
 	private String mobile;
-	/**
-	 * 座机号
-	 */
+    /**
+     * 座机号
+     */
 	@TableField("landline_number")
 	private String landlineNumber;
-	/**
+    /**
      * 公司产品图片
      */
 	@TableField("company_product")
@@ -112,49 +118,44 @@ public class CompanyInfo extends PojoModel<CompanyInfo> {
      */
 	@TableField("company_tag")
 	private String companyTag;
-	/**
-	 * 公司简介
-	 */
+    /**
+     * 公司简介
+     */
 	@TableField("company_profile")
 	private String companyProfile;
-	/**
-	 * 公司名称
-	 */
+    /**
+     * 公司名称
+     */
 	@TableField("company_name")
 	private String companyName;
-	/**
-	 * 公司营业执照
-	 */
+    /**
+     * 公司营业执照
+     */
 	@TableField("company_license")
 	private String companyLicense;
-	/**
-	 * 公司logo
-	 */
+    /**
+     * 公司logo
+     */
 	@TableField("company_logo")
 	private String companyLogo;
-	/**
-	 * 公司环境照片
-	 */
+    /**
+     * 公司环境照片
+     */
 	@TableField("company_env_img")
 	private String companyEnvImg;
-	/**
-	 * 企业网址
-	 */
+    /**
+     * 企业网址
+     */
 	@TableField("company_website")
 	private String companyWebsite;
-	/**
-	 * 是否删除 1-正常 2-删除
-	 */
-	@TableField("is_del")
-	private Integer isDel;
-	/**
-	 * 创建时间
-	 */
+    /**
+     * 创建时间
+     */
 	@TableField("create_time")
 	private Date createTime;
-	/**
-	 * 更新时间
-	 */
+    /**
+     * 更新时间
+     */
 	@TableField("update_time")
 	private Date updateTime;
 
@@ -162,13 +163,5 @@ public class CompanyInfo extends PojoModel<CompanyInfo> {
 	protected Serializable pkVal() {
 		return this.id;
 	}
-	
-	// --------额外属性（entity对应表结构之外的属性） start------------------------------
-	/**
-	 * 距离 单位公里
-	 */
-	@TableField(exist = false)
-	private BigDecimal distance;
-	// --------额外属性（entity对应表结构之外的属性） end--------------------------------
 
 }
