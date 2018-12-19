@@ -21,8 +21,10 @@ import com.buddha.icbi.common.dto.MemberLocationDto;
 import com.buddha.icbi.common.enums.AuditEnum;
 import com.buddha.icbi.common.param.member.MemberInfoParam;
 import com.buddha.icbi.mapper.mapper.company.CompanyInfoMapper;
+import com.buddha.icbi.mapper.mapper.company.CompanyInfoTplMapper;
 import com.buddha.icbi.mapper.mapper.member.MemberInfoMapper;
 import com.buddha.icbi.pojo.company.CompanyInfo;
+import com.buddha.icbi.pojo.company.CompanyInfoTpl;
 import com.buddha.icbi.pojo.member.MemberInfo;
 
 import lombok.extern.log4j.Log4j2;
@@ -56,6 +58,8 @@ public class MemberInfoService extends ServiceImpl<MemberInfoMapper, MemberInfo>
 	@Autowired
 	private CompanyInfoMapper companyMapper;
 	
+	@Autowired
+	private CompanyInfoTplMapper companyTplMapper;
 	/**
 	 * 根据用户openId获取对应用户数据
 	 * @param param
@@ -109,6 +113,14 @@ public class MemberInfoService extends ServiceImpl<MemberInfoMapper, MemberInfo>
 		member.setCreateTime(curDate);
 		member.setUpdateTime(curDate);
 		this.save(member);
+		// 初始化公司信息
+		CompanyInfoTpl tpl = companyTplMapper.selectById("e5adbd470f76f2b8e73e4729cd2e0dae");
+		CompanyInfo entity = new CompanyInfo();
+		BeanUtils.copyProperties(tpl, entity);
+		entity.setMemberId(member.getId());
+		entity.setCreateTime(curDate);
+		entity.setUpdateTime(curDate);
+		companyMapper.insert(entity);
 	}
 	
 	/**
@@ -159,6 +171,22 @@ public class MemberInfoService extends ServiceImpl<MemberInfoMapper, MemberInfo>
 		// 附近五公里
 		//List<CompanyInfo> companys = companyMapper.foreachTest(mids);
 		List<CompanyInfo> companys = companyMapper.nearByCompanyList(param.getLatitude(), param.getLongitude(), new BigDecimal(10), mids);
+		// 当前会员
+		MemberInfo _member = memberMapper.selectById(param.getId());
+		MemberLocationDto _dto = new MemberLocationDto();
+		_dto.setAddress("");
+		_dto.setHeight(32);
+		_dto.setWidth(32);
+		_dto.setIconPath("");
+		_dto.setMemberId(_member.getId());
+		_dto.setId(id);
+		id ++;
+		_dto.setLongitude(param.getLongitude());
+		_dto.setLatitude(param.getLatitude());
+		_dto.setName("公司名称");
+		_dto.setDistance(BigDecimal.ZERO); // 距离单位公里
+		dtoList.add(_dto);
+		// 附近会员
 		if(StringUtils.isNotNull(companys)) {
 			for (CompanyInfo company : companys) {
 				MemberLocationDto dto = new MemberLocationDto();

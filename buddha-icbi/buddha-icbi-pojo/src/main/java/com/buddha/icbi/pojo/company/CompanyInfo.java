@@ -169,6 +169,21 @@ public class CompanyInfo extends PojoModel<CompanyInfo> {
 	 */
 	@TableField(exist = false)
 	private BigDecimal distance;
+	
+	@TableField(exist = false)
+	private String[] realAvatarArr;
+	@TableField(exist = false)
+	private String[] identityFrontArr;
+	@TableField(exist = false)
+	private String[] identityBackArr;
+	@TableField(exist = false)
+	private String[] companyProductArr;
+	@TableField(exist = false)
+	private String[] companyLicenseArr;
+	@TableField(exist = false)
+	private String[] companyLogoArr;
+	@TableField(exist = false)
+	private String[] companyEnvImgArr;
 	// --------额外属性（entity对应表结构之外的属性） end--------------------------------
 
 }

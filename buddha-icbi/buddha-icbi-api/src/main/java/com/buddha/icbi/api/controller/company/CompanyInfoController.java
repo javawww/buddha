@@ -65,6 +65,16 @@ public class CompanyInfoController extends WebBaseController{
 				log.info("公司信息为空");
 				return new ResultJson(ResultStatusEnum.DATA_NOT_EXIST,"公司信息为空");
 			}
+			// 产品标签
+			String companyTag = company.getCompanyTag();
+			company.setCompanyTag(StringUtils.vertical2comma(companyTag));
+			company.setRealAvatarArr(StringUtils.string2List(company.getRealAvatar()));
+			company.setIdentityFrontArr(StringUtils.string2List(company.getIdentityFront()));
+			company.setIdentityBackArr(StringUtils.string2List(company.getIdentityBack()));
+			company.setCompanyProductArr(StringUtils.string2List(company.getCompanyProduct()));
+			company.setCompanyLicenseArr(StringUtils.string2List(company.getCompanyLicense()));
+			company.setCompanyLogoArr(StringUtils.string2List(company.getCompanyLogo()));
+			company.setCompanyEnvImgArr(StringUtils.string2List(company.getCompanyEnvImg()));
 			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, company);
 		} catch (Exception e) {
 			log.error("系统异常，请检查", e);
