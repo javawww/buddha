@@ -7,6 +7,9 @@
 		SELECT *, ROUND( SQRT(POW(69.1 * (latitude - #{latitude}), 2) + POW(69.1 * (#{longitude} - longitude) * COS(latitude / 57.3), 2) ),2) AS distance
 			FROM company_info 
 			WHERE 1=1 
+			<if test="mids.size() > 0">
+				AND member_id in <foreach collection="mids" index="index" item="item" open="(" separator="," close=")"> #{item} </foreach> 
+			</if>
 			HAVING distance &lt;= #{distance}
 			ORDER BY distance ASC
 	</select>
@@ -15,10 +18,7 @@
 		SELECT * FROM company_info 
 			WHERE 1=1 
 			<if test="mids.size() > 0">
-				AND member_id IN
-				<foreach collection="mids" index="index" item="item" open="(" separator="," close=")">
-			       #{item}
-			    </foreach> 
+				AND member_id in <foreach collection="mids" index="index" item="item" open="(" separator="," close=")"> #{item} </foreach> 
 			</if>
 	</select>
 </mapper>
