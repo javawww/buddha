@@ -39,5 +39,15 @@ public interface CompanyInfoMapper extends BaseMapper<CompanyInfo> {
 	 */
 	public List<CompanyInfo> nearByCompanyList(@Param("latitude") BigDecimal latitude,@Param("longitude") BigDecimal longitude,@Param("distance") BigDecimal distance,@Param("mids") List<String> mids);
 	
+	/**
+	 * 附近认证的公司
+	 * @param latitude
+	 * @param longitude
+	 * @param distance
+	 * @return
+	 */
+	public List<CompanyInfo> nearCompany(@Param("latitude") BigDecimal latitude,@Param("longitude") BigDecimal longitude,
+			@Param("distance") BigDecimal distance,@Param("isCertification") Integer isCertification,@Param("keyword") String keyword);
+	
 	public List<CompanyInfo> foreachTest(@Param("mids") List<String> mids);
 }

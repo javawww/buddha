@@ -49,6 +49,11 @@ public class CompanyInfo extends PojoModel<CompanyInfo> {
 	@TableField("member_id")
 	private String memberId;
 	/**
+	 * 是否认证 0-待认证 1-认证通过 2-认证驳回
+	 */
+	@TableField("is_certification")
+	private Integer isCertification;
+	/**
 	 * 纬度，范围为 -90~90，负数表示南纬
 	 */
 	private BigDecimal latitude;

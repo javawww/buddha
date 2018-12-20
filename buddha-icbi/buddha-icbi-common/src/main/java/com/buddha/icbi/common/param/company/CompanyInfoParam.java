@@ -27,7 +27,10 @@ public class CompanyInfoParam extends BaseParam{
 	 * 会员id
 	 */
 	private String memberId;
-	
+	/**
+	 * 是否认证 0-待认证 1-认证通过 2-认证驳回
+	 */
+	private Integer isCertification;
 	/**
 	 * 纬度，范围为 -90~90，负数表示南纬
 	 */
@@ -76,5 +79,8 @@ public class CompanyInfoParam extends BaseParam{
 	 * 企业网址
 	 */
 	private String companyWebsite;
-
+	/**
+	 * 关键字
+	 */
+	private String keyword;
 }

@@ -14,6 +14,21 @@
 			ORDER BY distance ASC
 	</select>
 	
+	<!-- 查询附近公司信息 状态查询-->
+	<select id="nearCompany" resultType="com.buddha.icbi.pojo.company.CompanyInfo" parameterType="java.util.List">
+		SELECT *, ROUND( SQRT(POW(69.1 * (latitude - #{latitude}), 2) + POW(69.1 * (#{longitude} - longitude) * COS(latitude / 57.3), 2) ),2) AS distance
+			FROM company_info 
+			WHERE 1=1 
+			<if test="isCertification !=null and isCertification != '' ">
+		 	AND is_certification = #{isCertification}
+			</if>
+			<if test="keyword != null and keyword != '' ">
+			AND company_tag LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+			HAVING distance &lt;= #{distance}
+			ORDER BY distance ASC
+	</select>
+	
 	<select id="foreachTest" resultType="com.buddha.icbi.pojo.company.CompanyInfo" parameterType="java.util.List">
 		SELECT * FROM company_info 
 			WHERE 1=1 

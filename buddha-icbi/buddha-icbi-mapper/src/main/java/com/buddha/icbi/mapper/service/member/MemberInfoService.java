@@ -1,7 +1,5 @@
 package com.buddha.icbi.mapper.service.member;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,14 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.buddha.component.common.constant.OSSImageStyleConstant;
 import com.buddha.component.common.enums.ResultStatusEnum;
 import com.buddha.component.common.exception.BaseException;
 import com.buddha.component.common.util.EmojiUtils;
 import com.buddha.component.common.util.StringUtils;
 import com.buddha.icbi.common.bean.LoginUserInfoBean;
-import com.buddha.icbi.common.dto.MemberLocationDto;
-import com.buddha.icbi.common.enums.AuditEnum;
 import com.buddha.icbi.common.param.member.MemberInfoParam;
 import com.buddha.icbi.mapper.mapper.company.CompanyInfoMapper;
 import com.buddha.icbi.mapper.mapper.company.CompanyInfoTplMapper;
@@ -152,127 +147,6 @@ public class MemberInfoService extends ServiceImpl<MemberInfoMapper, MemberInfo>
 			throw new BaseException(ResultStatusEnum.DATA_NOT_EXIST,"数据库暂无用户");
 		}
 		return list;
-	}
-	/**
-	 * 附近会员
-	 * @param param
-	 * @return
-	 */
-	public List<MemberLocationDto> listMemberLocation(MemberInfoParam param) {
-		// 认证通过会员ids
-		List<String> mids = memberMapper.selectCertification(AuditEnum.AUDITED.getValue());
-		if(StringUtils.isEmpty(mids)) {
-			log.info("数据库暂无用户");
-			throw new BaseException(ResultStatusEnum.DATA_NOT_EXIST,"数据库暂无用户");
-		}
-		// 封装对象
-		List<MemberLocationDto> dtoList = new ArrayList<MemberLocationDto>();
-		Integer id = 0;
-		// 附近五公里
-		//List<CompanyInfo> companys = companyMapper.foreachTest(mids);
-		List<CompanyInfo> companys = companyMapper.nearByCompanyList(param.getLatitude(), param.getLongitude(), new BigDecimal(10), mids);
-		// 当前会员
-		MemberInfo _member = memberMapper.selectById(param.getId());
-		MemberLocationDto _dto = new MemberLocationDto();
-		_dto.setAddress("");
-		_dto.setHeight(32);
-		_dto.setWidth(32);
-		_dto.setIconPath("");
-		_dto.setMemberId(_member.getId());
-		_dto.setId(id);
-		id ++;
-		_dto.setLongitude(param.getLongitude());
-		_dto.setLatitude(param.getLatitude());
-		_dto.setName("公司名称");
-		_dto.setDistance(BigDecimal.ZERO); // 距离单位公里
-		dtoList.add(_dto);
-		// 附近会员
-		if(StringUtils.isNotNull(companys)) {
-			for (CompanyInfo company : companys) {
-				MemberLocationDto dto = new MemberLocationDto();
-				dto.setAddress(company.getAddress());
-				dto.setHeight(32);
-				dto.setWidth(32);
-				// 查询
-				MemberInfo member = memberMapper.selectById(company.getMemberId());
-				if(null != member) {
-					dto.setIconPath(member.getRealAvatar() + OSSImageStyleConstant.IMAGE_CIRCLE);
-					dto.setMemberId(member.getId());
-				}
-				dto.setId(id);
-				id ++;
-				dto.setLongitude(company.getLongitude());
-				dto.setLatitude(company.getLatitude());
-				dto.setName(company.getCompanyName());
-				dto.setDistance(company.getDistance()); // 距离单位公里
-				dtoList.add(dto);
-			}
-		}else {
-			
-		}
-		// 放置list
-		return dtoList;
-	}
-	
-	/**
-	 * 查询附近会员
-	 * @param param
-	 * @return
-	 */
-	public List<MemberLocationDto> searchMemberLocation(MemberInfoParam param) {
-		// 认证通过会员ids
-		List<String> mids = memberMapper.selectCertification(AuditEnum.AUDITED.getValue());
-		if(StringUtils.isEmpty(mids)) {
-			log.info("数据库暂无用户");
-			throw new BaseException(ResultStatusEnum.DATA_NOT_EXIST,"数据库暂无用户");
-		}
-		// 封装对象
-		List<MemberLocationDto> dtoList = new ArrayList<MemberLocationDto>();
-		Integer id = 0;
-		// 附近五公里
-		//List<CompanyInfo> companys = companyMapper.foreachTest(mids);
-		List<CompanyInfo> companys = companyMapper.nearByCompanyList(param.getLatitude(), param.getLongitude(), new BigDecimal(10), mids);
-		// 当前会员
-		MemberInfo _member = memberMapper.selectById(param.getId());
-		MemberLocationDto _dto = new MemberLocationDto();
-		_dto.setAddress("");
-		_dto.setHeight(32);
-		_dto.setWidth(32);
-		_dto.setIconPath("");
-		_dto.setMemberId(_member.getId());
-		_dto.setId(id);
-		id ++;
-		_dto.setLongitude(param.getLongitude());
-		_dto.setLatitude(param.getLatitude());
-		_dto.setName("公司名称");
-		_dto.setDistance(BigDecimal.ZERO); // 距离单位公里
-		dtoList.add(_dto);
-		// 附近会员
-		if(StringUtils.isNotNull(companys)) {
-			for (CompanyInfo company : companys) {
-				MemberLocationDto dto = new MemberLocationDto();
-				dto.setAddress(company.getAddress());
-				dto.setHeight(32);
-				dto.setWidth(32);
-				// 查询
-				MemberInfo member = memberMapper.selectById(company.getMemberId());
-				if(null != member) {
-					dto.setIconPath(member.getRealAvatar() + OSSImageStyleConstant.IMAGE_CIRCLE);
-					dto.setMemberId(member.getId());
-				}
-				dto.setId(id);
-				id ++;
-				dto.setLongitude(company.getLongitude());
-				dto.setLatitude(company.getLatitude());
-				dto.setName(company.getCompanyName());
-				dto.setDistance(company.getDistance()); // 距离单位公里
-				dtoList.add(dto);
-			}
-		}else {
-			
-		}
-		// 放置list
-		return dtoList;
 	}
 	
 }

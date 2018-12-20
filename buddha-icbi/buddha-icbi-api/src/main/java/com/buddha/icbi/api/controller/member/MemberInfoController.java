@@ -22,7 +22,6 @@ import com.buddha.component.wechat.bean.Code2SessionBean;
 import com.buddha.component.wechat.service.WechatService;
 import com.buddha.icbi.api.controller.base.WebBaseController;
 import com.buddha.icbi.common.bean.LoginUserInfoBean;
-import com.buddha.icbi.common.dto.MemberLocationDto;
 import com.buddha.icbi.common.enums.AuditEnum;
 import com.buddha.icbi.common.enums.IsAdminEnum;
 import com.buddha.icbi.common.param.member.MemberInfoParam;
@@ -189,68 +188,6 @@ public class MemberInfoController extends WebBaseController{
 			// 会员列表
 			List<MemberInfo> members = memberService.listMember(param);
 			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS,members);
-		} catch (Exception e) {
-			log.error("系统异常，请检查", e);
-			return new ResultJson(e);
-		}
-	}
-	/**
-	 * 首页附近会员列表
-	 * @param param
-	 * @return
-	 */
-	@PostMapping("list-member-location")
-	public ResultJson listMemberLocation(@RequestBody MemberInfoParam param) {
-		try {
-			if(StringUtils.isNull(param.getId())) {
-				log.info("会员Id为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"会员Id为空");
-			}
-			if(StringUtils.isEmpty(param.getLatitude())) {
-				log.info("纬度为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"纬度为空");
-			}
-			if(StringUtils.isEmpty(param.getLongitude())) {
-				log.info("经度为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"经度为空");
-			}
-			// 附近会员列表
-			List<MemberLocationDto> dtoList = memberService.listMemberLocation(param);
-			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, dtoList);
-		} catch (Exception e) {
-			log.error("系统异常，请检查", e);
-			return new ResultJson(e);
-		}
-	}
-	
-	/**
-	 * 查询附近会员列表
-	 * 查询关键字：1-公司标签
-	 * @param param
-	 * @return
-	 */
-	@PostMapping("search-member-location")
-	public ResultJson searchMemberLocation(@RequestBody MemberInfoParam param) {
-		try {
-			if(StringUtils.isNull(param.getId())) {
-				log.info("会员Id为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"会员Id为空");
-			}
-			if(StringUtils.isEmpty(param.getLatitude())) {
-				log.info("纬度为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"纬度为空");
-			}
-			if(StringUtils.isEmpty(param.getLongitude())) {
-				log.info("经度为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"经度为空");
-			}
-			if(StringUtils.isNull(param.getKeyworkd())) {
-				log.info("关键字为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"关键字为空");
-			}
-			// 查询附近会员列表
-			List<MemberLocationDto> dtoList = memberService.searchMemberLocation(param);
-			return null;
 		} catch (Exception e) {
 			log.error("系统异常，请检查", e);
 			return new ResultJson(e);
