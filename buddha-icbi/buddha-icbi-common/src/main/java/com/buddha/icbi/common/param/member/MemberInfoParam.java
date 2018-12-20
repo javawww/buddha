@@ -126,4 +126,8 @@ public class MemberInfoParam extends BaseParam {
 	 * 客户端ip地址
 	 */
 	private String clientIp;
+	/**
+	  * 查询关键字
+	  */
+	private String keyworkd;
 }

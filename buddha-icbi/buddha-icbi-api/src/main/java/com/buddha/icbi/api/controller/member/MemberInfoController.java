@@ -224,6 +224,40 @@ public class MemberInfoController extends WebBaseController{
 	}
 	
 	/**
+	 * 查询附近会员列表
+	 * 查询关键字：1-公司标签
+	 * @param param
+	 * @return
+	 */
+	@PostMapping("search-member-location")
+	public ResultJson searchMemberLocation(@RequestBody MemberInfoParam param) {
+		try {
+			if(StringUtils.isNull(param.getId())) {
+				log.info("会员Id为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"会员Id为空");
+			}
+			if(StringUtils.isEmpty(param.getLatitude())) {
+				log.info("纬度为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"纬度为空");
+			}
+			if(StringUtils.isEmpty(param.getLongitude())) {
+				log.info("经度为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"经度为空");
+			}
+			if(StringUtils.isNull(param.getKeyworkd())) {
+				log.info("关键字为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"关键字为空");
+			}
+			// 查询附近会员列表
+			List<MemberLocationDto> dtoList = memberService.searchMemberLocation(param);
+			return null;
+		} catch (Exception e) {
+			log.error("系统异常，请检查", e);
+			return new ResultJson(e);
+		}
+	}
+	
+	/**
 	 * 待审核列表
 	 * @param param
 	 * @return
