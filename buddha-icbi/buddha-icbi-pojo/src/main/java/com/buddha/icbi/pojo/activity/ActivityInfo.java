@@ -57,6 +57,16 @@ public class ActivityInfo extends PojoModel<ActivityInfo> {
      * 参与数量
      */
 	private Integer amount;
+	/**
+	 * 举办时间
+	 */
+	@TableField("hold_time")
+	private Date holdTime;
+	/**
+	 * 结束时间
+	 */
+	@TableField("over_time")
+	private Date overTime;
     /**
      * 活动代号
      */

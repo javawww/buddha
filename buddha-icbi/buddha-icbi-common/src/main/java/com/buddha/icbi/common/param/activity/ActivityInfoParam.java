@@ -1,6 +1,7 @@
 package com.buddha.icbi.common.param.activity;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import com.buddha.component.common.param.base.BaseParam;
 
@@ -35,6 +36,14 @@ public class ActivityInfoParam extends BaseParam{
      * 参与数量
      */
 	private Integer amount;
+	/**
+	 * 举办时间
+	 */
+	private Date holdTime;
+	/**
+	 * 结束时间
+	 */
+	private Date overTime;
     /**
      * 活动代号
      */

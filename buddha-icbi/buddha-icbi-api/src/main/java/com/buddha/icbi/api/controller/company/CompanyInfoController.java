@@ -1,5 +1,6 @@
 package com.buddha.icbi.api.controller.company;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +24,7 @@ import com.buddha.icbi.common.param.company.CompanyInfoParam;
 import com.buddha.icbi.mapper.service.company.CompanyInfoService;
 import com.buddha.icbi.mapper.service.member.MemberInfoService;
 import com.buddha.icbi.pojo.company.CompanyInfo;
+import com.buddha.icbi.pojo.company.FileList;
 import com.buddha.icbi.pojo.member.MemberInfo;
 
 import io.swagger.annotations.Api;
@@ -66,22 +68,7 @@ public class CompanyInfoController extends WebBaseController{
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"id为空");
 			}
 			// 查询
-			CompanyInfo company = companyService.getById(param.getId());
-			if(null == company) {
-				log.info("公司信息为空");
-				return new ResultJson(ResultStatusEnum.DATA_NOT_EXIST,"公司信息为空");
-			}
-			// 产品标签
-			if(StringUtils.isNotNull(company.getCompanyTag())) {
-				company.setCompanyTag(StringUtils.vertical2comma(company.getCompanyTag()));
-			}
-			company.setRealAvatarArr(StringUtils.string2List(company.getRealAvatar()));
-			company.setIdentityFrontArr(StringUtils.string2List(company.getIdentityFront()));
-			company.setIdentityBackArr(StringUtils.string2List(company.getIdentityBack()));
-			company.setCompanyProductArr(StringUtils.string2List(company.getCompanyProduct()));
-			company.setCompanyLicenseArr(StringUtils.string2List(company.getCompanyLicense()));
-			company.setCompanyLogoArr(StringUtils.string2List(company.getCompanyLogo()));
-			company.setCompanyEnvImgArr(StringUtils.string2List(company.getCompanyEnvImg()));
+			CompanyInfo company = companyService.detailCompany(param);
 			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, company);
 		} catch (Exception e) {
 			log.error("系统异常，请检查", e);
@@ -102,24 +89,7 @@ public class CompanyInfoController extends WebBaseController{
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"会员id为空");
 			}
 			// 查询
-			QueryWrapper<CompanyInfo> queryWrapper = super.getQueryWrapper(CompanyInfo.class);
-			queryWrapper.getEntity().setMemberId(param.getMemberId());
-			CompanyInfo company = companyService.getOne(queryWrapper);
-			if(null == company) {
-				log.info("公司信息为空");
-				return new ResultJson(ResultStatusEnum.DATA_NOT_EXIST,"公司信息为空");
-			}
-			// 产品标签
-			if(StringUtils.isNotNull(company.getCompanyTag())) {
-				company.setCompanyTag(StringUtils.vertical2comma(company.getCompanyTag()));
-			}
-			company.setRealAvatarArr(StringUtils.string2List(company.getRealAvatar()));
-			company.setIdentityFrontArr(StringUtils.string2List(company.getIdentityFront()));
-			company.setIdentityBackArr(StringUtils.string2List(company.getIdentityBack()));
-			company.setCompanyProductArr(StringUtils.string2List(company.getCompanyProduct()));
-			company.setCompanyLicenseArr(StringUtils.string2List(company.getCompanyLicense()));
-			company.setCompanyLogoArr(StringUtils.string2List(company.getCompanyLogo()));
-			company.setCompanyEnvImgArr(StringUtils.string2List(company.getCompanyEnvImg()));
+			CompanyInfo company = companyService.detailCompanyByMid(param);
 			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, company);
 		} catch (Exception e) {
 			log.error("系统异常，请检查", e);

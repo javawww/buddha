@@ -7,8 +7,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.buddha.component.common.bean.ResultJson;
 import com.buddha.component.common.constant.OSSImageStyleConstant;
+import com.buddha.component.common.enums.ResultStatusEnum;
+import com.buddha.component.common.exception.BaseException;
 import com.buddha.component.common.util.StringUtils;
 import com.buddha.icbi.common.dto.MemberLocationDto;
 import com.buddha.icbi.common.enums.AuditEnum;
@@ -16,7 +20,10 @@ import com.buddha.icbi.common.param.company.CompanyInfoParam;
 import com.buddha.icbi.mapper.mapper.company.CompanyInfoMapper;
 import com.buddha.icbi.mapper.mapper.member.MemberInfoMapper;
 import com.buddha.icbi.pojo.company.CompanyInfo;
+import com.buddha.icbi.pojo.company.FileList;
 import com.buddha.icbi.pojo.member.MemberInfo;
+
+import lombok.extern.log4j.Log4j2;
 
 
  /**
@@ -38,6 +45,7 @@ import com.buddha.icbi.pojo.member.MemberInfo;
  * @版权 深圳市佛系青年互联网科技有限公司(www.fxqn.xin)
  */
 @Service
+@Log4j2
 public class CompanyInfoService extends ServiceImpl<CompanyInfoMapper, CompanyInfo> {
 	
 	@Autowired
@@ -154,6 +162,256 @@ public class CompanyInfoService extends ServiceImpl<CompanyInfoMapper, CompanyIn
 		}
 		// 放置list
 		return dtoList;
+	}
+	
+	
+	/**
+	 * 根据id返回公司信息
+	 * @param param
+	 * @return
+	 */
+	public CompanyInfo detailCompany(CompanyInfoParam param) {
+		// 条件
+		CompanyInfo company = this.getById(param.getId());
+		if(null == company) {
+			log.info("公司信息为空");
+			throw new BaseException(ResultStatusEnum.DATA_NOT_EXIST,"公司信息为空");
+		} 
+		
+		// 产品标签
+		if(StringUtils.isNotNull(company.getCompanyTag())) {
+			company.setCompanyTag(StringUtils.vertical2comma(company.getCompanyTag()));
+		}
+		
+		// 真实头像
+		if(StringUtils.isNotNull(company.getRealAvatar())) {
+			List<FileList> fileList = new ArrayList<FileList>();
+			String str[] = StringUtils.string2List(company.getRealAvatar());
+			for (int i = 0; i < str.length; i++) {
+				FileList file = new FileList();
+				file.setUrl(str[i]);
+				file.setOssFileUrl(str[i]);
+				file.setStatus("done");
+				file.setUid(i);
+				fileList.add(file);
+			}
+			company.setRealAvatarArr(fileList);
+		}
+		
+		// 身份证 正面
+		if(StringUtils.isNotNull(company.getIdentityFront())) {
+			List<FileList> fileList = new ArrayList<FileList>();
+			String str[] = StringUtils.string2List(company.getIdentityFront());
+			for (int i = 0; i < str.length; i++) {
+				FileList file = new FileList();
+				file.setUrl(str[i]);
+				file.setOssFileUrl(str[i]);
+				file.setStatus("done");
+				file.setUid(i);
+				fileList.add(file);
+			}
+			company.setIdentityFrontArr(fileList);
+		}
+		
+		// 身份证反面
+		if(StringUtils.isNotNull(company.getIdentityBack())) {
+			List<FileList> fileList = new ArrayList<FileList>();
+			String str[] = StringUtils.string2List(company.getIdentityBack());
+			for (int i = 0; i < str.length; i++) {
+				FileList file = new FileList();
+				file.setUrl(str[i]);
+				file.setOssFileUrl(str[i]);
+				file.setStatus("done");
+				file.setUid(i);
+				fileList.add(file);
+			}
+			company.setIdentityBackArr(fileList);
+		}
+		
+		// 公司产品
+		if(StringUtils.isNotNull(company.getCompanyProduct())) {
+			List<FileList> fileList = new ArrayList<FileList>();
+			String str[] = StringUtils.string2List(company.getCompanyProduct());
+			for (int i = 0; i < str.length; i++) {
+				FileList file = new FileList();
+				file.setUrl(str[i]);
+				file.setOssFileUrl(str[i]);
+				file.setStatus("done");
+				file.setUid(i);
+				fileList.add(file);
+			}
+			company.setCompanyProductArr(fileList);
+		}
+		// 营业执照
+		if(StringUtils.isNotNull(company.getCompanyLicense())) {
+			List<FileList> fileList = new ArrayList<FileList>();
+			String str[] = StringUtils.string2List(company.getCompanyLicense());
+			for (int i = 0; i < str.length; i++) {
+				FileList file = new FileList();
+				file.setUrl(str[i]);
+				file.setOssFileUrl(str[i]);
+				file.setStatus("done");
+				file.setUid(i);
+				fileList.add(file);
+			}
+			company.setCompanyLicenseArr(fileList);
+		}
+		
+		// 公司logo
+		if(StringUtils.isNotNull(company.getCompanyLogo())) {
+			List<FileList> fileList = new ArrayList<FileList>();
+			String str[] = StringUtils.string2List(company.getCompanyLogo());
+			for (int i = 0; i < str.length; i++) {
+				FileList file = new FileList();
+				file.setUrl(str[i]);
+				file.setOssFileUrl(str[i]);
+				file.setStatus("done");
+				file.setUid(i);
+				fileList.add(file);
+			}
+			company.setCompanyLogoArr(fileList);
+		}
+		
+		// 公司环境
+		if(StringUtils.isNotNull(company.getCompanyEnvImg())) {
+			List<FileList> fileList = new ArrayList<FileList>();
+			String str[] = StringUtils.string2List(company.getCompanyEnvImg());
+			for (int i = 0; i < str.length; i++) {
+				FileList file = new FileList();
+				file.setUrl(str[i]);
+				file.setOssFileUrl(str[i]);
+				file.setStatus("done");
+				file.setUid(i);
+				fileList.add(file);
+			}
+			company.setCompanyEnvImgArr(fileList);
+		}
+		return company;
+	}
+	
+	/**
+	 * 根据会员id返回公司信息
+	 * @param param
+	 * @return
+	 */
+	public CompanyInfo detailCompanyByMid(CompanyInfoParam param) {
+		// 条件
+		QueryWrapper<CompanyInfo> queryWrapper = new QueryWrapper<CompanyInfo>(new CompanyInfo());
+		queryWrapper.getEntity().setMemberId(param.getMemberId());
+		CompanyInfo company = this.getOne(queryWrapper);
+		if(null == company) {
+			log.info("公司信息为空");
+			throw new BaseException(ResultStatusEnum.DATA_NOT_EXIST,"公司信息为空");
+		}
+		// 产品标签
+		if(StringUtils.isNotNull(company.getCompanyTag())) {
+			company.setCompanyTag(StringUtils.vertical2comma(company.getCompanyTag()));
+		}
+		
+		// 真实头像
+		if(StringUtils.isNotNull(company.getRealAvatar())) {
+			List<FileList> fileList = new ArrayList<FileList>();
+			String str[] = StringUtils.string2List(company.getRealAvatar());
+			for (int i = 0; i < str.length; i++) {
+				FileList file = new FileList();
+				file.setUrl(str[i]);
+				file.setOssFileUrl(str[i]);
+				file.setStatus("done");
+				file.setUid(i);
+				fileList.add(file);
+			}
+			company.setRealAvatarArr(fileList);
+		}
+		
+		// 身份证 正面
+		if(StringUtils.isNotNull(company.getIdentityFront())) {
+			List<FileList> fileList = new ArrayList<FileList>();
+			String str[] = StringUtils.string2List(company.getIdentityFront());
+			for (int i = 0; i < str.length; i++) {
+				FileList file = new FileList();
+				file.setUrl(str[i]);
+				file.setOssFileUrl(str[i]);
+				file.setStatus("done");
+				file.setUid(i);
+				fileList.add(file);
+			}
+			company.setIdentityFrontArr(fileList);
+		}
+		
+		// 身份证反面
+		if(StringUtils.isNotNull(company.getIdentityBack())) {
+			List<FileList> fileList = new ArrayList<FileList>();
+			String str[] = StringUtils.string2List(company.getIdentityBack());
+			for (int i = 0; i < str.length; i++) {
+				FileList file = new FileList();
+				file.setUrl(str[i]);
+				file.setOssFileUrl(str[i]);
+				file.setStatus("done");
+				file.setUid(i);
+				fileList.add(file);
+			}
+			company.setIdentityBackArr(fileList);
+		}
+		
+		// 公司产品
+		if(StringUtils.isNotNull(company.getCompanyProduct())) {
+			List<FileList> fileList = new ArrayList<FileList>();
+			String str[] = StringUtils.string2List(company.getCompanyProduct());
+			for (int i = 0; i < str.length; i++) {
+				FileList file = new FileList();
+				file.setUrl(str[i]);
+				file.setOssFileUrl(str[i]);
+				file.setStatus("done");
+				file.setUid(i);
+				fileList.add(file);
+			}
+			company.setCompanyProductArr(fileList);
+		}
+		// 营业执照
+		if(StringUtils.isNotNull(company.getCompanyLicense())) {
+			List<FileList> fileList = new ArrayList<FileList>();
+			String str[] = StringUtils.string2List(company.getCompanyLicense());
+			for (int i = 0; i < str.length; i++) {
+				FileList file = new FileList();
+				file.setUrl(str[i]);
+				file.setOssFileUrl(str[i]);
+				file.setStatus("done");
+				file.setUid(i);
+				fileList.add(file);
+			}
+			company.setCompanyLicenseArr(fileList);
+		}
+		
+		// 公司logo
+		if(StringUtils.isNotNull(company.getCompanyLogo())) {
+			List<FileList> fileList = new ArrayList<FileList>();
+			String str[] = StringUtils.string2List(company.getCompanyLogo());
+			for (int i = 0; i < str.length; i++) {
+				FileList file = new FileList();
+				file.setUrl(str[i]);
+				file.setOssFileUrl(str[i]);
+				file.setStatus("done");
+				file.setUid(i);
+				fileList.add(file);
+			}
+			company.setCompanyLogoArr(fileList);
+		}
+		
+		// 公司环境
+		if(StringUtils.isNotNull(company.getCompanyEnvImg())) {
+			List<FileList> fileList = new ArrayList<FileList>();
+			String str[] = StringUtils.string2List(company.getCompanyEnvImg());
+			for (int i = 0; i < str.length; i++) {
+				FileList file = new FileList();
+				file.setUrl(str[i]);
+				file.setOssFileUrl(str[i]);
+				file.setStatus("done");
+				file.setUid(i);
+				fileList.add(file);
+			}
+			company.setCompanyEnvImgArr(fileList);
+		}
+		return company;
 	}
 	
 }

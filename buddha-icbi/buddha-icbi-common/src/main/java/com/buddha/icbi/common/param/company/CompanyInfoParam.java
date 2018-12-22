@@ -52,9 +52,41 @@ public class CompanyInfoParam extends BaseParam{
 	 */
 	private String floor;
 	/**
+     * 真实头像
+     */
+	private String realAvatar;
+    /**
+     * 真实姓名
+     */
+	private String realName;
+    /**
+     * 身份证正面
+     */
+	private String identityFront;
+    /**
+     * 身份证反面
+     */
+	private String identityBack;
+    /**
+     * 个人名片
+     */
+	private String businessCard;
+    /**
+     * 个人手机号
+     */
+	private String mobile;
+	/**
 	 * 座机号
 	 */
 	private String landlineNumber;
+	/**
+     * 公司产品图片
+     */
+	private String companyProduct;
+    /**
+     * 公司标签
+     */
+	private String companyTag;
 	/**
 	 * 公司简介
 	 */

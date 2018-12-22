@@ -3,6 +3,7 @@ package com.buddha.icbi.pojo.company;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -176,19 +177,19 @@ public class CompanyInfo extends PojoModel<CompanyInfo> {
 	private BigDecimal distance;
 	
 	@TableField(exist = false)
-	private String[] realAvatarArr;
+	private List<FileList> realAvatarArr;
 	@TableField(exist = false)
-	private String[] identityFrontArr;
+	private List<FileList> identityFrontArr;
 	@TableField(exist = false)
-	private String[] identityBackArr;
+	private List<FileList> identityBackArr;
 	@TableField(exist = false)
-	private String[] companyProductArr;
+	private List<FileList> companyProductArr;
 	@TableField(exist = false)
-	private String[] companyLicenseArr;
+	private List<FileList> companyLicenseArr;
 	@TableField(exist = false)
-	private String[] companyLogoArr;
+	private List<FileList> companyLogoArr;
 	@TableField(exist = false)
-	private String[] companyEnvImgArr;
+	private List<FileList> companyEnvImgArr;
 	// --------额外属性（entity对应表结构之外的属性） end--------------------------------
 
 }

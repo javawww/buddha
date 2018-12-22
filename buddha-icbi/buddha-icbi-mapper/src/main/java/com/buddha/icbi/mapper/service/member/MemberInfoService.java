@@ -64,7 +64,6 @@ public class MemberInfoService extends ServiceImpl<MemberInfoMapper, MemberInfo>
 		Date curDate = new Date();
 		// 查询会员信息
 		QueryWrapper<MemberInfo> queryWrapper = new QueryWrapper<MemberInfo>(new MemberInfo());
-		log.info("queryWrapper value is ===>>"+queryWrapper);
 		queryWrapper.getEntity().setOpenId(param.getOpenId());
 		MemberInfo member = this.getOne(queryWrapper);
 		if(null == member) {
