@@ -313,7 +313,7 @@ public class CompanyInfoController extends WebBaseController{
 	 * @param param
 	 * @return
 	 */
-	@PostMapping("search-company")
+	/*@PostMapping("search-company")
 	public ResultJson listSearchCompany(@RequestBody CompanyInfoParam param) {
 		try {
 			if(StringUtils.isNull(param.getMemberId())) {
@@ -339,5 +339,5 @@ public class CompanyInfoController extends WebBaseController{
 			log.error("系统异常，请检查", e);
 			return new ResultJson(e);
 		}
-	}
+	}*/
 }

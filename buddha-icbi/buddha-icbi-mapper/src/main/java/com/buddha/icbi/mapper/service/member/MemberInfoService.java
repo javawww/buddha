@@ -110,7 +110,8 @@ public class MemberInfoService extends ServiceImpl<MemberInfoMapper, MemberInfo>
 		// 初始化公司信息
 		CompanyInfoTpl tpl = companyTplMapper.selectById("e5adbd470f76f2b8e73e4729cd2e0dae");
 		CompanyInfo entity = new CompanyInfo();
-		BeanUtils.copyProperties(tpl, entity);
+		
+		BeanUtils.copyProperties(tpl, entity, "id");
 		entity.setMemberId(member.getId());
 		entity.setCreateTime(curDate);
 		entity.setUpdateTime(curDate);

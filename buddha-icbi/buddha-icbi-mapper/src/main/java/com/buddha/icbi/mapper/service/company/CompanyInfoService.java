@@ -65,9 +65,13 @@ public class CompanyInfoService extends ServiceImpl<CompanyInfoMapper, CompanyIn
 		Integer id = 0;
 		// 附近五公里
 		List<CompanyInfo> companys = companyMapper.nearCompany(param.getLatitude(), param.getLongitude(), 
-				new BigDecimal(10), AuditEnum.AUDITED.getValue(),null);
+				new BigDecimal(10), AuditEnum.AUDITED.getValue(),param.getKeyword());
 		// 当前会员
 		MemberInfo _member = memberMapper.selectById(param.getMemberId());
+		if(null == _member) {
+			log.info("当前会员不存在");
+			throw new BaseException(ResultStatusEnum.DATA_NOT_EXIST,"当前会员不存在");
+		}
 		MemberLocationDto _dto = new MemberLocationDto();
 		_dto.setAddress("公司地址");
 		_dto.setHeight(32);
@@ -91,6 +95,7 @@ public class CompanyInfoService extends ServiceImpl<CompanyInfoMapper, CompanyIn
 				// 查询
 				dto.setIconPath(company.getRealAvatar() + OSSImageStyleConstant.IMAGE_CIRCLE);
 				dto.setCompanyId(company.getId());
+				dto.setMemberId(company.getMemberId());
 				dto.setId(id);
 				id ++;
 				dto.setLongitude(company.getLongitude());
@@ -146,6 +151,7 @@ public class CompanyInfoService extends ServiceImpl<CompanyInfoMapper, CompanyIn
 				// 查询
 				dto.setIconPath(company.getRealAvatar() + OSSImageStyleConstant.IMAGE_CIRCLE);
 				dto.setCompanyId(company.getId());
+				dto.setMemberId(company.getMemberId());
 				dto.setId(id);
 				id ++;
 				dto.setLongitude(company.getLongitude());
