@@ -65,7 +65,7 @@ public class CompanyInfoService extends ServiceImpl<CompanyInfoMapper, CompanyIn
 		Integer id = 0;
 		// 附近五公里
 		List<CompanyInfo> companys = companyMapper.nearCompany(param.getLatitude(), param.getLongitude(), 
-				new BigDecimal(10), AuditEnum.AUDITED.getValue(),param.getKeyword());
+				null, AuditEnum.AUDITED.getValue(),param.getKeyword());
 		// 当前会员
 		MemberInfo _member = memberMapper.selectById(param.getMemberId());
 		if(null == _member) {

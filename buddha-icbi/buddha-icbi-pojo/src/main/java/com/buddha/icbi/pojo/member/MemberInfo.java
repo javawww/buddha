@@ -59,6 +59,11 @@ public class MemberInfo extends PojoModel<MemberInfo> {
 	@TableField("open_id")
 	private String openId;
 	/**
+	 * 推荐码
+	 */
+	@TableField("recommend_code")
+	private String recommendCode;
+	/**
 	 * 微信access token
 	 */
 	@TableField("access_token")

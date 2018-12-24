@@ -25,7 +25,9 @@
 			<if test="keyword != null and keyword != '' ">
 			AND company_tag LIKE CONCAT('%', #{keyword}, '%')
 			</if>
+			<if test="distance !=null and distance != '' ">
 			HAVING distance &lt;= #{distance}
+			</if>
 			ORDER BY distance ASC
 	</select>
 	

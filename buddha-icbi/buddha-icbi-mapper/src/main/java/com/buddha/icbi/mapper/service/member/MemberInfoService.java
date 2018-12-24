@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.buddha.component.common.enums.ResultStatusEnum;
 import com.buddha.component.common.exception.BaseException;
 import com.buddha.component.common.util.EmojiUtils;
+import com.buddha.component.common.util.RandomUtil;
 import com.buddha.component.common.util.StringUtils;
 import com.buddha.icbi.common.bean.LoginUserInfoBean;
 import com.buddha.icbi.common.param.member.MemberInfoParam;
@@ -103,7 +104,8 @@ public class MemberInfoService extends ServiceImpl<MemberInfoMapper, MemberInfo>
 		}
 		// 赋值数据
 		MemberInfo member = new MemberInfo();
-		BeanUtils.copyProperties(param, member);;
+		BeanUtils.copyProperties(param, member);
+		member.setRecommendCode(RandomUtil.getUUID2());//推荐码
 		member.setCreateTime(curDate);
 		member.setUpdateTime(curDate);
 		this.save(member);
