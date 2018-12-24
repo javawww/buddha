@@ -115,6 +115,7 @@ public class MemberInfoService extends ServiceImpl<MemberInfoMapper, MemberInfo>
 		
 		BeanUtils.copyProperties(tpl, entity, "id");
 		entity.setMemberId(member.getId());
+		entity.setGender(param.getGender());
 		entity.setCreateTime(curDate);
 		entity.setUpdateTime(curDate);
 		companyMapper.insert(entity);

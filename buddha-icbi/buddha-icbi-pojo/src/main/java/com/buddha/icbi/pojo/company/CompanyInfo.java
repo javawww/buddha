@@ -75,6 +75,20 @@ public class CompanyInfo extends PojoModel<CompanyInfo> {
 	 */
 	private String floor;
 	/**
+	 * 性别 0-未知 1-男性 -女性
+	 */
+	private Integer gender;
+	/**
+	 * 姓氏
+	 */
+	@TableField("first_name")
+	private String firstName;
+	/**
+	 * 姓名
+	 */
+	@TableField("last_name")
+	private String lastName;
+	/**
      * 真实头像
      */
 	@TableField("real_avatar")
