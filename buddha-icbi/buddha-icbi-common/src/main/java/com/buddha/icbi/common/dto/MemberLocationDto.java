@@ -42,5 +42,9 @@ public class MemberLocationDto implements Serializable{
 	private String realName;// 真实姓名
 	private String realAvatar;// 真实头像
 	private String mobile;// 手机号
+	private String landlineNumber;// 座机号
+	private Integer gender;// 性别 
+	private String firstName;//姓氏 
+	private String lastName;//  姓名
 	
 }

@@ -23,7 +23,15 @@
 		 	AND is_certification = #{isCertification}
 			</if>
 			<if test="keyword != null and keyword != '' ">
-			AND company_tag LIKE CONCAT('%', #{keyword}, '%')
+			AND (
+				company_tag LIKE CONCAT('%', #{keyword}, '%')
+				OR
+				real_name LIKE CONCAT('%', #{keyword}, '%')
+				OR
+				mobile LIKE CONCAT('%', #{keyword}, '%')
+				OR
+				company_name LIKE CONCAT('%', #{keyword}, '%')
+			)
 			</if>
 			<if test="distance !=null and distance != '' ">
 			HAVING distance &lt;= #{distance}

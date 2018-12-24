@@ -175,6 +175,20 @@ public class CompanyInfoController extends WebBaseController{
 				log.info("公司id为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"公司id为空");
 			}
+			if(StringUtils.isNull(param.getFirstName())) {
+				log.info("姓名不能为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"姓名不能为空");
+			}
+			if(StringUtils.isNull(param.getLastName())) {
+				log.info("姓名不能为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"姓名不能为空");
+			}
+			if(StringUtils.isNull(param.getMobile())) {
+				log.info("手机号不能为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"手机号不能为空");
+			}
+			// 封装全名
+			param.setRealName(param.getFirstName()+param.getLastName());
 			// 更新
 			CompanyInfo company = companyService.getById(param.getId());
 			if(null == company) {

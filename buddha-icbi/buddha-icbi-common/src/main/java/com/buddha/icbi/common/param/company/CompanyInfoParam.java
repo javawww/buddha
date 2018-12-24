@@ -52,6 +52,18 @@ public class CompanyInfoParam extends BaseParam{
 	 */
 	private String floor;
 	/**
+	 * 性别 0-未知 1-男性 -女性
+	 */
+	private Integer gender;
+	/**
+	 * 姓氏
+	 */
+	private String firstName;
+	/**
+	 * 姓名
+	 */
+	private String lastName;
+	/**
      * 真实头像
      */
 	private String realAvatar;

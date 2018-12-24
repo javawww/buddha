@@ -72,7 +72,7 @@ public class CompanyInfoService extends ServiceImpl<CompanyInfoMapper, CompanyIn
 			log.info("当前会员不存在");
 			throw new BaseException(ResultStatusEnum.DATA_NOT_EXIST,"当前会员不存在");
 		}
-		MemberLocationDto _dto = new MemberLocationDto();
+		/*MemberLocationDto _dto = new MemberLocationDto();
 		_dto.setAddress("公司地址");
 		_dto.setHeight(32);
 		_dto.setWidth(22);
@@ -84,7 +84,7 @@ public class CompanyInfoService extends ServiceImpl<CompanyInfoMapper, CompanyIn
 		_dto.setLatitude(param.getLatitude());
 		_dto.setName("公司名称");
 		_dto.setDistance(BigDecimal.ZERO); // 距离单位公里
-		dtoList.add(_dto);
+		dtoList.add(_dto);*/
 		// 附近会员
 		if(StringUtils.isNotNull(companys)) {
 			for (CompanyInfo company : companys) {
@@ -105,6 +105,10 @@ public class CompanyInfoService extends ServiceImpl<CompanyInfoMapper, CompanyIn
 				dto.setRealName(company.getRealName());
 				dto.setRealAvatar(company.getRealAvatar());
 				dto.setMobile(company.getMobile());
+				dto.setLandlineNumber(company.getLandlineNumber());
+				dto.setFirstName(company.getFirstName());
+				dto.setLastName(company.getLastName());
+				dto.setGender(company.getGender());
 				dtoList.add(dto);
 			}
 		}else {
@@ -119,7 +123,7 @@ public class CompanyInfoService extends ServiceImpl<CompanyInfoMapper, CompanyIn
 	 * @param param
 	 * @return
 	 */
-	public List<MemberLocationDto> listSearchCompany(CompanyInfoParam param) {
+	/*public List<MemberLocationDto> listSearchCompany(CompanyInfoParam param) {
 		// 封装对象
 		List<MemberLocationDto> dtoList = new ArrayList<MemberLocationDto>();
 		Integer id = 0;
@@ -168,7 +172,7 @@ public class CompanyInfoService extends ServiceImpl<CompanyInfoMapper, CompanyIn
 		}
 		// 放置list
 		return dtoList;
-	}
+	}*/
 	
 	
 	/**

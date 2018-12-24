@@ -105,7 +105,7 @@ public class MemberInfoService extends ServiceImpl<MemberInfoMapper, MemberInfo>
 		// 赋值数据
 		MemberInfo member = new MemberInfo();
 		BeanUtils.copyProperties(param, member);
-		member.setRecommendCode(RandomUtil.getUUID2());//推荐码
+		member.setRecommendCode(RandomUtil.generateCode());//推荐码
 		member.setCreateTime(curDate);
 		member.setUpdateTime(curDate);
 		this.save(member);
