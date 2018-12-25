@@ -127,4 +127,8 @@ public class CompanyInfoParam extends BaseParam{
 	 * 关键字
 	 */
 	private String keyword;
+	/**
+	 * 距离
+	 */
+	private BigDecimal distance;
 }

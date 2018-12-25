@@ -312,6 +312,10 @@ public class CompanyInfoController extends WebBaseController{
 				log.info("经度为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"经度为空");
 			}
+			if(StringUtils.isEmpty(param.getDistance())) {
+				log.info("距离为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"距离为空");
+			}
 			// 附近会员列表
 			List<MemberLocationDto> dtoList = companyService.listNearCompany(param);
 			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, dtoList);
