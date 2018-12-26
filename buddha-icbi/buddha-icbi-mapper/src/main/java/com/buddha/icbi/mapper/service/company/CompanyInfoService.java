@@ -1,15 +1,16 @@
 package com.buddha.icbi.mapper.service.company;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.buddha.component.common.bean.ResultJson;
 import com.buddha.component.common.constant.OSSImageStyleConstant;
 import com.buddha.component.common.enums.ResultStatusEnum;
 import com.buddha.component.common.exception.BaseException;
@@ -18,8 +19,10 @@ import com.buddha.icbi.common.dto.MemberLocationDto;
 import com.buddha.icbi.common.enums.AuditEnum;
 import com.buddha.icbi.common.param.company.CompanyInfoParam;
 import com.buddha.icbi.mapper.mapper.company.CompanyInfoMapper;
+import com.buddha.icbi.mapper.mapper.company.CompanyInfoTplMapper;
 import com.buddha.icbi.mapper.mapper.member.MemberInfoMapper;
 import com.buddha.icbi.pojo.company.CompanyInfo;
+import com.buddha.icbi.pojo.company.CompanyInfoTpl;
 import com.buddha.icbi.pojo.company.FileList;
 import com.buddha.icbi.pojo.member.MemberInfo;
 
@@ -54,6 +57,8 @@ public class CompanyInfoService extends ServiceImpl<CompanyInfoMapper, CompanyIn
 	@Autowired
 	private CompanyInfoMapper companyMapper;
 	
+	@Autowired
+	private CompanyInfoTplMapper companyTplMapper;
 	/**
 	 * 附近会员
 	 * @param param
@@ -70,7 +75,7 @@ public class CompanyInfoService extends ServiceImpl<CompanyInfoMapper, CompanyIn
 		MemberInfo _member = memberMapper.selectById(param.getMemberId());
 		if(null == _member) {
 			log.info("当前会员不存在");
-			throw new BaseException(ResultStatusEnum.DATA_NOT_EXIST,"当前会员不存在");
+			//throw new BaseException(ResultStatusEnum.DATA_NOT_EXIST,"当前会员不存在");
 		}
 		/*MemberLocationDto _dto = new MemberLocationDto();
 		_dto.setAddress("公司地址");
@@ -309,9 +314,23 @@ public class CompanyInfoService extends ServiceImpl<CompanyInfoMapper, CompanyIn
 		QueryWrapper<CompanyInfo> queryWrapper = new QueryWrapper<CompanyInfo>(new CompanyInfo());
 		queryWrapper.getEntity().setMemberId(param.getMemberId());
 		CompanyInfo company = this.getOne(queryWrapper);
+		// 会员对象
 		if(null == company) {
+			MemberInfo member =  memberMapper.selectById(param.getMemberId());
 			log.info("公司信息为空");
-			throw new BaseException(ResultStatusEnum.DATA_NOT_EXIST,"公司信息为空");
+			//throw new BaseException(ResultStatusEnum.DATA_NOT_EXIST,"公司信息为空");
+			// 初始化公司信息
+			Date curDate = new Date();
+			CompanyInfoTpl tpl = companyTplMapper.selectById("e5adbd470f76f2b8e73e4729cd2e0dae");
+			CompanyInfo entity = new CompanyInfo();
+			BeanUtils.copyProperties(tpl, entity, "id");
+			entity.setMemberId(param.getMemberId());
+			entity.setGender(member.getGender());
+			entity.setCreateTime(curDate);
+			entity.setUpdateTime(curDate);
+			companyMapper.insert(entity);
+			log.info(">>>>>>>>>>\n",JSON.toJSONString(entity, true));
+			return entity;
 		}
 		// 产品标签
 		if(StringUtils.isNotNull(company.getCompanyTag())) {

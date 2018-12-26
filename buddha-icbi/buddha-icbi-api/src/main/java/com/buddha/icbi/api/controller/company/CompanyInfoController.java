@@ -1,6 +1,5 @@
 package com.buddha.icbi.api.controller.company;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +23,6 @@ import com.buddha.icbi.common.param.company.CompanyInfoParam;
 import com.buddha.icbi.mapper.service.company.CompanyInfoService;
 import com.buddha.icbi.mapper.service.member.MemberInfoService;
 import com.buddha.icbi.pojo.company.CompanyInfo;
-import com.buddha.icbi.pojo.company.FileList;
 import com.buddha.icbi.pojo.member.MemberInfo;
 
 import io.swagger.annotations.Api;
@@ -54,6 +52,7 @@ public class CompanyInfoController extends WebBaseController{
 
 	@Autowired
 	private MemberInfoService	memberService;
+	
 	/**
 	 * 公司详情信息
 	 * @param param
@@ -312,10 +311,10 @@ public class CompanyInfoController extends WebBaseController{
 				log.info("经度为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"经度为空");
 			}
-			if(StringUtils.isEmpty(param.getDistance())) {
+			/*if(StringUtils.isEmpty(param.getDistance())) {
 				log.info("距离为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"距离为空");
-			}
+			}*/
 			// 附近会员列表
 			List<MemberLocationDto> dtoList = companyService.listNearCompany(param);
 			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, dtoList);
