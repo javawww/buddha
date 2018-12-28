@@ -100,4 +100,14 @@ public class MessageInfo extends PojoModel<MessageInfo> {
 	 */
 	@TableField(exist = false)
 	private String showTime;
+	/**
+	 * 消息来源 myItem-我发送  youItem-我接受
+	 */
+	@TableField(exist = false)
+	private String mesType;
+	/**
+	 * 真实头像
+	 */
+	@TableField(exist = false)
+	private String realAvatar;
 }

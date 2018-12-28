@@ -14,5 +14,9 @@ public interface MessageInfoConfig {
 	 * 附近消息列表
 	 */
 	public static final String MESSAGE_INFO_RECENT_LIST = "message-info/recent-list";
+	/**
+	 * 聊天记录
+	 */
+	public static final String MESSAGE_INFO_CHAT_LIST = "message-info/chat-list";
 	
 }

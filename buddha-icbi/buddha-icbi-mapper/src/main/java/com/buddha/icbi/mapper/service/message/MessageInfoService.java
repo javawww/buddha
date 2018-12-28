@@ -81,7 +81,7 @@ public class MessageInfoService extends ServiceImpl<MessageInfoMapper, MessageIn
 				}
 				dto.setToId(rec.getMemberId());
 				dto.setNewMsg(rec.getMessage());
-				String time = DateTimeUtils.getDateTimeFormatToString(rec.getCreateTime(), DateTimeUtils.FORMAT_MM_DD);
+				String time = DateTimeUtils.getDateTimeFormatToString(rec.getCreateTime(), DateTimeUtils.FORMAT_MM_DD_HH_MM);
 				dto.setTime(time);
 				dtoList.add(dto);
 			}

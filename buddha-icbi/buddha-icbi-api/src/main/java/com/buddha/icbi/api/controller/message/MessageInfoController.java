@@ -20,8 +20,10 @@ import com.buddha.icbi.api.controller.base.WebBaseController;
 import com.buddha.icbi.common.dto.MessageInfoDto;
 import com.buddha.icbi.common.param.message.MessageInfoParam;
 import com.buddha.icbi.mapper.service.company.CompanyInfoService;
+import com.buddha.icbi.mapper.service.member.MemberInfoService;
 import com.buddha.icbi.mapper.service.message.MessageInfoService;
 import com.buddha.icbi.pojo.company.CompanyInfo;
+import com.buddha.icbi.pojo.member.MemberInfo;
 import com.buddha.icbi.pojo.message.MessageInfo;
 
 import lombok.extern.log4j.Log4j2;
@@ -48,6 +50,9 @@ public class MessageInfoController extends WebBaseController{
 	
 	@Autowired
 	private CompanyInfoService companyService;
+	
+	@Autowired
+	private MemberInfoService memberService;
 	/**
 	 * 保存聊天消息
 	 * @param param
@@ -162,6 +167,19 @@ public class MessageInfoController extends WebBaseController{
 			}
 			// 查询聊天记录
 			List<MessageInfo> msgList = messageService.chatList(param);
+			if(StringUtils.isNotEmpty(msgList)) {
+				for (MessageInfo msg : msgList) {
+					QueryWrapper<CompanyInfo> queryWrapper = new QueryWrapper<CompanyInfo>(new CompanyInfo());
+					queryWrapper.getEntity().setMemberId(msg.getMemberId());
+					CompanyInfo company = companyService.getOne(queryWrapper);
+					if(StringUtils.isNotEmpty(company)) {
+						msg.setRealAvatar(company.getRealAvatar());
+					}else {
+						MemberInfo member = memberService.getById(msg.getMemberId());
+						msg.setRealAvatar(member.getAvatar());
+					}
+				}
+			}
 			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS,msgList);
 		} catch (Exception e) {
 			log.error("系统异常，请检查", e);

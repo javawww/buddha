@@ -5,7 +5,7 @@
 	<!-- 最近联系人 -->
 	<select id="recentList" resultType="com.buddha.icbi.pojo.message.MessageInfo">
 		SELECT id,memberId,message,create_time FROM (
-		(SELECT id,from_id as memberId,message,create_time FROM message_info WHERE from_id = #{memberId}  )
+		(SELECT id,to_id as memberId,message,create_time FROM message_info WHERE from_id = #{memberId}  )
 		UNION 
 		(SELECT id,from_id as memberId,message,create_time FROM message_info WHERE to_id = #{memberId}  ) 
 		ORDER BY create_time DESC) 
@@ -15,17 +15,17 @@
 	<!-- 聊天记录 -->
 	<select id="chatList" resultType="com.buddha.icbi.pojo.message.MessageInfo">
 		(
-		SELECT * FROM message_info 
-		WHERE 1=1
-		AND from_id = #{fromId}
-		AND to_id = #{toId}
+			SELECT message,from_id AS memberId,create_time, 'myItem' AS mesType FROM message_info 
+			WHERE 1=1
+			AND from_id = #{fromId}
+			AND to_id = #{toId}
 		 )
-		UNION
+			UNION
 		(
-		SELECT * FROM message_info 
-		WHERE 1=1
-		AND from_id = #{toId}
-		AND to_id = #{fromId}
+			SELECT message,from_id AS memberId,create_time, 'youItem' AS mesType FROM message_info 
+			WHERE 1=1
+			AND from_id = #{toId}
+			AND to_id = #{fromId}
 		)
 		ORDER BY create_time ASC
 	</select>
