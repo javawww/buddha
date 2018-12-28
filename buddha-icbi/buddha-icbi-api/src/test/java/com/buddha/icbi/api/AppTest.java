@@ -2,6 +2,7 @@ package com.buddha.icbi.api;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,11 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.buddha.icbi.common.dto.MessageInfoDto;
+import com.buddha.icbi.common.param.message.MessageInfoParam;
 import com.buddha.icbi.mapper.service.activity.ActivityInfoTplService;
 import com.buddha.icbi.mapper.service.company.CompanyInfoTplService;
+import com.buddha.icbi.mapper.service.member.MemberInfoService;
+import com.buddha.icbi.mapper.service.message.MessageInfoService;
 import com.buddha.icbi.pojo.activity.ActivityInfoTpl;
 import com.buddha.icbi.pojo.company.CompanyInfoTpl;
+import com.buddha.icbi.pojo.message.MessageInfo;
 
 
 /**
@@ -30,6 +37,24 @@ public class AppTest {
 	@Autowired
 	private ActivityInfoTplService activityTplService;
 	
+	@Autowired
+	private MessageInfoService messageService;
+	@Test
+	public void testMessageList() {
+		MessageInfoParam param = new MessageInfoParam();
+		param.setMemberId("18acc26d9a2f2672ffda30b74a6d42a1");
+		List<MessageInfoDto> dotList = messageService.recentList(param);
+		System.out.println(JSON.toJSONString(dotList, true));
+	}
+	
+	@Test
+	public void testChatList() {
+		MessageInfoParam param = new MessageInfoParam();
+		param.setFromId("5585278698f38d5ca9ed9a97d4b1621c");
+		param.setToId("18acc26d9a2f2672ffda30b74a6d42a1");
+		List<MessageInfo> msgList = messageService.chatList(param);
+		System.out.println(JSON.toJSONString(msgList, true));
+	}
 	// 时间
 	Date curdate = new Date();
 	/**

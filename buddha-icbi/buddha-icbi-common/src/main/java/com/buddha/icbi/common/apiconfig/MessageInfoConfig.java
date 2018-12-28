@@ -10,5 +10,9 @@ public interface MessageInfoConfig {
 	 * 消息列表
 	 */
 	public static final String MESSAGE_INFO_LIST = "message-info/list";
+	/**
+	 * 附近消息列表
+	 */
+	public static final String MESSAGE_INFO_RECENT_LIST = "message-info/recent-list";
 	
 }

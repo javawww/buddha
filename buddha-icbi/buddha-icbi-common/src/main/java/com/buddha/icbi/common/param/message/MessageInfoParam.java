@@ -26,7 +26,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MessageInfoParam extends BaseParam{
-
+	
+	/**
+	 * 会员id
+	 */
+	private String memberId;
+	/**
+	 * 来源：1-私聊 2-群聊 3-系统广播
+	 */
+	private Integer source;
 	/**
 	 * 消息去向
 	 */

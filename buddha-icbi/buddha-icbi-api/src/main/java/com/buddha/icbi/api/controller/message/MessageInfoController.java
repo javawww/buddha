@@ -77,6 +77,26 @@ public class MessageInfoController extends WebBaseController{
 			return new ResultJson(e);
 		}
 	}
+	/**
+	 * 最近消息列表
+	 * @param param
+	 * @return
+	 */
+	@PostMapping("recent-list")
+	public ResultJson recentList(@RequestBody MessageInfoParam param) {
+		try {
+			if(StringUtils.isNull(param.getMemberId())) {
+				log.info("会员id为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"会员id为空");
+			}
+			// 查询最新消息列表
+			List<MessageInfoDto> dtoList = messageService.recentList(param);
+			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS,dtoList);
+		} catch (Exception e) {
+			log.error("系统异常，请检查", e);
+			return new ResultJson(e);
+		}
+	}
 	
 	/**
 	 * 消息列表
@@ -117,6 +137,32 @@ public class MessageInfoController extends WebBaseController{
 				}
 			}
 			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS,dtoList);
+		} catch (Exception e) {
+			log.error("系统异常，请检查", e);
+			return new ResultJson(e);
+		}
+	}
+	
+	/**
+	 * 聊天记录列表
+	 * @param param
+	 * @return
+	 */
+	@PostMapping("chat-list")
+	public ResultJson chatList(@RequestBody MessageInfoParam param) {
+		try {
+			// 判断
+			if(StringUtils.isNull(param.getFromId())) {
+				log.info("发送者为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"发送者为空");
+			}
+			if(StringUtils.isNull(param.getToId())) {
+				log.info("接受者为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"接受者为空");
+			}
+			// 查询聊天记录
+			List<MessageInfo> msgList = messageService.chatList(param);
+			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS,msgList);
 		} catch (Exception e) {
 			log.error("系统异常，请检查", e);
 			return new ResultJson(e);

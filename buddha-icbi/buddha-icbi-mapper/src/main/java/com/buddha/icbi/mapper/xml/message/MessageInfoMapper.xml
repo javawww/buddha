@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.buddha.icbi.mapper.mapper.message.MessageInfoMapper">
-
+	
+	<!-- 最近联系人 -->
+	<select id="recentList" resultType="com.buddha.icbi.pojo.message.MessageInfo">
+		SELECT id,memberId,message,create_time FROM (
+		(SELECT id,from_id as memberId,message,create_time FROM message_info WHERE from_id = #{memberId}  )
+		UNION 
+		(SELECT id,from_id as memberId,message,create_time FROM message_info WHERE to_id = #{memberId}  ) 
+		ORDER BY create_time DESC) 
+		as tmp GROUP BY tmp.memberId ORDER BY tmp.create_time DESC 
+	</select>
+	
+	<!-- 聊天记录 -->
+	<select id="chatList" resultType="com.buddha.icbi.pojo.message.MessageInfo">
+		(
+		SELECT * FROM message_info 
+		WHERE 1=1
+		AND from_id = #{fromId}
+		AND to_id = #{toId}
+		 )
+		UNION
+		(
+		SELECT * FROM message_info 
+		WHERE 1=1
+		AND from_id = #{toId}
+		AND to_id = #{fromId}
+		)
+		ORDER BY create_time ASC
+	</select>
 </mapper>

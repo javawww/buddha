@@ -88,4 +88,16 @@ public class MessageInfo extends PojoModel<MessageInfo> {
 	protected Serializable pkVal() {
 		return this.id;
 	}
+	
+	// ##################非数据库属性######################
+	/**
+	 * 会员id
+	 */
+	@TableField(exist = false)
+	private String memberId;
+	/**
+	 * 显示时间
+	 */
+	@TableField(exist = false)
+	private String showTime;
 }
