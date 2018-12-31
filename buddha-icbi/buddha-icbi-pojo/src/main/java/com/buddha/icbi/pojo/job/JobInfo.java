@@ -1,4 +1,4 @@
-package com.buddha.icbi.pojo.member;
+package com.buddha.icbi.pojo.job;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -8,13 +8,12 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.buddha.component.common.bean.mybatis.PojoModel;
-import com.buddha.icbi.pojo.company.CompanyInfo;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
  /**
  * 
- * 收藏名片信息-数据库实体对象
+ * -数据库实体对象
  *
  * #############################################################################
  *
@@ -27,74 +26,60 @@ import lombok.EqualsAndHashCode;
  * 
  * 
  * @作者 系统生成
- * @时间 2018-12-03
+ * @时间 2018-12-31
  * @版权 深圳市佛系青年互联网科技有限公司(www.fxqn.xin)
  */
-@TableName("member_collection")
+@TableName("job_info")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class MemberCollection extends PojoModel<MemberCollection> {
+public class JobInfo extends PojoModel<JobInfo> {
 
     private static final long serialVersionUID = 1L;
 
 
-
-    /**
-     * 主键
-     */
     @TableId(value = "id", type = IdType.UUID)
 	private String id;
     /**
-     * 公司id
+     * 招聘标题
      */
-    @TableField("company_id")
-    private String companyId;
+	private String title;
     /**
-     * 会员id
+     * 内容
      */
-	@TableField("member_id")
-	private String memberId;
+	private String content;
     /**
-     * 会员真实头像
+     * 岗位
      */
-	@TableField("member_real_avatar")
-	private String memberRealAvatar;
+	@TableField("job_desc")
+	private String jobDesc;
     /**
-     * 会员真实姓名
+     * 待遇
      */
-	@TableField("member_real_name")
-	private String memberRealName;
+	@TableField("salary_desc")
+	private String salaryDesc;
     /**
-     * 是否删除 1-整除 2-删除
+     * 状态 1-审核中 2-通过 3-拒绝
      */
-	@TableField("is_del")
-	private Integer isDel;
+	private Integer status;
     /**
-     * 收藏人id
+     * 创建人id
      */
 	@TableField("create_id")
 	private String createId;
     /**
-     * 收藏人昵称
-     */
-	@TableField("create_nick_name")
-	private String createNickName;
-    /**
-     * 收藏时间
+     * 创建时间
      */
 	@TableField("create_time")
 	private Date createTime;
+    /**
+     * 更新时间
+     */
+	@TableField("update_time")
+	private Date updateTime;
 
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
 	}
-	
-	//#############数据库之外属性##########################
-	/**
-	 * 公司信息
-	 */
-	@TableField(exist = false)
-	private CompanyInfo companyInfo;
-	//##############END################################
+
 }

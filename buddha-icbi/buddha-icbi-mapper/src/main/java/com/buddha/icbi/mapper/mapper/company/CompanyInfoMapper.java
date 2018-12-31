@@ -50,4 +50,11 @@ public interface CompanyInfoMapper extends BaseMapper<CompanyInfo> {
 			@Param("distance") BigDecimal distance,@Param("isCertification") Integer isCertification,@Param("keyword") String keyword);
 	
 	public List<CompanyInfo> foreachTest(@Param("mids") List<String> mids);
+	
+	/**
+	 * 通过关键字获取id数组
+	 * @param keyword
+	 * @return
+	 */
+	public String[] getIdArr(@Param("keyword") String keyword);
 }

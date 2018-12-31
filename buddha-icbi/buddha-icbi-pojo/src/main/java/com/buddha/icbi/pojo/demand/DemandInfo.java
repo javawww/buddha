@@ -1,6 +1,7 @@
-package com.buddha.icbi.pojo.member;
+package com.buddha.icbi.pojo.demand;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -8,13 +9,12 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.buddha.component.common.bean.mybatis.PojoModel;
-import com.buddha.icbi.pojo.company.CompanyInfo;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
  /**
  * 
- * 收藏名片信息-数据库实体对象
+ * 需求咨询-数据库实体对象
  *
  * #############################################################################
  *
@@ -27,13 +27,13 @@ import lombok.EqualsAndHashCode;
  * 
  * 
  * @作者 系统生成
- * @时间 2018-12-03
+ * @时间 2018-12-31
  * @版权 深圳市佛系青年互联网科技有限公司(www.fxqn.xin)
  */
-@TableName("member_collection")
+@TableName("demand_info")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class MemberCollection extends PojoModel<MemberCollection> {
+public class DemandInfo extends PojoModel<DemandInfo> {
 
     private static final long serialVersionUID = 1L;
 
@@ -45,56 +45,79 @@ public class MemberCollection extends PojoModel<MemberCollection> {
     @TableId(value = "id", type = IdType.UUID)
 	private String id;
     /**
-     * 公司id
+     * 单位名称
      */
-    @TableField("company_id")
-    private String companyId;
+	@TableField("company_name")
+	private String companyName;
     /**
-     * 会员id
+     * 联系电话
      */
-	@TableField("member_id")
-	private String memberId;
+	private String mobile;
     /**
-     * 会员真实头像
+     * 产品名称
      */
-	@TableField("member_real_avatar")
-	private String memberRealAvatar;
+	@TableField("product_name")
+	private String productName;
     /**
-     * 会员真实姓名
+     * 规格
      */
-	@TableField("member_real_name")
-	private String memberRealName;
+	private String norm;
     /**
-     * 是否删除 1-整除 2-删除
+     * 数量
      */
-	@TableField("is_del")
-	private Integer isDel;
+	private Integer amount;
     /**
-     * 收藏人id
+     * 收货坐标
      */
+	@TableField("receive_latitude")
+	private BigDecimal receiveLatitude;
+    /**
+     * 收货坐标
+     */
+	@TableField("receive_longitude")
+	private BigDecimal receiveLongitude;
+    /**
+     * 收货地址
+     */
+	@TableField("receive_address")
+	private String receiveAddress;
+    /**
+     * 当前位置坐标
+     */
+	@TableField("current_latitude")
+	private BigDecimal currentLatitude;
+    /**
+     * 发起人当前坐标
+     */
+	@TableField("current_longitude")
+	private BigDecimal currentLongitude;
+    /**
+     * 标签
+     */
+	private String tags;
+    /**
+     * 状态 1-审核中 2-通过 3-拒绝
+     */
+	private Integer status;
+	/**
+	 * 创建人id
+	 */
 	@TableField("create_id")
 	private String createId;
     /**
-     * 收藏人昵称
-     */
-	@TableField("create_nick_name")
-	private String createNickName;
-    /**
-     * 收藏时间
+     * 创建时间
      */
 	@TableField("create_time")
 	private Date createTime;
+    /**
+     * 更新时间
+     */
+	@TableField("update_time")
+	private Date updateTime;
 
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
 	}
-	
-	//#############数据库之外属性##########################
-	/**
-	 * 公司信息
-	 */
-	@TableField(exist = false)
-	private CompanyInfo companyInfo;
-	//##############END################################
+
 }

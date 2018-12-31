@@ -110,4 +110,8 @@ public class MessageInfo extends PojoModel<MessageInfo> {
 	 */
 	@TableField(exist = false)
 	private String realAvatar;
+	/**
+	 * 公司信心id
+	 */
+	private String companyId;
 }

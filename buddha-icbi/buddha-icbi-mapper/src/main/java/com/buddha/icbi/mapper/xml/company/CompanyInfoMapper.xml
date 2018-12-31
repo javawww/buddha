@@ -46,4 +46,21 @@
 				AND member_id in <foreach collection="mids" index="index" item="item" open="(" separator="," close=")"> #{item} </foreach> 
 			</if>
 	</select>
+	
+	<!-- 通过关键字获取id数组 -->
+	<select id="getIdArr" resultType="java.lang.String">
+		SELECT id FROM company_info
+		WHERE 1=1
+		<if test="keyword != null and keyword != '' ">
+		AND (
+			company_tag LIKE CONCAT('%', #{keyword}, '%')
+			OR
+			real_name LIKE CONCAT('%', #{keyword}, '%')
+			OR
+			mobile LIKE CONCAT('%', #{keyword}, '%')
+			OR
+			company_name LIKE CONCAT('%', #{keyword}, '%')
+		)
+		</if>
+	</select>
 </mapper>

@@ -1,6 +1,7 @@
-package com.buddha.icbi.pojo.member;
+package com.buddha.icbi.pojo.news;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -8,13 +9,12 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.buddha.component.common.bean.mybatis.PojoModel;
-import com.buddha.icbi.pojo.company.CompanyInfo;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
  /**
  * 
- * 收藏名片信息-数据库实体对象
+ * 风采展示-数据库实体对象
  *
  * #############################################################################
  *
@@ -27,13 +27,13 @@ import lombok.EqualsAndHashCode;
  * 
  * 
  * @作者 系统生成
- * @时间 2018-12-03
+ * @时间 2018-12-31
  * @版权 深圳市佛系青年互联网科技有限公司(www.fxqn.xin)
  */
-@TableName("member_collection")
+@TableName("news_info")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class MemberCollection extends PojoModel<MemberCollection> {
+public class NewsInfo extends PojoModel<NewsInfo> {
 
     private static final long serialVersionUID = 1L;
 
@@ -45,56 +45,53 @@ public class MemberCollection extends PojoModel<MemberCollection> {
     @TableId(value = "id", type = IdType.UUID)
 	private String id;
     /**
-     * 公司id
+     * 状态 1-审核中 2-通过 3-拒绝
      */
-    @TableField("company_id")
-    private String companyId;
+	private Integer status;
     /**
-     * 会员id
+     * 类型 1-商会风采 2-公司风采 3-个人风采
      */
-	@TableField("member_id")
-	private String memberId;
+	private Integer type;
     /**
-     * 会员真实头像
+     * 纬度，范围为 -90~90，负数表示南纬
      */
-	@TableField("member_real_avatar")
-	private String memberRealAvatar;
+	private BigDecimal latitude;
     /**
-     * 会员真实姓名
+     * 经度，范围为 -180~180，负数表示西经
      */
-	@TableField("member_real_name")
-	private String memberRealName;
+	private BigDecimal longitude;
     /**
-     * 是否删除 1-整除 2-删除
+     * 标题
      */
-	@TableField("is_del")
-	private Integer isDel;
+	private String title;
     /**
-     * 收藏人id
+     * 内容
+     */
+	private String content;
+    /**
+     * 封面图片
+     */
+	@TableField("cover_img")
+	private String coverImg;
+    /**
+     * 创建人即会员id
      */
 	@TableField("create_id")
 	private String createId;
     /**
-     * 收藏人昵称
-     */
-	@TableField("create_nick_name")
-	private String createNickName;
-    /**
-     * 收藏时间
+     * 创建时间
      */
 	@TableField("create_time")
 	private Date createTime;
+    /**
+     * 更新时间
+     */
+	@TableField("update_time")
+	private Date updateTime;
 
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
 	}
-	
-	//#############数据库之外属性##########################
-	/**
-	 * 公司信息
-	 */
-	@TableField(exist = false)
-	private CompanyInfo companyInfo;
-	//##############END################################
+
 }

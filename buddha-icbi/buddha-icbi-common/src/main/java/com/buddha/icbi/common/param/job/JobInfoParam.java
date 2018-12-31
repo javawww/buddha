@@ -1,4 +1,4 @@
-package com.buddha.icbi.common.param.message;
+package com.buddha.icbi.common.param.job;
 
 import com.buddha.component.common.param.base.BaseParam;
 
@@ -7,7 +7,7 @@ import lombok.Setter;
 
 /**
  * 
- * 聊天消息信息-参数
+ * 招聘-参数
  *
  * #############################################################################
  *
@@ -25,39 +25,31 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class MessageInfoParam extends BaseParam{
+public class JobInfoParam extends BaseParam{
+
 	
 	/**
-	 * 会员id
-	 */
-	private String memberId;
-	/**
-	 * 来源：1-私聊 2-群聊 3-系统广播
-	 */
-	private Integer source;
-	/**
-	 * 消息去向
-	 */
-	private String toId;
-	
-	/**
-	 * 消息来源
-	 */
-	private String fromId;
-	/**
-	 * 消息内容
-	 */
-	private String message;
-	/**
-	 * 图片地址
-	 */
-	private String url;
-	/**
-	 * 状态 0-已发送 1-已阅读 2-为阅读
-	 */
+     * 招聘标题
+     */
+	private String title;
+    /**
+     * 内容
+     */
+	private String content;
+    /**
+     * 岗位
+     */
+	private String jobDesc;
+    /**
+     * 待遇
+     */
+	private String salaryDesc;
+    /**
+     * 状态 1-审核中 2-通过 3-拒绝
+     */
 	private Integer status;
-	/**
-	 * 类型：1-文本 2-图片
-	 */
-	private Integer type;
+    /**
+     * 创建人id
+     */
+	private String createId;
 }

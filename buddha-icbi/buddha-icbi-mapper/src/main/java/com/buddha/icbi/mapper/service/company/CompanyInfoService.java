@@ -443,4 +443,14 @@ public class CompanyInfoService extends ServiceImpl<CompanyInfoMapper, CompanyIn
 		return company;
 	}
 	
+	/**
+	 * 通过关键字获取对应id数组
+	 * @param keyword
+	 * @return
+	 */
+	public String[] getIdArr(String keyword) {
+		String[] idArr = companyMapper.getIdArr(keyword);
+		return idArr;
+	}
+	
 }

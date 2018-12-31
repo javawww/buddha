@@ -1,4 +1,6 @@
-package com.buddha.icbi.common.param.message;
+package com.buddha.icbi.common.param.news;
+
+import java.math.BigDecimal;
 
 import com.buddha.component.common.param.base.BaseParam;
 
@@ -7,7 +9,7 @@ import lombok.Setter;
 
 /**
  * 
- * 聊天消息信息-参数
+ * 风采咨询-参数
  *
  * #############################################################################
  *
@@ -25,39 +27,37 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class MessageInfoParam extends BaseParam{
+public class NewsInfoParam extends BaseParam{
+
 	
-	/**
-	 * 会员id
-	 */
-	private String memberId;
-	/**
-	 * 来源：1-私聊 2-群聊 3-系统广播
-	 */
-	private Integer source;
-	/**
-	 * 消息去向
-	 */
-	private String toId;
-	
-	/**
-	 * 消息来源
-	 */
-	private String fromId;
-	/**
-	 * 消息内容
-	 */
-	private String message;
-	/**
-	 * 图片地址
-	 */
-	private String url;
-	/**
-	 * 状态 0-已发送 1-已阅读 2-为阅读
-	 */
 	private Integer status;
-	/**
-	 * 类型：1-文本 2-图片
-	 */
+    /**
+     * 类型 1-商会风采 2-公司风采 3-个人风采
+     */
 	private Integer type;
+    /**
+     * 纬度，范围为 -90~90，负数表示南纬
+     */
+	private BigDecimal latitude;
+    /**
+     * 经度，范围为 -180~180，负数表示西经
+     */
+	private BigDecimal longitude;
+    /**
+     * 标题
+     */
+	private String title;
+    /**
+     * 内容
+     */
+	private String content;
+    /**
+     * 封面图片
+     */
+	private String coverImg;
+    /**
+     * 创建人即会员id
+     */
+	private String createId;
+	
 }

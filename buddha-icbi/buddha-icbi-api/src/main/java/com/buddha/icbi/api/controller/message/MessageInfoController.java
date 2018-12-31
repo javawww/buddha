@@ -174,6 +174,7 @@ public class MessageInfoController extends WebBaseController{
 					CompanyInfo company = companyService.getOne(queryWrapper);
 					if(StringUtils.isNotEmpty(company)) {
 						msg.setRealAvatar(company.getRealAvatar());
+						msg.setCompanyId(company.getId());
 					}else {
 						MemberInfo member = memberService.getById(msg.getMemberId());
 						msg.setRealAvatar(member.getAvatar());

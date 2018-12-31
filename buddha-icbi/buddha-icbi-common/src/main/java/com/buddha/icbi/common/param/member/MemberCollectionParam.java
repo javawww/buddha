@@ -1,7 +1,5 @@
 package com.buddha.icbi.common.param.member;
 
-import java.math.BigDecimal;
-
 import com.buddha.component.common.param.base.BaseParam;
 
 import lombok.Getter;
@@ -25,12 +23,21 @@ import lombok.Setter;
 public class MemberCollectionParam extends BaseParam{
 
 	/**
-	 * 收藏会员id
+	 * 公司id
+	 */
+	private String companyId;
+	/**
+	 * 会员id
 	 */
 	private String memberId;
-	
+
 	/**
-	 * 创建人id 
+	 * 收藏人id
 	 */
 	private String createId;
+	
+	/**
+	 * 关键字
+	 */
+	private String keyword;
 }

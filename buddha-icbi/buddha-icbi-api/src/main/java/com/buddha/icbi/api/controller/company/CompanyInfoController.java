@@ -121,11 +121,17 @@ public class CompanyInfoController extends WebBaseController{
 			// 待审核列表
 			QueryWrapper<CompanyInfo> queryWrapper = super.getQueryWrapper(CompanyInfo.class);
 			queryWrapper.getEntity().setIsCertification(AuditEnum.AUDITING.getValue());
+			// 关键字搜索
+			if(StringUtils.isNotNull(param.getKeyword())) {
+				queryWrapper.like("mobile", param.getKeyword())
+				.or().like("real_name", param.getKeyword())
+				.or().like("company_name", param.getKeyword());
+			}
 			queryWrapper.orderByDesc(true, "create_time");
 			List<CompanyInfo> list = companyService.list(queryWrapper);
 			if(StringUtils.isEmpty(list)) {
 				log.info("待审核列表为空");
-				return new ResultJson(ResultStatusEnum.DATA_NOT_EXIST,"待审核列表为空");
+				//return new ResultJson(ResultStatusEnum.DATA_NOT_EXIST,"待审核列表为空");
 			}
 			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, list);
 		} catch (Exception e) {
@@ -357,4 +363,5 @@ public class CompanyInfoController extends WebBaseController{
 			return new ResultJson(e);
 		}
 	}*/
+	
 }
