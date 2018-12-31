@@ -1,8 +1,14 @@
 package com.buddha.icbi.mapper.service.news;
 
+import java.math.BigDecimal;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.buddha.icbi.common.enums.AuditEnum;
+import com.buddha.icbi.common.param.news.NewsInfoParam;
 import com.buddha.icbi.mapper.mapper.news.NewsInfoMapper;
 import com.buddha.icbi.pojo.news.NewsInfo;
 
@@ -27,5 +33,21 @@ import com.buddha.icbi.pojo.news.NewsInfo;
  */
 @Service
 public class NewsInfoService extends ServiceImpl<NewsInfoMapper, NewsInfo> {
+	
+	@Autowired
+	private NewsInfoMapper newsMapper;
+	
+	/**
+	 * 查询
+	 * @param param
+	 * @return
+	 */
+	public List<NewsInfo> listSearch(NewsInfoParam param) {
+		// 查询
+		param.setStatus(AuditEnum.AUDITED.getValue()); // 审核通过
+		param.setDistance(new BigDecimal(10000));
+		List<NewsInfo> news = newsMapper.listSearch(param);
+		return news;
+	}
 	
 }

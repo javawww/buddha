@@ -29,7 +29,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DemandInfoParam extends BaseParam {
-
+	
+	/**
+	 * 公司名称
+	 */
 	private String companyName;
     /**
      * 联系电话
@@ -39,6 +42,10 @@ public class DemandInfoParam extends BaseParam {
      * 产品名称
      */
 	private String productName;
+	/**
+	 * 产品图片
+	 */
+	private String productImg;
     /**
      * 规格
      */
@@ -79,4 +86,21 @@ public class DemandInfoParam extends BaseParam {
 	 * 创建人id
 	 */
 	private String createId;
+	/**
+     * 纬度，范围为 -90~90，负数表示南纬
+     */
+	private BigDecimal latitude;
+    /**
+     * 经度，范围为 -180~180，负数表示西经
+     */
+	private BigDecimal longitude;
+	/**
+	 * 关键字查询
+	 */
+	private String keyword;
+	/**
+	 * 距离
+	 */
+	private BigDecimal distance;
+	
 }

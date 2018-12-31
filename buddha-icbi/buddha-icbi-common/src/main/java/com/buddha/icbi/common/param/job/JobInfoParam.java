@@ -1,5 +1,7 @@
 package com.buddha.icbi.common.param.job;
 
+import java.math.BigDecimal;
+
 import com.buddha.component.common.param.base.BaseParam;
 
 import lombok.Getter;
@@ -36,6 +38,10 @@ public class JobInfoParam extends BaseParam{
      * 内容
      */
 	private String content;
+	/**
+	 * 封面图片
+	 */
+	private String coverImg;
     /**
      * 岗位
      */
@@ -52,4 +58,21 @@ public class JobInfoParam extends BaseParam{
      * 创建人id
      */
 	private String createId;
+	
+	/**
+     * 纬度，范围为 -90~90，负数表示南纬
+     */
+	private BigDecimal latitude;
+    /**
+     * 经度，范围为 -180~180，负数表示西经
+     */
+	private BigDecimal longitude;
+	/**
+	 * 关键字查询
+	 */
+	private String keyword;
+	/**
+	 * 距离
+	 */
+	private BigDecimal distance;
 }

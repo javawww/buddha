@@ -1,8 +1,12 @@
 package com.buddha.icbi.mapper.service.job;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.buddha.icbi.common.param.job.JobInfoParam;
 import com.buddha.icbi.mapper.mapper.job.JobInfoMapper;
 import com.buddha.icbi.pojo.job.JobInfo;
 
@@ -27,5 +31,19 @@ import com.buddha.icbi.pojo.job.JobInfo;
  */
 @Service
 public class JobInfoService extends ServiceImpl<JobInfoMapper, JobInfo> {
+	
+	@Autowired
+	private JobInfoMapper jobMapper;
+	
+	/**
+	 * 查询附近列表
+	 * @param param
+	 * @return
+	 */
+	public List<JobInfo> listSearch(JobInfoParam param) {
+		// 查询
+		List<JobInfo> jobs = jobMapper.listSearch(param);
+		return jobs;
+	}
 	
 }

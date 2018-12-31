@@ -3,12 +3,14 @@ package com.buddha.icbi.pojo.news;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.buddha.component.common.bean.mybatis.PojoModel;
+import com.buddha.icbi.pojo.company.FileList;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -45,7 +47,7 @@ public class NewsInfo extends PojoModel<NewsInfo> {
     @TableId(value = "id", type = IdType.UUID)
 	private String id;
     /**
-     * 状态 1-审核中 2-通过 3-拒绝
+     * 状态 0-审核中 1-通过 2-拒绝
      */
 	private Integer status;
     /**
@@ -93,5 +95,8 @@ public class NewsInfo extends PojoModel<NewsInfo> {
 	protected Serializable pkVal() {
 		return this.id;
 	}
-
+	
+	//###############数据库之外属性##########################
+	@TableField(exist = false)
+	private List<FileList> coverImgArr;
 }

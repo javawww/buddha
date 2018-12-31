@@ -1,6 +1,11 @@
 package com.buddha.icbi.mapper.mapper.news;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.buddha.icbi.common.param.news.NewsInfoParam;
 import com.buddha.icbi.pojo.news.NewsInfo;
 
 
@@ -23,5 +28,12 @@ import com.buddha.icbi.pojo.news.NewsInfo;
  * @版权 深圳市佛系青年互联网科技有限公司(www.fxqn.xin)
  */
 public interface NewsInfoMapper extends BaseMapper<NewsInfo> {
+	
+	/**
+	 * 查询
+	 * @param param
+	 * @return
+	 */
+	List<NewsInfo> listSearch(@Param("param") NewsInfoParam param);
 
 }

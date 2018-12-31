@@ -3,12 +3,14 @@ package com.buddha.icbi.pojo.demand;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.buddha.component.common.bean.mybatis.PojoModel;
+import com.buddha.icbi.pojo.company.FileList;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -58,6 +60,11 @@ public class DemandInfo extends PojoModel<DemandInfo> {
      */
 	@TableField("product_name")
 	private String productName;
+	/**
+	 * 产品图片
+	 */
+	@TableField("product_img")
+	private String productImg;
     /**
      * 规格
      */
@@ -96,7 +103,7 @@ public class DemandInfo extends PojoModel<DemandInfo> {
      */
 	private String tags;
     /**
-     * 状态 1-审核中 2-通过 3-拒绝
+     * 状态 0-审核中 1-通过 2-拒绝
      */
 	private Integer status;
 	/**
@@ -119,5 +126,10 @@ public class DemandInfo extends PojoModel<DemandInfo> {
 	protected Serializable pkVal() {
 		return this.id;
 	}
-
+//	################额外#############################
+	/**
+	 * 产品图片数组
+	 */
+	@TableField(exist = false)
+	private List<FileList> productImgArr;
 }

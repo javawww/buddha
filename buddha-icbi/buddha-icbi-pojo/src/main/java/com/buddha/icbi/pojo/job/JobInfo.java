@@ -2,12 +2,14 @@ package com.buddha.icbi.pojo.job;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.buddha.component.common.bean.mybatis.PojoModel;
+import com.buddha.icbi.pojo.company.FileList;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -47,6 +49,11 @@ public class JobInfo extends PojoModel<JobInfo> {
      * 内容
      */
 	private String content;
+	/**
+	 * 封面图片
+	 */
+	@TableField("cover_img")
+	private String coverImg;
     /**
      * 岗位
      */
@@ -58,7 +65,7 @@ public class JobInfo extends PojoModel<JobInfo> {
 	@TableField("salary_desc")
 	private String salaryDesc;
     /**
-     * 状态 1-审核中 2-通过 3-拒绝
+     * 状态 0-审核中 1-通过 2-拒绝
      */
 	private Integer status;
     /**
@@ -81,5 +88,7 @@ public class JobInfo extends PojoModel<JobInfo> {
 	protected Serializable pkVal() {
 		return this.id;
 	}
-
+//###############额外属性##########################
+	@TableField(exist = false)
+	private List<FileList> coverImgArr;
 }

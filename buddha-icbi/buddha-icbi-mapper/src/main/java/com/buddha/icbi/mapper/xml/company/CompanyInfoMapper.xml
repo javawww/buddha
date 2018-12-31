@@ -3,7 +3,7 @@
 <mapper namespace="com.buddha.icbi.mapper.mapper.company.CompanyInfoMapper">
 
 	<!-- 查询附近公司信息 -->
-	<select id="nearByCompanyList" resultType="com.buddha.icbi.pojo.company.CompanyInfo" parameterType="java.util.List">
+	<select id="nearByCompanyList" resultType="com.buddha.icbi.pojo.company.CompanyInfo">
 		SELECT *, ROUND( SQRT(POW(69.1 * (latitude - #{latitude}), 2) + POW(69.1 * (#{longitude} - longitude) * COS(latitude / 57.3), 2) ),2) AS distance
 			FROM company_info 
 			WHERE 1=1 
@@ -15,7 +15,7 @@
 	</select>
 	
 	<!-- 查询附近公司信息 状态查询-->
-	<select id="nearCompany" resultType="com.buddha.icbi.pojo.company.CompanyInfo" parameterType="java.util.List">
+	<select id="nearCompany" resultType="com.buddha.icbi.pojo.company.CompanyInfo">
 		SELECT *, ROUND( SQRT(POW(69.1 * (latitude - #{latitude}), 2) + POW(69.1 * (#{longitude} - longitude) * COS(latitude / 57.3), 2) ),2) AS distance
 			FROM company_info 
 			WHERE 1=1 

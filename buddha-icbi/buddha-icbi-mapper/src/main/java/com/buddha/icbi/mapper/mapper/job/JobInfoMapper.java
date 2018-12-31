@@ -1,6 +1,11 @@
 package com.buddha.icbi.mapper.mapper.job;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.buddha.icbi.common.param.job.JobInfoParam;
 import com.buddha.icbi.pojo.job.JobInfo;
 
 
@@ -23,5 +28,12 @@ import com.buddha.icbi.pojo.job.JobInfo;
  * @版权 深圳市佛系青年互联网科技有限公司(www.fxqn.xin)
  */
 public interface JobInfoMapper extends BaseMapper<JobInfo> {
+	
+	/**
+	 * 查询附近列表
+	 * @param param
+	 * @return
+	 */
+	List<JobInfo> listSearch(@Param("param") JobInfoParam param);
 
 }

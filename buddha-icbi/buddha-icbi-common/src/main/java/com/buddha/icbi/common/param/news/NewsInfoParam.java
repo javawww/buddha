@@ -29,7 +29,9 @@ import lombok.Setter;
 @Setter
 public class NewsInfoParam extends BaseParam{
 
-	
+	/**
+	 * 状态 0-审核中 1-审核通过 2-审核拒绝
+	 */
 	private Integer status;
     /**
      * 类型 1-商会风采 2-公司风采 3-个人风采
@@ -59,5 +61,13 @@ public class NewsInfoParam extends BaseParam{
      * 创建人即会员id
      */
 	private String createId;
+	/**
+	 * 关键字查询
+	 */
+	private String keyword;
+	/**
+	 * 距离
+	 */
+	private BigDecimal distance;
 	
 }
