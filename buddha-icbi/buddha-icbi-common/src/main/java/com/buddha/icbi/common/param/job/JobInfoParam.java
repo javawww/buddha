@@ -34,6 +34,14 @@ public class JobInfoParam extends BaseParam{
      * 招聘标题
      */
 	private String title;
+	/**
+	 * 地图位置
+	 */
+	private String address;
+	/**
+	 * 详细地址
+	 */
+	private String addressDetail;
     /**
      * 内容
      */
@@ -50,6 +58,18 @@ public class JobInfoParam extends BaseParam{
      * 待遇
      */
 	private String salaryDesc;
+	/**
+	 * 邮箱地址
+	 */
+	private String email;
+	/**
+     * 联系电话
+     */
+	private String mobile;
+	/**
+	 * 联系人
+	 */
+	private String contactName;
     /**
      * 状态 1-审核中 2-通过 3-拒绝
      */
@@ -75,4 +95,5 @@ public class JobInfoParam extends BaseParam{
 	 * 距离
 	 */
 	private BigDecimal distance;
+	
 }

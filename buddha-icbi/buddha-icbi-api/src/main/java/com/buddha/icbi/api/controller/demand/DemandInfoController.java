@@ -18,7 +18,9 @@ import com.buddha.component.common.util.StringUtils;
 import com.buddha.icbi.api.controller.base.WebBaseController;
 import com.buddha.icbi.common.enums.AuditEnum;
 import com.buddha.icbi.common.param.demand.DemandInfoParam;
+import com.buddha.icbi.mapper.service.company.CompanyInfoService;
 import com.buddha.icbi.mapper.service.demand.DemandInfoService;
+import com.buddha.icbi.pojo.company.CompanyInfo;
 import com.buddha.icbi.pojo.company.FileList;
 import com.buddha.icbi.pojo.demand.DemandInfo;
 
@@ -44,6 +46,9 @@ public class DemandInfoController extends WebBaseController{
 	@Autowired
 	private DemandInfoService demandService;
 	
+	@Autowired
+	private CompanyInfoService companyService;
+	
 	/**
 	 * 新增
 	 * @param param
@@ -55,31 +60,43 @@ public class DemandInfoController extends WebBaseController{
 			// 判断
 			if(StringUtils.isNull(param.getCreateId())) {
 				log.info("创建人为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"创建人为空");
 			}
 			if(StringUtils.isNull(param.getMobile())) {
 				log.info("联系方式为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"联系方式为空");
+			}
+			if(StringUtils.isNull(param.getContactName())) {
+				log.info("联系人为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"联系人为空");
 			}
 			if(StringUtils.isNull(param.getProductName())) {
 				log.info("产品名称为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"产品名称为空");
+			}
+			if(StringUtils.isNull(param.getProductImg())) {
+				log.info("产品图片为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"产品图片为空");
+			}
+			if(StringUtils.isNull(param.getProductDesc())) {
+				log.info("产品描述为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"产品描述为空");
 			}
 			if(StringUtils.isNull(param.getAmount())) {
 				log.info("数量为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"数量为空");
 			}
 			if(StringUtils.isEmpty(param.getReceiveLatitude())) {
 				log.info("收货坐标为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"收货地址为空");
 			}
 			if(StringUtils.isEmpty(param.getReceiveLongitude())) {
 				log.info("收货坐标为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"收货地址为空");
 			}
-			if(StringUtils.isNull(param.getReceiveAddress())) {
+			if(StringUtils.isNull(param.getAddressDetail())) {
 				log.info("收货地址为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"收货地址为空");
 			}
 			// 保存
 			Date curDate = new Date();
@@ -114,8 +131,26 @@ public class DemandInfoController extends WebBaseController{
 			QueryWrapper<DemandInfo> queryWrapper = super.getQueryWrapper(DemandInfo.class);
 			queryWrapper.getEntity().setCreateId(param.getCreateId());
 			queryWrapper.orderByDesc("update_time");
-			List<DemandInfo> news = demandService.list(queryWrapper);
-			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, news);
+			List<DemandInfo> demands = demandService.list(queryWrapper);
+			if(StringUtils.isNotEmpty(demands)) {
+				for (DemandInfo demand : demands) {
+					// 产品图片处理
+					if(StringUtils.isNotNull(demand.getProductImg())) {
+						List<FileList> fileList = new ArrayList<FileList>();
+						String str[] = StringUtils.string2List(demand.getProductImg());
+						for (int i = 0; i < str.length; i++) {
+							FileList file = new FileList();
+							file.setUrl(str[i]);
+							file.setOssFileUrl(str[i]);
+							file.setStatus("done");
+							file.setUid(i);
+							fileList.add(file);
+						}
+						demand.setProductImgArr(fileList);
+					}
+				}
+			}
+			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, demands);
 		} catch (Exception e) {
 			log.error("系统异常，请检查", e);
 			return new ResultJson(e);
@@ -140,8 +175,26 @@ public class DemandInfoController extends WebBaseController{
 			// 待审核
 			queryWrapper.getEntity().setStatus(AuditEnum.AUDITING.getValue());
 			queryWrapper.orderByDesc("update_time");
-			List<DemandInfo> news = demandService.list(queryWrapper);
-			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, news);
+			List<DemandInfo> demands = demandService.list(queryWrapper);
+			if(StringUtils.isNotEmpty(demands)) {
+				for (DemandInfo demand : demands) {
+					// 产品图片处理
+					if(StringUtils.isNotNull(demand.getProductImg())) {
+						List<FileList> fileList = new ArrayList<FileList>();
+						String str[] = StringUtils.string2List(demand.getProductImg());
+						for (int i = 0; i < str.length; i++) {
+							FileList file = new FileList();
+							file.setUrl(str[i]);
+							file.setOssFileUrl(str[i]);
+							file.setStatus("done");
+							file.setUid(i);
+							fileList.add(file);
+						}
+						demand.setProductImgArr(fileList);
+					}
+				}
+			}
+			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, demands);
 		} catch (Exception e) {
 			log.error("系统异常，请检查", e);
 			return new ResultJson(e);
@@ -215,6 +268,19 @@ public class DemandInfoController extends WebBaseController{
 				}
 				demand.setProductImgArr(fileList);
 			}
+			// 单位名称
+			QueryWrapper<CompanyInfo> queryWrapper = super.getQueryWrapper(CompanyInfo.class);
+			queryWrapper.getEntity().setMemberId(demand.getCreateId());
+			CompanyInfo company = companyService.getOne(queryWrapper);
+			if(null != company) {
+				demand.setCompanyName(company.getCompanyName());
+				demand.setRealAvatar(company.getRealAvatar());
+				demand.setCompanyId(company.getId());
+			}else {
+				demand.setCompanyName("");
+				demand.setRealAvatar("");
+				demand.setCompanyId("");
+			}
 			
 			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, demand);
 		} catch (Exception e) {
@@ -259,31 +325,43 @@ public class DemandInfoController extends WebBaseController{
 			}
 			if(StringUtils.isNull(param.getCreateId())) {
 				log.info("创建人为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"创建人为空");
 			}
 			if(StringUtils.isNull(param.getMobile())) {
 				log.info("联系方式为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"联系方式为空");
+			}
+			if(StringUtils.isNull(param.getContactName())) {
+				log.info("联系人为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"联系人为空");
 			}
 			if(StringUtils.isNull(param.getProductName())) {
 				log.info("产品名称为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"产品名称为空");
+			}
+			if(StringUtils.isNull(param.getProductImg())) {
+				log.info("产品图片为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"产品图片为空");
+			}
+			if(StringUtils.isNull(param.getProductDesc())) {
+				log.info("产品描述为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"产品描述为空");
 			}
 			if(StringUtils.isNull(param.getAmount())) {
 				log.info("数量为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"数量为空");
 			}
 			if(StringUtils.isEmpty(param.getReceiveLatitude())) {
 				log.info("收货坐标为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"收货地址为空");
 			}
 			if(StringUtils.isEmpty(param.getReceiveLongitude())) {
 				log.info("收货坐标为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"收货地址为空");
 			}
-			if(StringUtils.isNull(param.getReceiveAddress())) {
+			if(StringUtils.isNull(param.getAddressDetail())) {
 				log.info("收货地址为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"收货地址为空");
 			}
 			// 查询
 			DemandInfo demand = demandService.getById(param.getId());
@@ -318,6 +396,38 @@ public class DemandInfoController extends WebBaseController{
 			}
 			// 查询
 			List<DemandInfo> demands = demandService.listSearch(param);
+			if(StringUtils.isNotEmpty(demands)) {
+				for (DemandInfo demand : demands) {
+					// 产品图片处理
+					if(StringUtils.isNotNull(demand.getProductImg())) {
+						List<FileList> fileList = new ArrayList<FileList>();
+						String str[] = StringUtils.string2List(demand.getProductImg());
+						for (int i = 0; i < str.length; i++) {
+							FileList file = new FileList();
+							file.setUrl(str[i]);
+							file.setOssFileUrl(str[i]);
+							file.setStatus("done");
+							file.setUid(i);
+							fileList.add(file);
+						}
+						demand.setProductImgArr(fileList);
+					}
+					// 单位名称
+					QueryWrapper<CompanyInfo> queryWrapper = super.getQueryWrapper(CompanyInfo.class);
+					queryWrapper.getEntity().setMemberId(demand.getCreateId());
+					CompanyInfo company = companyService.getOne(queryWrapper);
+					if(null != company) {
+						demand.setCompanyName(company.getCompanyName());
+						demand.setRealAvatar(company.getRealAvatar());
+						demand.setCompanyId(company.getId());
+					}else {
+						demand.setCompanyName("");
+						demand.setRealAvatar("");
+						demand.setCompanyId("");
+					}
+				}
+			}
+			
 			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, demands);
 		} catch (Exception e) {
 			log.error("系统异常，请检查", e);

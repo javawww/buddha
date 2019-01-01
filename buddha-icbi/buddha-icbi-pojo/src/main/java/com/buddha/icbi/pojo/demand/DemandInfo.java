@@ -55,6 +55,11 @@ public class DemandInfo extends PojoModel<DemandInfo> {
      * 联系电话
      */
 	private String mobile;
+	/**
+	 * 联系人
+	 */
+	@TableField("contact_name")
+	private String contactName;
     /**
      * 产品名称
      */
@@ -65,6 +70,11 @@ public class DemandInfo extends PojoModel<DemandInfo> {
 	 */
 	@TableField("product_img")
 	private String productImg;
+	/**
+	 * 产品描述
+	 */
+	@TableField("product_desc")
+	private String productDesc;
     /**
      * 规格
      */
@@ -83,11 +93,16 @@ public class DemandInfo extends PojoModel<DemandInfo> {
      */
 	@TableField("receive_longitude")
 	private BigDecimal receiveLongitude;
+	/**
+	 * 收货地址
+	 */
+	private String address;
     /**
-     * 收货地址
+     * 收货地址明细
      */
-	@TableField("receive_address")
-	private String receiveAddress;
+	@TableField("address_detail")
+	private String addressDetail;
+	
     /**
      * 当前位置坐标
      */
@@ -126,10 +141,25 @@ public class DemandInfo extends PojoModel<DemandInfo> {
 	protected Serializable pkVal() {
 		return this.id;
 	}
-//	################额外#############################
+//	################额外属性#############################
+	/**
+	 * 距离
+	 */
+	@TableField(exist = false)
+	private BigDecimal distance;
 	/**
 	 * 产品图片数组
 	 */
 	@TableField(exist = false)
 	private List<FileList> productImgArr;
+	/**
+	 * 真实头像
+	 */
+	@TableField(exist = false)
+	private String realAvatar;
+	/**
+	 * 公司id
+	 */
+	@TableField(exist = false)
+	private String companyId;
 }

@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.buddha.icbi.mapper.mapper.job.JobInfoMapper">
-
+	
+	<!-- 查询附近列表-->
+	<select id="listSearch" resultType="com.buddha.icbi.pojo.job.JobInfo">
+		SELECT *, ROUND( SQRT(POW(69.1 * (latitude - #{param.latitude}), 2) + POW(69.1 * (#{param.longitude} - longitude) * COS(latitude / 57.3), 2) ),2) AS distance
+			FROM job_info 
+			WHERE 1=1 
+			<if test="param.status !=null and param.status != '' ">
+		 	AND status = #{param.status}
+			</if>
+			<if test="param.keyword != null and param.keyword != '' ">
+			AND  (
+			job_desc LIKE CONCAT('%', #{param.keyword}, '%')
+			OR
+			contact_name LIKE CONCAT('%', #{param.keyword}, '%')
+			OR
+			mobile LIKE CONCAT('%', #{param.keyword}, '%')
+			)
+			</if>
+			<if test="param.distance !=null and param.distance != '' ">
+			HAVING distance &lt;= #{param.distance}
+			</if>
+			ORDER BY distance ASC
+	</select>
 </mapper>

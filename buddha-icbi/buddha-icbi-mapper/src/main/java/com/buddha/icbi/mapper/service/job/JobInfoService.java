@@ -1,11 +1,13 @@
 package com.buddha.icbi.mapper.service.job;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.buddha.icbi.common.enums.AuditEnum;
 import com.buddha.icbi.common.param.job.JobInfoParam;
 import com.buddha.icbi.mapper.mapper.job.JobInfoMapper;
 import com.buddha.icbi.pojo.job.JobInfo;
@@ -42,6 +44,8 @@ public class JobInfoService extends ServiceImpl<JobInfoMapper, JobInfo> {
 	 */
 	public List<JobInfo> listSearch(JobInfoParam param) {
 		// 查询
+		param.setStatus(AuditEnum.AUDITED.getValue()); // 审核通过
+		param.setDistance(new BigDecimal(10000));// 距离
 		List<JobInfo> jobs = jobMapper.listSearch(param);
 		return jobs;
 	}

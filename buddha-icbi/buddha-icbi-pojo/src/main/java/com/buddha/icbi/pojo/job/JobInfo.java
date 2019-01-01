@@ -1,6 +1,7 @@
 package com.buddha.icbi.pojo.job;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -45,6 +46,23 @@ public class JobInfo extends PojoModel<JobInfo> {
      * 招聘标题
      */
 	private String title;
+	/**
+	 * 纬度，范围为 -90~90，负数表示南纬
+	 */
+	private BigDecimal latitude;
+	/**
+	 * 经度，范围为 -180~180，负数表示西经
+	 */
+	private BigDecimal longitude;
+	/**
+	 * 地图位置
+	 */
+	private String address;
+	/**
+	 * 详细地址
+	 */
+	@TableField("address_detail")
+	private String addressDetail;
     /**
      * 内容
      */
@@ -64,10 +82,27 @@ public class JobInfo extends PojoModel<JobInfo> {
      */
 	@TableField("salary_desc")
 	private String salaryDesc;
+	/**
+	 * 邮箱地址
+	 */
+	private String email;
+	/**
+     * 联系电话
+     */
+	private String mobile;
+	/**
+	 * 联系人
+	 */
+	@TableField("contact_name")
+	private String contactName;
     /**
      * 状态 0-审核中 1-通过 2-拒绝
      */
 	private Integer status;
+	/**
+	 * 是否启用 0-启用 1-禁用
+	 */
+	private Integer enable;
     /**
      * 创建人id
      */
@@ -89,6 +124,34 @@ public class JobInfo extends PojoModel<JobInfo> {
 		return this.id;
 	}
 //###############额外属性##########################
+	/**
+	 * 封面图片
+	 */
 	@TableField(exist = false)
 	private List<FileList> coverImgArr;
+	/**
+	 * 距离
+	 */
+	@TableField(exist = false)
+	private BigDecimal distance;
+	/**
+	 * 真实头像
+	 */
+	@TableField(exist = false)
+	private String realAvatar;
+	/**
+	 * 公司id
+	 */
+	@TableField(exist = false)
+	private String companyId;
+	/**
+	 * 公司名称
+	 */
+	@TableField(exist = false)
+	private String companyName;
+	/**
+	 * 公司简介
+	 */
+	@TableField(exist = false)
+	private String companyProfile;
 }

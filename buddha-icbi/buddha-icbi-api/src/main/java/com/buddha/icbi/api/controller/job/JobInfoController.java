@@ -18,7 +18,9 @@ import com.buddha.component.common.util.StringUtils;
 import com.buddha.icbi.api.controller.base.WebBaseController;
 import com.buddha.icbi.common.enums.AuditEnum;
 import com.buddha.icbi.common.param.job.JobInfoParam;
+import com.buddha.icbi.mapper.service.company.CompanyInfoService;
 import com.buddha.icbi.mapper.service.job.JobInfoService;
+import com.buddha.icbi.pojo.company.CompanyInfo;
 import com.buddha.icbi.pojo.company.FileList;
 import com.buddha.icbi.pojo.job.JobInfo;
 
@@ -44,6 +46,8 @@ public class JobInfoController extends WebBaseController {
 	@Autowired
 	private JobInfoService jobService;
 	
+	@Autowired
+	private CompanyInfoService companyService;
 	/**
 	 * 新增
 	 * @param param
@@ -57,25 +61,37 @@ public class JobInfoController extends WebBaseController {
 				log.info("创建人为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
 			}
-			if(StringUtils.isNull(param.getTitle())) {
-				log.info("招聘标题为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
-			}
-			if(StringUtils.isNull(param.getCoverImg())) {
-				log.info("招聘封面为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+			if(StringUtils.isNull(param.getJobDesc())) {
+				log.info("职位为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"职位为空");
 			}
 			if(StringUtils.isNull(param.getContent())) {
-				log.info("招聘内容为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
-			}
-			if(StringUtils.isNull(param.getJobDesc())) {
-				log.info("招聘岗位为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				log.info("职位描述为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"职位描述为空");
 			}
 			if(StringUtils.isNull(param.getSalaryDesc())) {
-				log.info("待遇说明为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				log.info("待遇为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"待遇为空");
+			}
+			if(StringUtils.isNull(param.getMobile())) {
+				log.info("电话为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"电话为空");
+			}
+			if(StringUtils.isNull(param.getContactName())) {
+				log.info("联系人为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"联系人为空");
+			}
+			if(StringUtils.isNull(param.getEmail())) {
+				log.info("邮箱为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"邮箱为空");
+			}
+			if(StringUtils.isNull(param.getAddress())) {
+				log.info("工作地点为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"工作地点为空");
+			}
+			if(StringUtils.isNull(param.getAddressDetail())) {
+				log.info("详细地址为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"详细地址为空");
 			}
 			// 保存
 			Date curDate = new Date();
@@ -136,8 +152,9 @@ public class JobInfoController extends WebBaseController {
 			// 待审核
 			queryWrapper.getEntity().setStatus(AuditEnum.AUDITING.getValue());
 			queryWrapper.orderByDesc("update_time");
-			List<JobInfo> news = jobService.list(queryWrapper);
-			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, news);
+			List<JobInfo> jobs = jobService.list(queryWrapper);
+			
+			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, jobs);
 		} catch (Exception e) {
 			log.error("系统异常，请检查", e);
 			return new ResultJson(e);
@@ -211,7 +228,22 @@ public class JobInfoController extends WebBaseController {
 				}
 				job.setCoverImgArr(fileList);
 			}
-			
+			// 单位名称
+			QueryWrapper<CompanyInfo> queryWrapper = super.getQueryWrapper(CompanyInfo.class);
+			queryWrapper.getEntity().setMemberId(job.getCreateId());
+			CompanyInfo company = companyService.getOne(queryWrapper);
+			if(null != company) {
+				job.setCompanyName(company.getCompanyName());
+				job.setRealAvatar(company.getRealAvatar());
+				job.setCompanyId(company.getId());
+				job.setCompanyProfile(company.getCompanyProfile());
+			}else {
+				job.setCompanyName("");
+				job.setRealAvatar("");
+				job.setCompanyId("");
+				job.setCompanyProfile("");
+			}
+						
 			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, job);
 		} catch (Exception e) {
 			log.error("系统异常，请检查", e);
@@ -253,25 +285,41 @@ public class JobInfoController extends WebBaseController {
 				log.info("id为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
 			}
-			if(StringUtils.isNull(param.getTitle())) {
-				log.info("招聘标题为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
-			}
-			if(StringUtils.isNull(param.getCoverImg())) {
-				log.info("招聘封面为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
-			}
-			if(StringUtils.isNull(param.getContent())) {
-				log.info("招聘内容为空");
+			if(StringUtils.isNull(param.getCreateId())) {
+				log.info("创建人为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
 			}
 			if(StringUtils.isNull(param.getJobDesc())) {
-				log.info("招聘岗位为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				log.info("职位为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"职位为空");
+			}
+			if(StringUtils.isNull(param.getContent())) {
+				log.info("职位描述为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"职位描述为空");
 			}
 			if(StringUtils.isNull(param.getSalaryDesc())) {
-				log.info("待遇说明为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				log.info("待遇为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"待遇为空");
+			}
+			if(StringUtils.isNull(param.getMobile())) {
+				log.info("电话为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"电话为空");
+			}
+			if(StringUtils.isNull(param.getContactName())) {
+				log.info("联系人为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"联系人为空");
+			}
+			if(StringUtils.isNull(param.getEmail())) {
+				log.info("邮箱为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"邮箱为空");
+			}
+			if(StringUtils.isNull(param.getAddress())) {
+				log.info("工作地点为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"工作地点为空");
+			}
+			if(StringUtils.isNull(param.getAddressDetail())) {
+				log.info("详细地址为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"详细地址为空");
 			}
 			// 查询
 			JobInfo job = jobService.getById(param.getId());

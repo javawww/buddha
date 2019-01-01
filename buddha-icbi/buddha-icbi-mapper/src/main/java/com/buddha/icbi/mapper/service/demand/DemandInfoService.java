@@ -1,11 +1,13 @@
 package com.buddha.icbi.mapper.service.demand;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.buddha.icbi.common.enums.AuditEnum;
 import com.buddha.icbi.common.param.demand.DemandInfoParam;
 import com.buddha.icbi.mapper.mapper.demand.DemandInfoMapper;
 import com.buddha.icbi.pojo.demand.DemandInfo;
@@ -40,7 +42,9 @@ public class DemandInfoService extends ServiceImpl<DemandInfoMapper, DemandInfo>
 	 * @return
 	 */
 	public List<DemandInfo> listSearch(DemandInfoParam param) {
-		// TODO Auto-generated method stub
+		// 查询
+		param.setStatus(AuditEnum.AUDITED.getValue()); // 审核通过
+		param.setDistance(new BigDecimal(10000));// 距离
 		List<DemandInfo> demands = demandMapper.listSearch(param);
 		return demands;
 	}

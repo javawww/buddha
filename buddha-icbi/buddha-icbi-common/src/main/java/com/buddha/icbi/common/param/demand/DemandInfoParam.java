@@ -38,6 +38,10 @@ public class DemandInfoParam extends BaseParam {
      * 联系电话
      */
 	private String mobile;
+	/**
+	 * 联系人
+	 */
+	private String contactName;
     /**
      * 产品名称
      */
@@ -46,6 +50,10 @@ public class DemandInfoParam extends BaseParam {
 	 * 产品图片
 	 */
 	private String productImg;
+	/**
+	 * 产品描述
+	 */
+	private String productDesc;
     /**
      * 规格
      */
@@ -65,7 +73,11 @@ public class DemandInfoParam extends BaseParam {
     /**
      * 收货地址
      */
-	private String receiveAddress;
+	private String address;
+	/**
+	 * 收货地址明细
+	 */
+	private String addressDetail;
     /**
      * 当前位置坐标
      */
