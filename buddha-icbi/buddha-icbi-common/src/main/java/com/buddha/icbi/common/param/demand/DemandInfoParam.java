@@ -7,7 +7,6 @@ import com.buddha.component.common.param.base.BaseParam;
 import lombok.Getter;
 import lombok.Setter;
 
-
 /**
  * 
  * 需求采购-参数
@@ -29,22 +28,22 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DemandInfoParam extends BaseParam {
-	
+
 	/**
 	 * 公司名称
 	 */
 	private String companyName;
-    /**
-     * 联系电话
-     */
+	/**
+	 * 联系电话
+	 */
 	private String mobile;
 	/**
 	 * 联系人
 	 */
 	private String contactName;
-    /**
-     * 产品名称
-     */
+	/**
+	 * 产品名称
+	 */
 	private String productName;
 	/**
 	 * 产品图片
@@ -54,57 +53,57 @@ public class DemandInfoParam extends BaseParam {
 	 * 产品描述
 	 */
 	private String productDesc;
-    /**
-     * 规格
-     */
+	/**
+	 * 规格
+	 */
 	private String norm;
-    /**
-     * 数量
-     */
-	private Integer amount;
-    /**
-     * 收货坐标
-     */
+	/**
+	 * 数量
+	 */
+	private String amount;
+	/**
+	 * 收货坐标
+	 */
 	private BigDecimal receiveLatitude;
-    /**
-     * 收货坐标
-     */
+	/**
+	 * 收货坐标
+	 */
 	private BigDecimal receiveLongitude;
-    /**
-     * 收货地址
-     */
+	/**
+	 * 收货地址
+	 */
 	private String address;
 	/**
 	 * 收货地址明细
 	 */
 	private String addressDetail;
-    /**
-     * 当前位置坐标
-     */
+	/**
+	 * 当前位置坐标
+	 */
 	private BigDecimal currentLatitude;
-    /**
-     * 发起人当前坐标
-     */
+	/**
+	 * 发起人当前坐标
+	 */
 	private BigDecimal currentLongitude;
-    /**
-     * 标签
-     */
+	/**
+	 * 标签
+	 */
 	private String tags;
-    /**
-     * 状态 1-审核中 2-通过 3-拒绝
-     */
+	/**
+	 * 状态 1-审核中 2-通过 3-拒绝
+	 */
 	private Integer status;
 	/**
 	 * 创建人id
 	 */
 	private String createId;
 	/**
-     * 纬度，范围为 -90~90，负数表示南纬
-     */
+	 * 纬度，范围为 -90~90，负数表示南纬
+	 */
 	private BigDecimal latitude;
-    /**
-     * 经度，范围为 -180~180，负数表示西经
-     */
+	/**
+	 * 经度，范围为 -180~180，负数表示西经
+	 */
 	private BigDecimal longitude;
 	/**
 	 * 关键字查询
@@ -114,5 +113,5 @@ public class DemandInfoParam extends BaseParam {
 	 * 距离
 	 */
 	private BigDecimal distance;
-	
+
 }

@@ -82,7 +82,7 @@ public class DemandInfo extends PojoModel<DemandInfo> {
     /**
      * 数量
      */
-	private Integer amount;
+	private String amount;
     /**
      * 收货坐标
      */

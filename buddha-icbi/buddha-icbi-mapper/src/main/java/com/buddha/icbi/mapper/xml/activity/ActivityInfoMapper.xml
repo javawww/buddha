@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.buddha.icbi.mapper.mapper.activity.ActivityInfoMapper">
-
+	
+	
+	<!-- 查询附近公司信息 状态查询-->
+	<select id="nearCompany" resultType="com.buddha.icbi.pojo.activity.ActivityInfo">
+		SELECT *, ROUND( SQRT(POW(69.1 * (latitude - #{latitude}), 2) + POW(69.1 * (#{longitude} - longitude) * COS(latitude / 57.3), 2) ),2) AS distance
+			FROM activity_info 
+			WHERE 1=1 
+			<if test="status !=null and status != '' ">
+		 	AND status = #{status}
+			</if>
+			<if test="keyword != null and keyword != '' ">
+			AND (
+				theme LIKE CONCAT('%', #{keyword}, '%')
+				OR
+				address LIKE CONCAT('%', #{keyword}, '%')
+			)
+			</if>
+			<if test="distance !=null and distance != '' ">
+			HAVING distance &lt;= #{distance}
+			</if>
+			ORDER BY distance ASC
+	</select>
+	
 </mapper>

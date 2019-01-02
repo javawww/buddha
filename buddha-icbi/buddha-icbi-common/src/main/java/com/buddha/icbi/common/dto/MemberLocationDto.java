@@ -46,5 +46,6 @@ public class MemberLocationDto implements Serializable{
 	private Integer gender;// 性别 
 	private String firstName;//姓氏 
 	private String lastName;//  姓名
+	private String activityId; // 活动id
 	
 }
