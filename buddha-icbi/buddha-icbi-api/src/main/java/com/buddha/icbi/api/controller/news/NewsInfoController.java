@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.buddha.component.common.bean.ResultJson;
 import com.buddha.component.common.enums.ResultStatusEnum;
+import com.buddha.component.common.util.DateTimeUtils;
 import com.buddha.component.common.util.StringUtils;
 import com.buddha.icbi.api.controller.base.WebBaseController;
 import com.buddha.icbi.common.enums.AuditEnum;
 import com.buddha.icbi.common.param.news.NewsInfoParam;
+import com.buddha.icbi.mapper.service.company.CompanyInfoService;
 import com.buddha.icbi.mapper.service.news.NewsInfoService;
+import com.buddha.icbi.pojo.company.CompanyInfo;
 import com.buddha.icbi.pojo.company.FileList;
 import com.buddha.icbi.pojo.news.NewsInfo;
 
@@ -44,6 +47,9 @@ public class NewsInfoController extends WebBaseController{
 	@Autowired
 	private NewsInfoService newsService;
 	
+	@Autowired
+	private CompanyInfoService	companyService;
+	
 	/**
 	 * 新增
 	 * @param param
@@ -55,23 +61,23 @@ public class NewsInfoController extends WebBaseController{
 			// 判断
 			if(StringUtils.isNull(param.getCreateId())) {
 				log.info("创建人为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
-			}
-			if(StringUtils.isNull(param.getTitle())) {
-				log.info("风采标题为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"创建人为空");
 			}
 			if(StringUtils.isNull(param.getType())) {
 				log.info("风采类型为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"风采类型为空");
+			}
+			if(StringUtils.isNull(param.getTitle())) {
+				log.info("风采标题为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"风采标题为空");
 			}
 			if(StringUtils.isNull(param.getCoverImg())) {
 				log.info("风采封面为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"风采封面为空");
 			}
 			if(StringUtils.isNull(param.getContent())) {
 				log.info("风采内容为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"风采内容为空");
 			}
 			// 保存
 			Date curDate = new Date();
@@ -207,6 +213,23 @@ public class NewsInfoController extends WebBaseController{
 				}
 				news.setCoverImgArr(fileList);
 			}
+			// 时间格式化
+			news.setCreateTimetxt(DateTimeUtils.getDateTimeFormatToString(news.getCreateTime(), DateTimeUtils.FORMAT_YYYY_MM_DD_CHINA));
+			// 单位名称
+			QueryWrapper<CompanyInfo> queryWrapper = super.getQueryWrapper(CompanyInfo.class);
+			queryWrapper.getEntity().setMemberId(news.getCreateId());
+			CompanyInfo company = companyService.getOne(queryWrapper);
+			if(null != company) {
+				news.setCompanyName(company.getCompanyName());
+				news.setRealAvatar(company.getRealAvatar());
+				news.setCompanyId(company.getId());
+				news.setCompanyProfile(company.getCompanyProfile());
+			}else {
+				news.setCompanyName("");
+				news.setRealAvatar("");
+				news.setCompanyId("");
+				news.setCompanyProfile("");
+			}
 			
 			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, news);
 		} catch (Exception e) {
@@ -247,27 +270,27 @@ public class NewsInfoController extends WebBaseController{
 			// 判断 
 			if(StringUtils.isNull(param.getId())) {
 				log.info("id为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"id为空");
 			}
 			if(StringUtils.isNull(param.getCreateId())) {
 				log.info("创建人为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
-			}
-			if(StringUtils.isNull(param.getTitle())) {
-				log.info("风采标题为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"创建人为空");
 			}
 			if(StringUtils.isNull(param.getType())) {
 				log.info("风采类型为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"风采类型为空");
+			}
+			if(StringUtils.isNull(param.getTitle())) {
+				log.info("风采标题为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"风采标题为空");
 			}
 			if(StringUtils.isNull(param.getCoverImg())) {
 				log.info("风采封面为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"风采封面为空");
 			}
 			if(StringUtils.isNull(param.getContent())) {
 				log.info("风采内容为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"风采内容为空");
 			}
 			// 查询
 			NewsInfo news = newsService.getById(param.getId());

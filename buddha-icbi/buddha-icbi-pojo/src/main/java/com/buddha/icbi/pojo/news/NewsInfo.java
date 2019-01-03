@@ -97,6 +97,39 @@ public class NewsInfo extends PojoModel<NewsInfo> {
 	}
 	
 	//###############数据库之外属性##########################
+	/**
+	 * 封面图片
+	 */
 	@TableField(exist = false)
 	private List<FileList> coverImgArr;
+	/**
+	 * 发布时间
+	 */
+	@TableField(exist = false)
+	private String createTimetxt;
+	/**
+	 * 距离
+	 */
+	@TableField(exist = false)
+	private BigDecimal distance;
+	/**
+	 * 真实头像
+	 */
+	@TableField(exist = false)
+	private String realAvatar;
+	/**
+	 * 公司id
+	 */
+	@TableField(exist = false)
+	private String companyId;
+	/**
+	 * 公司名称
+	 */
+	@TableField(exist = false)
+	private String companyName;
+	/**
+	 * 公司简介
+	 */
+	@TableField(exist = false)
+	private String companyProfile;
 }

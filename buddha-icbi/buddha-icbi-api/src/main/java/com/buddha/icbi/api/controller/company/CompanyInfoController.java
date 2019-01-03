@@ -127,6 +127,12 @@ public class CompanyInfoController extends WebBaseController{
 				.or().like("real_name", param.getKeyword())
 				.or().like("company_name", param.getKeyword());
 			}
+			queryWrapper.isNotNull("real_avatar");
+			queryWrapper.isNotNull("real_name");
+			queryWrapper.isNotNull("address");
+			queryWrapper.ne("real_avatar", "");
+			queryWrapper.ne("real_name", "");
+			queryWrapper.ne("address", "");
 			queryWrapper.orderByDesc(true, "create_time");
 			List<CompanyInfo> list = companyService.list(queryWrapper);
 			if(StringUtils.isEmpty(list)) {
@@ -152,6 +158,10 @@ public class CompanyInfoController extends WebBaseController{
 			if(StringUtils.isNull(param.getMemberId())) {
 				log.info("会员id为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"会员id为空");
+			}
+			if(StringUtils.isEmpty(param.getLatitude())) {
+				log.info("地址为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"地址为空");
 			}
 			// 保存
 			Date curDate = new Date();
@@ -191,6 +201,14 @@ public class CompanyInfoController extends WebBaseController{
 			if(StringUtils.isNull(param.getMobile())) {
 				log.info("手机号不能为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"手机号不能为空");
+			}
+			if(StringUtils.isEmpty(param.getLatitude())) {
+				log.info("地址为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"地址为空");
+			}
+			if(StringUtils.isEmpty(param.getLongitude())) {
+				log.info("地址为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"地址为空");
 			}
 			// 封装全名
 			param.setRealName(param.getFirstName()+param.getLastName());
