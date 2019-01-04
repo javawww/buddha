@@ -74,30 +74,35 @@ public class DemandInfoController extends WebBaseController{
 				log.info("产品名称为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"产品名称为空");
 			}
-			if(StringUtils.isNull(param.getProductImg())) {
+			/*if(StringUtils.isNull(param.getProductImg())) {
 				log.info("产品图片为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"产品图片为空");
-			}
+			}*/
 			if(StringUtils.isNull(param.getProductDesc())) {
 				log.info("产品描述为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"产品描述为空");
 			}
-			if(StringUtils.isNull(param.getAmount())) {
+			/*if(StringUtils.isNull(param.getAmount())) {
 				log.info("数量为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"数量为空");
-			}
-			if(StringUtils.isEmpty(param.getReceiveLatitude())) {
+			}*/
+			/*if(StringUtils.isEmpty(param.getReceiveLatitude())) {
 				log.info("收货坐标为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"收货地址为空");
 			}
 			if(StringUtils.isEmpty(param.getReceiveLongitude())) {
 				log.info("收货坐标为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"收货地址为空");
-			}
+			}*/
 			if(StringUtils.isNull(param.getAddressDetail())) {
 				log.info("收货地址为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"收货地址为空");
 			}
+			// 公司位置 
+			CompanyInfo company = companyService.getCompanyInfoByMid(param.getCreateId());
+			param.setReceiveLatitude(company.getLatitude());
+			param.setReceiveLongitude(company.getLongitude());
+			param.setAddress(company.getAddress());
 			// 保存
 			Date curDate = new Date();
 			DemandInfo demand = new DemandInfo();
@@ -339,15 +344,15 @@ public class DemandInfoController extends WebBaseController{
 				log.info("产品名称为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"产品名称为空");
 			}
-			if(StringUtils.isNull(param.getProductImg())) {
+			/*if(StringUtils.isNull(param.getProductImg())) {
 				log.info("产品图片为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"产品图片为空");
-			}
+			}*/
 			if(StringUtils.isNull(param.getProductDesc())) {
 				log.info("产品描述为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"产品描述为空");
 			}
-			if(StringUtils.isNull(param.getAmount())) {
+			/*if(StringUtils.isNull(param.getAmount())) {
 				log.info("数量为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"数量为空");
 			}
@@ -358,7 +363,7 @@ public class DemandInfoController extends WebBaseController{
 			if(StringUtils.isEmpty(param.getReceiveLongitude())) {
 				log.info("收货坐标为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"收货地址为空");
-			}
+			}*/
 			if(StringUtils.isNull(param.getAddressDetail())) {
 				log.info("收货地址为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"收货地址为空");

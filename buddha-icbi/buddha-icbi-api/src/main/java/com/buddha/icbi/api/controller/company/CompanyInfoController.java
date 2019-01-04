@@ -123,21 +123,34 @@ public class CompanyInfoController extends WebBaseController{
 			queryWrapper.getEntity().setIsCertification(AuditEnum.AUDITING.getValue());
 			// 关键字搜索
 			if(StringUtils.isNotNull(param.getKeyword())) {
-				queryWrapper.like("mobile", param.getKeyword())
-				.or().like("real_name", param.getKeyword())
-				.or().like("company_name", param.getKeyword());
+				queryWrapper.and(wrapper -> wrapper.like("mobile", param.getKeyword())
+						.or().like("real_name", param.getKeyword())
+						.or().like("company_name", param.getKeyword()));
 			}
-			queryWrapper.isNotNull("real_avatar");
+			/*queryWrapper.isNotNull("real_avatar");
 			queryWrapper.isNotNull("real_name");
 			queryWrapper.isNotNull("address");
 			queryWrapper.ne("real_avatar", "");
 			queryWrapper.ne("real_name", "");
-			queryWrapper.ne("address", "");
+			queryWrapper.ne("address", "");*/
 			queryWrapper.orderByDesc(true, "create_time");
 			List<CompanyInfo> list = companyService.list(queryWrapper);
 			if(StringUtils.isEmpty(list)) {
 				log.info("待审核列表为空");
 				//return new ResultJson(ResultStatusEnum.DATA_NOT_EXIST,"待审核列表为空");
+			}
+			// 遍历
+			for (CompanyInfo company : list) {
+				// 会员信息
+				MemberInfo _member = memberService.getById(company.getMemberId());
+				if(null != _member) {
+					if(StringUtils.isNull(company.getRealAvatar())) {
+						company.setRealAvatar(_member.getAvatar());
+					}
+					if(StringUtils.isNull(company.getRealName())) {
+						company.setRealName(_member.getNickName());
+					}
+				}
 			}
 			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, list);
 		} catch (Exception e) {
@@ -162,6 +175,14 @@ public class CompanyInfoController extends WebBaseController{
 			if(StringUtils.isEmpty(param.getLatitude())) {
 				log.info("地址为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"地址为空");
+			}
+			if(StringUtils.isEmpty(param.getAddress())) {
+				log.info("公司导航位置为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"公司导航位置为空");
+			}
+			if(StringUtils.isNull(param.getFloor())) {
+				log.info("公司详细位置为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"公司详细位置为空");
 			}
 			// 保存
 			Date curDate = new Date();
@@ -203,12 +224,28 @@ public class CompanyInfoController extends WebBaseController{
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"手机号不能为空");
 			}
 			if(StringUtils.isEmpty(param.getLatitude())) {
-				log.info("地址为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"地址为空");
+				log.info("公司导航位置为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"公司导航位置为空");
 			}
 			if(StringUtils.isEmpty(param.getLongitude())) {
-				log.info("地址为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"地址为空");
+				log.info("公司导航位置为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"公司导航位置为空");
+			}
+			if(StringUtils.isEmpty(param.getAddress())) {
+				log.info("公司导航位置为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"公司导航位置为空");
+			}
+			if(StringUtils.isNull(param.getFloor())) {
+				log.info("公司详细地址为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"公司详细地址为空");
+			}
+			if(StringUtils.isNull(param.getCompanyName())) {
+				log.info("公司名称为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"公司名称为空");
+			}
+			if(StringUtils.isNull(param.getLandlineNumber())) {
+				log.info("座机号为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"座机号为空");
 			}
 			// 封装全名
 			param.setRealName(param.getFirstName()+param.getLastName());

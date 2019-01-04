@@ -85,14 +85,19 @@ public class JobInfoController extends WebBaseController {
 				log.info("邮箱为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"邮箱为空");
 			}
-			if(StringUtils.isNull(param.getAddress())) {
+			/*if(StringUtils.isNull(param.getAddress())) {
+				log.info("工作地点为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"工作地点为空");
+			}*/
+			if(StringUtils.isNull(param.getAddressDetail())) {
 				log.info("工作地点为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"工作地点为空");
 			}
-			if(StringUtils.isNull(param.getAddressDetail())) {
-				log.info("详细地址为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"详细地址为空");
-			}
+			// 公司位置 
+			CompanyInfo company = companyService.getCompanyInfoByMid(param.getCreateId());
+			param.setLatitude(company.getLatitude());
+			param.setLongitude(company.getLongitude());
+			param.setAddress(company.getAddress());
 			// 保存
 			Date curDate = new Date();
 			JobInfo job = new JobInfo();
@@ -313,10 +318,10 @@ public class JobInfoController extends WebBaseController {
 				log.info("邮箱为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"邮箱为空");
 			}
-			if(StringUtils.isNull(param.getAddress())) {
+			/*if(StringUtils.isNull(param.getAddress())) {
 				log.info("工作地点为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"工作地点为空");
-			}
+			}*/
 			if(StringUtils.isNull(param.getAddressDetail())) {
 				log.info("详细地址为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"详细地址为空");

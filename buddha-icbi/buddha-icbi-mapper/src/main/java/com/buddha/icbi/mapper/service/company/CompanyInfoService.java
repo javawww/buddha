@@ -97,8 +97,13 @@ public class CompanyInfoService extends ServiceImpl<CompanyInfoMapper, CompanyIn
 				dto.setAddress(company.getAddress());
 				dto.setHeight(32);
 				dto.setWidth(32);
-				// 查询
-				dto.setIconPath(company.getRealAvatar() + OSSImageStyleConstant.IMAGE_CIRCLE);
+				// 真实头像
+				if(StringUtils.isNull(company.getRealAvatar())) {
+					MemberInfo member = memberMapper.selectById(company.getMemberId());
+					dto.setIconPath(member.getAvatar() + OSSImageStyleConstant.IMAGE_CIRCLE);
+				}else {
+					dto.setIconPath(company.getRealAvatar() + OSSImageStyleConstant.IMAGE_CIRCLE);
+				}
 				dto.setCompanyId(company.getId());
 				dto.setMemberId(company.getMemberId());
 				dto.setId(id);
@@ -453,4 +458,14 @@ public class CompanyInfoService extends ServiceImpl<CompanyInfoMapper, CompanyIn
 		return idArr;
 	}
 	
+	/**
+	 * 根据会员id获取公司信息
+	 * @param memberId
+	 * @return
+	 */
+	public CompanyInfo getCompanyInfoByMid(String memberId) {
+		QueryWrapper<CompanyInfo> queryWrapper = new QueryWrapper<CompanyInfo>(new CompanyInfo());
+		queryWrapper.getEntity().setMemberId(memberId);
+		return companyMapper.selectOne(queryWrapper);
+	}
 }

@@ -216,9 +216,7 @@ public class NewsInfoController extends WebBaseController{
 			// 时间格式化
 			news.setCreateTimetxt(DateTimeUtils.getDateTimeFormatToString(news.getCreateTime(), DateTimeUtils.FORMAT_YYYY_MM_DD_CHINA));
 			// 单位名称
-			QueryWrapper<CompanyInfo> queryWrapper = super.getQueryWrapper(CompanyInfo.class);
-			queryWrapper.getEntity().setMemberId(news.getCreateId());
-			CompanyInfo company = companyService.getOne(queryWrapper);
+			CompanyInfo company =  companyService.getCompanyInfoByMid(news.getCreateId());
 			if(null != company) {
 				news.setCompanyName(company.getCompanyName());
 				news.setRealAvatar(company.getRealAvatar());

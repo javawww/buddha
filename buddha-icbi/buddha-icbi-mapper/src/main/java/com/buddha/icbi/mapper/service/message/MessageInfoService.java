@@ -71,8 +71,18 @@ public class MessageInfoService extends ServiceImpl<MessageInfoMapper, MessageIn
 				queryWrapper.getEntity().setMemberId(rec.getMemberId());
 				CompanyInfo company = companyMapper.selectOne(queryWrapper);
 				if(null != company) {
-					dto.setRealName(company.getRealName());
-					dto.setRealAvatar(company.getRealAvatar());
+					if(StringUtils.isNull(company.getRealName())) {
+						MemberInfo member = memberMapper.selectById(company.getMemberId());
+						dto.setRealAvatar(member.getAvatar());
+					}else {
+						dto.setRealName(company.getRealName());
+					}
+					if(StringUtils.isNull(company.getRealAvatar())) {
+						MemberInfo member = memberMapper.selectById(company.getMemberId());
+						dto.setRealName(member.getNickName());
+					}else {
+						dto.setRealAvatar(company.getRealAvatar());
+					}
 				}else {
 					log.info("公司信息为空-查询会员信息");
 					MemberInfo member = memberMapper.selectById(rec.getMemberId());
