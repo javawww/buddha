@@ -358,7 +358,7 @@ public class ActivityInfoController extends WebBaseController{
 		try {
 			if(StringUtils.isNull(param.getCreateId())) {
 				log.info("会员Id为空");
-				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"会员Id为空");
+//				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"会员Id为空");
 			}
 			if(StringUtils.isEmpty(param.getLatitude())) {
 				log.info("纬度为空");
