@@ -85,6 +85,10 @@ public class ActivityInfoParam extends BaseParam {
 	 */
 	private Integer status;
 	/**
+	 * 举办状态：1-未开始 2-进行中 3-已结束
+	 */
+	private Integer holdStatus;
+	/**
 	 * 收费类型： 1-免费 2-女免费男AA 3-女半价男AA
 	 */
 	private Integer chargeType;

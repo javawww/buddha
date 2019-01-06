@@ -14,7 +14,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<!-- <repositories>
+	<repositories>
 		<repository>
 			<id>alimaven</id>
 			<name>aliyun maven</name>
@@ -25,7 +25,7 @@
 			<name>buddha maven</name>
 			<url>http://39.98.166.140:8081/nexus/repository/maven-releases/</url>
 		</repository>
-	</repositories> -->
+	</repositories>
 
 	<properties>
 		<!-- 编码方式 -->

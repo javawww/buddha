@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.buddha.component.common.bean.mybatis.PojoModel;
+import com.buddha.icbi.pojo.company.CompanyInfo;
 import com.buddha.icbi.pojo.company.FileList;
 
 import lombok.Data;
@@ -99,6 +100,11 @@ public class ActivityInfo extends PojoModel<ActivityInfo> {
 	 */
 	private String post;
 	/**
+	 * 举办状态：1-未开始 2-进行中 3-已结束
+	 */
+	@TableField("hold_Status")
+	private Integer holdStatus;
+	/**
 	 * 状态： 0-审核中 1-通过 2-拒绝
 	 */
 	private Integer status;
@@ -117,7 +123,7 @@ public class ActivityInfo extends PojoModel<ActivityInfo> {
 	 */
 	private String content;
 	/**
-	 * 是否取消 1-正常 2-取消
+	 * 是否取消 1-正常 2-取消 3-结束
 	 */
 	@TableField("is_cancel")
 	private Integer isCancel;
@@ -159,25 +165,10 @@ public class ActivityInfo extends PojoModel<ActivityInfo> {
 	@TableField(exist = false)
 	private BigDecimal distance;
 	/**
-	 * 真实头像
+	 * 公司信息
 	 */
 	@TableField(exist = false)
-	private String realAvatar;
-	/**
-	 * 公司id
-	 */
-	@TableField(exist = false)
-	private String companyId;
-	/**
-	 * 公司名称
-	 */
-	@TableField(exist = false)
-	private String companyName;
-	/**
-	 * 公司简介
-	 */
-	@TableField(exist = false)
-	private String companyProfile;
+	private CompanyInfo companyInfo;
 	
 	//举办时间
 	@TableField(exist = false)

@@ -25,15 +25,20 @@ import com.buddha.icbi.common.param.activity.ActivityInfoParam;
 import com.buddha.icbi.common.param.company.CompanyInfoParam;
 import com.buddha.icbi.common.param.demand.DemandInfoParam;
 import com.buddha.icbi.common.param.job.JobInfoParam;
+import com.buddha.icbi.mapper.service.activity.ActivityCollectionService;
 import com.buddha.icbi.mapper.service.activity.ActivityInfoService;
+import com.buddha.icbi.mapper.service.activity.ActivityJoinLogService;
 import com.buddha.icbi.mapper.service.company.CompanyInfoService;
+import com.buddha.icbi.pojo.activity.ActivityCollection;
 import com.buddha.icbi.pojo.activity.ActivityInfo;
+import com.buddha.icbi.pojo.activity.ActivityJoinLog;
 import com.buddha.icbi.pojo.company.CompanyInfo;
 import com.buddha.icbi.pojo.company.FileList;
 import com.buddha.icbi.pojo.demand.DemandInfo;
 import com.buddha.icbi.pojo.job.JobInfo;
 
 import lombok.extern.log4j.Log4j2;
+import net.sf.jsqlparser.expression.DateTimeLiteralExpression.DateTime;
 
 /**
  * //在这里注释类文件的作用等信息
@@ -57,6 +62,12 @@ public class ActivityInfoController extends WebBaseController{
 	
 	@Autowired
 	private CompanyInfoService companyService;
+	
+	@Autowired
+	private ActivityJoinLogService joinLogService;
+	
+	@Autowired
+	private ActivityCollectionService collectionService;
 	/**
 	 * 发起活动
 	 * @param param
@@ -216,22 +227,13 @@ public class ActivityInfoController extends WebBaseController{
 			if(StringUtils.isNotEmpty(activity.getOverTime())) {
 				activity.setOverTimetxt(DateTimeUtils.getDateTimeFormatToString(activity.getOverTime(), DateTimeUtils.FORMAT_YYYY_MM_DD_HH_MM_SS_CHINA));
 			}
-			// 单位名称
-			QueryWrapper<CompanyInfo> queryWrapper = super.getQueryWrapper(CompanyInfo.class);
-			queryWrapper.getEntity().setMemberId(activity.getCreateId());
-			CompanyInfo company = companyService.getOne(queryWrapper);
+			// 公司信息
+			CompanyInfo company = companyService.getCompanyInfoByMid(activity.getCreateId());
 			if(null != company) {
-				activity.setCompanyName(company.getCompanyName());
-				activity.setRealAvatar(company.getRealAvatar());
-				activity.setCompanyId(company.getId());
-				activity.setCompanyProfile(company.getCompanyProfile());
+				activity.setCompanyInfo(company);
 			}else {
-				activity.setCompanyName("");
-				activity.setRealAvatar("");
-				activity.setCompanyId("");
-				activity.setCompanyProfile("");
+				log.info("公司信息为空");
 			}
-			
 			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, activity);
 		} catch (Exception e) {
 			log.error("系统异常，请检查", e);
@@ -380,4 +382,254 @@ public class ActivityInfoController extends WebBaseController{
 			return new ResultJson(e);
 		}
 	}
+	/**
+	 * 加入活动
+	 * @return
+	 */
+	@PostMapping("join")
+	public ResultJson joinActivity(@RequestBody ActivityInfoParam param) {
+		try {
+			// 判断
+			if(StringUtils.isNull(param.getCreateId())) {
+				log.info("会员Id为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"会员Id为空");
+			}
+			if(StringUtils.isNull(param.getId())) {
+				log.info("活动Id为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"活动Id为空");
+			}
+			// 查询活动
+			ActivityInfo activity = activityService.getById(param.getId());
+			if(StringUtils.isEmpty(activity)) {
+				log.info("活动不存在");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"活动不存在");
+			}
+			if(activity.getIsCancel() == ActivityInfoStatusEnum.ALREADY_OVER.getValue() ) {
+				log.info("活动已结束");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"活动已结束");
+			}
+			// 是否加入
+			QueryWrapper<ActivityJoinLog> queryWrapper = super.getQueryWrapper(ActivityJoinLog.class);
+			queryWrapper.getEntity().setActivityId(activity.getId());
+			queryWrapper.getEntity().setMemberId(param.getCreateId());
+			ActivityJoinLog joinLog = joinLogService.getOne(queryWrapper);
+			if(StringUtils.isNotEmpty(joinLog)) {
+				log.info("已加入该活动");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"已加入该活动");
+			}
+			// 加入
+			Date curDate = new Date();
+			ActivityJoinLog _joinLog = new ActivityJoinLog();
+			_joinLog.setActivityId(activity.getId());
+			_joinLog.setMemberId(param.getCreateId());
+			_joinLog.setInitiateId(activity.getCreateId());
+			_joinLog.setCreateTime(curDate);
+			_joinLog.setUpdateTime(curDate);
+			joinLogService.save(_joinLog);
+			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS);
+		} catch (Exception e) {
+			log.error("系统异常，请检查", e);
+			return new ResultJson(e);
+		}
+	}
+	
+	/**
+	 * 收藏活动
+	 * @param param
+	 * @return
+	 */
+	@PostMapping("collect")
+	public ResultJson collectActivity(@RequestBody ActivityInfoParam param) {
+		try {
+			// 判断
+			if(StringUtils.isNull(param.getCreateId())) {
+				log.info("会员Id为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"会员Id为空");
+			}
+			if(StringUtils.isNull(param.getId())) {
+				log.info("活动Id为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"活动Id为空");
+			}
+			// 是否收藏
+			QueryWrapper<ActivityCollection> queryWrapper = super.getQueryWrapper(ActivityCollection.class);
+			queryWrapper.getEntity().setActivityId(param.getId());
+			queryWrapper.getEntity().setCreateId(param.getCreateId());
+			ActivityCollection collection = collectionService.getOne(queryWrapper);
+			if(StringUtils.isNotEmpty(collection)) {
+				log.info("已经收藏过了");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"已经收藏过了");
+			}
+			// 收藏
+			Date curDate = new Date();
+			ActivityCollection _collection = new ActivityCollection();
+			_collection.setActivityId(param.getId());
+			_collection.setCreateId(param.getCreateId());
+			_collection.setCreateTime(curDate);
+			collectionService.save(_collection);
+			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS);
+		} catch (Exception e) {
+			log.error("系统异常，请检查", e);
+			return new ResultJson(e);
+		}
+	}
+	/**
+	 * 取消收藏
+	 * @return
+	 */
+	@PostMapping("uncollect")
+	public ResultJson uncollectActivity(@RequestBody ActivityInfoParam param) {
+		try {
+			// 判断
+			if(StringUtils.isNull(param.getId())) {
+				log.info("活动id为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"活动id为空");
+			}
+			if(StringUtils.isNull(param.getCreateId())) {
+				log.info("会员Id为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"会员Id为空");
+			}
+			// 查询
+			QueryWrapper<ActivityCollection> queryWrapper = super.getQueryWrapper(ActivityCollection.class);
+			queryWrapper.getEntity().setActivityId(param.getId());
+			queryWrapper.getEntity().setCreateId(param.getCreateId());
+			ActivityCollection collection =  collectionService.getOne(queryWrapper);
+			if(StringUtils.isEmpty(collection)) {
+				log.info("数据不存在");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"数据不存在");
+			}
+			// 取消
+			collectionService.removeById(collection.getId());
+			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS);
+		} catch (Exception e) {
+			log.error("系统异常，请检查", e);
+			return new ResultJson(e);
+		}
+	}
+	
+	/**
+	 * 	参与列表
+	 * @param param
+	 * @return
+	 */
+	@PostMapping("join-list")
+	public ResultJson joinList(@RequestBody ActivityInfoParam param) {
+		try {
+			// 判断
+			if(StringUtils.isNull(param.getCreateId())) {
+				log.info("会员id为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"会员id为空");
+			}
+			// 查询
+			QueryWrapper<ActivityJoinLog> queryWrapper = super.getQueryWrapper(ActivityJoinLog.class);
+			queryWrapper.getEntity().setMemberId(param.getCreateId());
+			queryWrapper.orderByDesc("create_time");
+			List<ActivityJoinLog> joinLogs = joinLogService.list(queryWrapper);
+			if(!StringUtils.isNotNull(joinLogs)) {
+				log.info("活动列表为空");
+				//return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"活动列表为空");
+			}
+			// 活动列表
+			List<ActivityInfo> activitys = new ArrayList<ActivityInfo>();
+			for (ActivityJoinLog joinLog : joinLogs) {
+				ActivityInfo activity = activityService.getById(joinLog.getActivityId());
+				Integer days = DateTimeUtils.getDateIntervalDay(new Date(), activity.getHoldTime());
+				//  1-未开始 2-进行中 3-已结束
+				if(days > 0) {
+					activity.setHoldStatus(1);;
+				}
+				if(days == 0) {
+					activity.setHoldStatus(2);;
+				}
+				if(days < 0) {
+					activity.setHoldStatus(3);;
+				}
+				activitys.add(activity);
+			}
+			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, activitys);
+		} catch (Exception e) {
+			log.error("系统异常，请检查", e);
+			return new ResultJson(e);
+		}
+	}
+	/**
+	 * 	收藏列表
+	 * @param param
+	 * @return
+	 */
+	@PostMapping("collect-list")
+	public ResultJson collectList(@RequestBody ActivityInfoParam param) {
+		try {
+			// 判断
+			if(StringUtils.isNull(param.getCreateId())) {
+				log.info("会员id为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"会员id为空");
+			}
+			// 查询
+			QueryWrapper<ActivityCollection> queryWrapper = super.getQueryWrapper(ActivityCollection.class);
+			queryWrapper.getEntity().setCreateId(param.getCreateId());
+			List<ActivityCollection> collections = collectionService.list(queryWrapper);
+			if(!StringUtils.isNotNull(collections)) {
+				log.info("活动列表为空");
+				//return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"活动列表为空");
+			}
+			// 活动列表
+			List<ActivityInfo> activitys = new ArrayList<ActivityInfo>();
+			for (ActivityCollection collect : collections) {
+				ActivityInfo activity = activityService.getById(collect.getActivityId());
+				Integer days = DateTimeUtils.getDateIntervalDay(new Date(), activity.getHoldTime());
+				//  1-未开始 2-进行中 3-已结束
+				if(days > 0) {
+					activity.setHoldStatus(1);;
+				}
+				if(days == 0) {
+					activity.setHoldStatus(2);;
+				}
+				if(days < 0) {
+					activity.setHoldStatus(3);;
+				}
+				activitys.add(activity);
+			}
+			
+			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, activitys);
+		} catch (Exception e) {
+			log.error("系统异常，请检查", e);
+			return new ResultJson(e);
+		}
+	}
+	
+	/**
+	 *  往期风采
+	 * @param param
+	 * @return
+	 */
+	@PostMapping("history-list")
+	public ResultJson historyList(@RequestBody ActivityInfoParam param) {
+		try {
+			// 判断
+			if(StringUtils.isNull(param.getCreateId())) {
+				log.info("会员id为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR);
+			}
+			// 查询
+			QueryWrapper<ActivityInfo> queryWrapper = super.getQueryWrapper(ActivityInfo.class);
+			queryWrapper.getEntity().setStatus(AuditEnum.AUDITED.getValue()); // 审核通过
+			queryWrapper.getEntity().setHoldStatus(3);// 已结束
+			queryWrapper.orderByDesc("update_time");
+			List<ActivityInfo> activitys = activityService.list(queryWrapper);
+			if(StringUtils.isNotNull(activitys)) {
+				for (ActivityInfo activity : activitys) {
+					// 公司信息
+					CompanyInfo company = companyService.getCompanyInfoByMid(activity.getCreateId());
+					activity.setCompanyInfo(company);
+					// 日期
+					activity.setHodeTimetxt(DateTimeUtils.getDateTimeFormatToString(activity.getHoldTime(), DateTimeUtils.FORMAT_YYYY_MM_DD_HH_MM));
+				}
+			}
+			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, activitys);
+		} catch (Exception e) {
+			log.error("系统异常，请检查", e);
+			return new ResultJson(e);
+		}
+	}
+	
 }
