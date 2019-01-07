@@ -219,6 +219,15 @@ public class MemberInfoController extends WebBaseController{
 			// 待审核列表
 			QueryWrapper<MemberInfo> queryWrapper = super.getQueryWrapper(MemberInfo.class);
 			queryWrapper.getEntity().setIsCertification(AuditEnum.AUDITING.getValue());
+			// 查询类型 1-完善资料 2-未完善资料
+			if(param.getQueryType() == 1) {
+				queryWrapper.and(wrapper -> wrapper.isNotNull("address").or().isNotNull("real_name")
+						.or().isNotNull("mobile").or().isNotNull("landline_number"));
+			}
+			else if(param.getQueryType() == 2) {
+				queryWrapper.and(wrapper -> wrapper.isNull("address").or().isNull("real_name")
+						.or().isNull("mobile").or().isNull("landline_number"));
+			}
 			queryWrapper.orderByDesc(true, "create_time");
 			List<MemberInfo> list = memberService.list(queryWrapper);
 			if(StringUtils.isEmpty(list)) {

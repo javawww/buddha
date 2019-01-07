@@ -123,16 +123,27 @@ public class CompanyInfoController extends WebBaseController{
 			queryWrapper.getEntity().setIsCertification(AuditEnum.AUDITING.getValue());
 			// 关键字搜索
 			if(StringUtils.isNotNull(param.getKeyword())) {
-				queryWrapper.and(wrapper -> wrapper.like("mobile", param.getKeyword())
+				queryWrapper.and(
+						wrapper -> 
+						wrapper.like("mobile", param.getKeyword())
 						.or().like("real_name", param.getKeyword())
 						.or().like("company_name", param.getKeyword()));
 			}
-			/*queryWrapper.isNotNull("real_avatar");
-			queryWrapper.isNotNull("real_name");
-			queryWrapper.isNotNull("address");
-			queryWrapper.ne("real_avatar", "");
-			queryWrapper.ne("real_name", "");
-			queryWrapper.ne("address", "");*/
+			if(param.getQueryType() == 1) {
+				queryWrapper.and(
+						wrapper -> 
+						wrapper.isNotNull("latitude")
+						/*.or().isNotNull("mobile")
+						.or().ne("address", "")
+						.or().ne("mobile", "")*/);
+			}else if(param.getQueryType() == 2) {
+				queryWrapper.and(
+						wrapper -> 
+						wrapper.isNull("latitude")
+						/*.or().isNull("mobile")
+						.or().eq("address", "")
+						.or().eq("mobile", "")*/);
+			}
 			queryWrapper.orderByDesc(true, "create_time");
 			List<CompanyInfo> list = companyService.list(queryWrapper);
 			if(StringUtils.isEmpty(list)) {
@@ -379,6 +390,34 @@ public class CompanyInfoController extends WebBaseController{
 			// 附近会员列表
 			List<MemberLocationDto> dtoList = companyService.listNearCompany(param);
 			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, dtoList);
+		} catch (Exception e) {
+			log.error("系统异常，请检查", e);
+			return new ResultJson(e);
+		}
+	}
+	/**
+	 * 附近会员列表 分页
+	 * @param param
+	 * @return
+	 */
+	@PostMapping("page-near-company")
+	public ResultJson pageListNearCompany(@RequestBody CompanyInfoParam param) {
+		try {
+			if(StringUtils.isNull(param.getMemberId())) {
+				log.info("会员Id为空");
+				//return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"会员Id为空");
+			}
+			if(StringUtils.isEmpty(param.getLatitude())) {
+				log.info("纬度为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"纬度为空");
+			}
+			if(StringUtils.isEmpty(param.getLongitude())) {
+				log.info("经度为空");
+				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"经度为空");
+			}
+			
+			
+			return null;
 		} catch (Exception e) {
 			log.error("系统异常，请检查", e);
 			return new ResultJson(e);

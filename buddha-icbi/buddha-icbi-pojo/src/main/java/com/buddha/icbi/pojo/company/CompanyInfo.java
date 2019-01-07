@@ -204,6 +204,19 @@ public class CompanyInfo extends PojoModel<CompanyInfo> {
 	private List<FileList> companyLogoArr;
 	@TableField(exist = false)
 	private List<FileList> companyEnvImgArr;
+	
+	
+	@TableField(exist = false)
+	private Integer height;// 图片高度
+	@TableField(exist = false)
+	private Integer width;// 图片宽度
+	@TableField(exist = false)
+	private String iconPath;// 图片地址
+	@TableField(exist = false)
+	private String companyId;// 公司id 
+	@TableField(exist = false)
+	private String activityId; // 活动id
+	
 	// --------额外属性（entity对应表结构之外的属性） end--------------------------------
 
 }

@@ -77,19 +77,6 @@ public class CompanyInfoService extends ServiceImpl<CompanyInfoMapper, CompanyIn
 			log.info("当前会员不存在");
 			//throw new BaseException(ResultStatusEnum.DATA_NOT_EXIST,"当前会员不存在");
 		}
-		/*MemberLocationDto _dto = new MemberLocationDto();
-		_dto.setAddress("公司地址");
-		_dto.setHeight(32);
-		_dto.setWidth(22);
-		_dto.setIconPath("/images/map/marker.png");
-		_dto.setMemberId(_member.getId());
-		_dto.setId(id);
-		id ++;
-		_dto.setLongitude(param.getLongitude());
-		_dto.setLatitude(param.getLatitude());
-		_dto.setName("公司名称");
-		_dto.setDistance(BigDecimal.ZERO); // 距离单位公里
-		dtoList.add(_dto);*/
 		// 附近会员
 		if(StringUtils.isNotNull(companys)) {
 			for (CompanyInfo company : companys) {

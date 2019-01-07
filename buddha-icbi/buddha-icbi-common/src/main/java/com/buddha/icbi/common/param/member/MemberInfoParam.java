@@ -130,4 +130,9 @@ public class MemberInfoParam extends BaseParam {
 	  * 查询关键字
 	  */
 	private String keyworkd;
+	
+	/**
+	 * 查询类型 1-完善资料 2-未完善资料
+	 */
+	private Integer queryType;
 }

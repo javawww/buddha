@@ -131,4 +131,8 @@ public class CompanyInfoParam extends BaseParam{
 	 * 距离
 	 */
 	private BigDecimal distance;
+	/**
+	 * 查询类型 1-完善资料 2-未完善资料
+	 */
+	private Integer queryType;
 }
