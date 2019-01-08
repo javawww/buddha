@@ -51,7 +51,8 @@ public interface CompanyInfoMapper extends BaseMapper<CompanyInfo> {
 			@Param("longitude") BigDecimal longitude,
 			@Param("distance") BigDecimal distance,
 			@Param("isCertification") Integer isCertification,
-			@Param("keyword") String keyword);
+			@Param("keyword") String keyword,
+			@Param("size") Integer size);
 	
 	public List<CompanyInfo> foreachTest(@Param("mids") List<String> mids);
 	
@@ -61,4 +62,24 @@ public interface CompanyInfoMapper extends BaseMapper<CompanyInfo> {
 	 * @return
 	 */
 	public String[] getIdArr(@Param("keyword") String keyword);
+	
+	/**
+	 * 分页 附近认证公司
+	 * @param latitude
+	 * @param longitude
+	 * @param distance
+	 * @param isCertification
+	 * @param keyword
+	 * @param page
+	 * @param pageSize
+	 * @return
+	 */
+	public List<CompanyInfo> pageCompany(
+			@Param("latitude") BigDecimal latitude,
+			@Param("longitude") BigDecimal longitude,
+			@Param("distance") BigDecimal distance,
+			@Param("isCertification") Integer isCertification,
+			@Param("keyword") String keyword,
+			@Param("page") Integer page, 
+			@Param("pageSize") Integer pageSize);
 }

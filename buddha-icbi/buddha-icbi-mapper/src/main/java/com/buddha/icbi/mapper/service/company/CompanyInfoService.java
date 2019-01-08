@@ -1,5 +1,6 @@
 package com.buddha.icbi.mapper.service.company;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -59,6 +60,10 @@ public class CompanyInfoService extends ServiceImpl<CompanyInfoMapper, CompanyIn
 	
 	@Autowired
 	private CompanyInfoTplMapper companyTplMapper;
+	
+	public static void main(String[] args) {
+		System.out.println(new BigDecimal(3.3333).compareTo(new BigDecimal(3.3333)));
+	}
 	/**
 	 * 附近会员
 	 * @param param
@@ -68,9 +73,24 @@ public class CompanyInfoService extends ServiceImpl<CompanyInfoMapper, CompanyIn
 		// 封装对象
 		List<MemberLocationDto> dtoList = new ArrayList<MemberLocationDto>();
 		Integer id = 0;
+		// 根据缩放比例控制查询数量
+		if(param.getScale().compareTo(new BigDecimal(13)) == 1) {
+			param.setPageSize(25);
+		}
+		if(param.getScale().compareTo(new BigDecimal(13)) == -1 && param.getScale().compareTo(new BigDecimal(10)) == 1) {
+			param.setPageSize(50);
+		}
+		if(param.getScale().compareTo(new BigDecimal(10)) == -1 && param.getScale().compareTo(new BigDecimal(4)) == 1) {
+			param.setPageSize(80);
+		}
+		if(param.getScale().compareTo(new BigDecimal(4)) == 0) {
+			param.setPageSize(200);
+		}
 		// 附近五公里
-		List<CompanyInfo> companys = companyMapper.nearCompany(param.getLatitude(), param.getLongitude(), 
-				param.getDistance(), AuditEnum.AUDITED.getValue(),param.getKeyword());
+		List<CompanyInfo> companys = companyMapper.nearCompany(
+				param.getLatitude(), param.getLongitude(), 
+				param.getDistance(), AuditEnum.AUDITED.getValue(),
+				param.getKeyword(),param.getPageSize());
 		// 当前会员
 		MemberInfo _member = memberMapper.selectById(param.getMemberId());
 		if(null == _member) {
@@ -454,5 +474,63 @@ public class CompanyInfoService extends ServiceImpl<CompanyInfoMapper, CompanyIn
 		QueryWrapper<CompanyInfo> queryWrapper = new QueryWrapper<CompanyInfo>(new CompanyInfo());
 		queryWrapper.getEntity().setMemberId(memberId);
 		return companyMapper.selectOne(queryWrapper);
+	}
+	/**
+	 * 分页查询附近会员
+	 * @param param
+	 * @return
+	 */
+	public List<MemberLocationDto> pageCompany(CompanyInfoParam param) {
+		// 封装对象
+		List<MemberLocationDto> dtoList = new ArrayList<MemberLocationDto>();
+		Integer id = 0;
+		// 附近五公里
+		List<CompanyInfo> companys = companyMapper.pageCompany(
+				param.getLatitude(), param.getLongitude(), 
+				param.getDistance(), AuditEnum.AUDITED.getValue(),
+				param.getKeyword(),param.getPage(),param.getPageSize());
+		System.out.println(JSON.toJSONString(companys, true));
+		// 当前会员
+		MemberInfo _member = memberMapper.selectById(param.getMemberId());
+		if(null == _member) {
+			log.info("当前会员不存在");
+			//throw new BaseException(ResultStatusEnum.DATA_NOT_EXIST,"当前会员不存在");
+		}
+		// 附近会员
+		if(StringUtils.isNotNull(companys)) {
+			for (CompanyInfo company : companys) {
+				MemberLocationDto dto = new MemberLocationDto();
+				dto.setAddress(company.getAddress());
+				dto.setHeight(32);
+				dto.setWidth(32);
+				// 真实头像
+				if(StringUtils.isNull(company.getRealAvatar())) {
+					MemberInfo member = memberMapper.selectById(company.getMemberId());
+					dto.setIconPath(member.getAvatar() + OSSImageStyleConstant.IMAGE_CIRCLE);
+				}else {
+					dto.setIconPath(company.getRealAvatar() + OSSImageStyleConstant.IMAGE_CIRCLE);
+				}
+				dto.setCompanyId(company.getId());
+				dto.setMemberId(company.getMemberId());
+				dto.setId(id);
+				id ++;
+				dto.setLongitude(company.getLongitude());
+				dto.setLatitude(company.getLatitude());
+				dto.setName(company.getCompanyName());
+				dto.setDistance(company.getDistance()); // 距离单位公里
+				dto.setRealName(company.getRealName());
+				dto.setRealAvatar(company.getRealAvatar());
+				dto.setMobile(company.getMobile());
+				dto.setLandlineNumber(company.getLandlineNumber());
+				dto.setFirstName(company.getFirstName());
+				dto.setLastName(company.getLastName());
+				dto.setGender(company.getGender());
+				dtoList.add(dto);
+			}
+		}else {
+			
+		}
+		// 放置list
+		return dtoList;
 	}
 }

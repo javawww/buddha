@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.buddha.component.common.bean.ResultJson;
 import com.buddha.component.common.enums.ResultStatusEnum;
 import com.buddha.component.common.util.StringUtils;
@@ -145,7 +147,10 @@ public class CompanyInfoController extends WebBaseController{
 						.or().eq("mobile", "")*/);
 			}
 			queryWrapper.orderByDesc(true, "create_time");
-			List<CompanyInfo> list = companyService.list(queryWrapper);
+			//List<CompanyInfo> list = companyService.list(queryWrapper);
+			IPage<CompanyInfo> page = new Page<CompanyInfo>(param.getPage(), param.getPageSize());
+			page = companyService.page(page, queryWrapper);
+			List<CompanyInfo> list = page.getRecords();
 			if(StringUtils.isEmpty(list)) {
 				log.info("待审核列表为空");
 				//return new ResultJson(ResultStatusEnum.DATA_NOT_EXIST,"待审核列表为空");
@@ -163,7 +168,7 @@ public class CompanyInfoController extends WebBaseController{
 					}
 				}
 			}
-			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, list);
+			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, page);
 		} catch (Exception e) {
 			log.error("系统异常，请检查", e);
 			return new ResultJson(e);
@@ -383,6 +388,9 @@ public class CompanyInfoController extends WebBaseController{
 				log.info("经度为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"经度为空");
 			}
+			if(StringUtils.isEmpty(param.getScale())) {
+				log.info("缩放比例为空");
+			}
 			/*if(StringUtils.isEmpty(param.getDistance())) {
 				log.info("距离为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"距离为空");
@@ -403,6 +411,7 @@ public class CompanyInfoController extends WebBaseController{
 	@PostMapping("page-near-company")
 	public ResultJson pageListNearCompany(@RequestBody CompanyInfoParam param) {
 		try {
+			// 判断
 			if(StringUtils.isNull(param.getMemberId())) {
 				log.info("会员Id为空");
 				//return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"会员Id为空");
@@ -411,13 +420,12 @@ public class CompanyInfoController extends WebBaseController{
 				log.info("纬度为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"纬度为空");
 			}
-			if(StringUtils.isEmpty(param.getLongitude())) {
+			if(StringUtils.isEmpty(param.getLongitude())) { 
 				log.info("经度为空");
 				return new ResultJson(ResultStatusEnum.PARAMETER_ERROR,"经度为空");
 			}
-			
-			
-			return null;
+			List<MemberLocationDto> dtoList = companyService.pageCompany(param);
+			return new ResultJson(ResultStatusEnum.COMMON_SUCCESS, dtoList);
 		} catch (Exception e) {
 			log.error("系统异常，请检查", e);
 			return new ResultJson(e);

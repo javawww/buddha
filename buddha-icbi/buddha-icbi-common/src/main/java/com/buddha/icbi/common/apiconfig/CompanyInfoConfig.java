@@ -41,6 +41,10 @@ public interface CompanyInfoConfig {
 	 */
 	public static final String COMPANY_INFO_NEAR_COMPANY = "company-info/near-company";
 	/**
+	 * 分页  附近公司
+	 */
+	public static final String COMPANY_INFO_PAGE_NEAR_COMPANY = "company-info/page-near-company";
+	/**
 	 * 关键字搜索附件公司
 	 */
 	public static final String COMPANY_INFO_SEARCH_COMPANY = "company-info/search-company";

@@ -135,4 +135,8 @@ public class CompanyInfoParam extends BaseParam{
 	 * 查询类型 1-完善资料 2-未完善资料
 	 */
 	private Integer queryType;
+	/**
+	 * 缩放比例
+	 */
+	private BigDecimal scale;
 }

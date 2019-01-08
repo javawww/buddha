@@ -19,6 +19,8 @@
 		SELECT *, ROUND( SQRT(POW(69.1 * (latitude - #{latitude}), 2) + POW(69.1 * (#{longitude} - longitude) * COS(latitude / 57.3), 2) ),2) AS distance
 			FROM company_info 
 			WHERE 1=1 
+			AND address IS NOT NULL
+			AND address != '' 
 			<if test="isCertification !=null and isCertification != '' ">
 		 	AND is_certification = #{isCertification}
 			</if>
@@ -37,6 +39,34 @@
 			HAVING distance &lt;= #{distance}
 			</if>
 			ORDER BY distance ASC
+			LIMIT #{size}
+	</select>
+	<!-- 分页  -->
+	<select id="pageCompany" resultType="com.buddha.icbi.pojo.company.CompanyInfo">
+		SELECT *, ROUND( SQRT(POW(69.1 * (latitude - #{latitude}), 2) + POW(69.1 * (#{longitude} - longitude) * COS(latitude / 57.3), 2) ),2) AS distance
+			FROM company_info 
+			WHERE 1=1 
+			AND address IS NOT NULL
+			AND address != '' 
+			<if test="isCertification !=null and isCertification != '' ">
+		 	AND is_certification = #{isCertification}
+			</if>
+			<if test="keyword != null and keyword != '' ">
+			AND (
+				company_tag LIKE CONCAT('%', #{keyword}, '%')
+				OR
+				real_name LIKE CONCAT('%', #{keyword}, '%')
+				OR
+				mobile LIKE CONCAT('%', #{keyword}, '%')
+				OR
+				company_name LIKE CONCAT('%', #{keyword}, '%')
+			)
+			</if>
+			<if test="distance !=null and distance != '' ">
+			HAVING distance &lt;= #{distance}
+			</if>
+			ORDER BY distance ASC
+			LIMIT ${(page-1)*pageSize},${pageSize}
 	</select>
 	
 	<select id="foreachTest" resultType="com.buddha.icbi.pojo.company.CompanyInfo" parameterType="java.util.List">
