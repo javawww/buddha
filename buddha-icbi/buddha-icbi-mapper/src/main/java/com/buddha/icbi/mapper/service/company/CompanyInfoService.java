@@ -74,17 +74,19 @@ public class CompanyInfoService extends ServiceImpl<CompanyInfoMapper, CompanyIn
 		List<MemberLocationDto> dtoList = new ArrayList<MemberLocationDto>();
 		Integer id = 0;
 		// 根据缩放比例控制查询数量
-		if(param.getScale().compareTo(new BigDecimal(13)) == 1) {
-			param.setPageSize(25);
-		}
-		if(param.getScale().compareTo(new BigDecimal(13)) == -1 && param.getScale().compareTo(new BigDecimal(10)) == 1) {
-			param.setPageSize(50);
-		}
-		if(param.getScale().compareTo(new BigDecimal(10)) == -1 && param.getScale().compareTo(new BigDecimal(4)) == 1) {
-			param.setPageSize(80);
-		}
-		if(param.getScale().compareTo(new BigDecimal(4)) == 0) {
-			param.setPageSize(200);
+		if(StringUtils.isNull(param.getKeyword())) {
+			if(param.getScale().compareTo(new BigDecimal(13)) == 1) {
+				param.setPageSize(25);
+			}
+			if(param.getScale().compareTo(new BigDecimal(13)) == -1 && param.getScale().compareTo(new BigDecimal(10)) == 1) {
+				param.setPageSize(50);
+			}
+			if(param.getScale().compareTo(new BigDecimal(10)) == -1 && param.getScale().compareTo(new BigDecimal(4)) == 1) {
+				param.setPageSize(80);
+			}
+			if(param.getScale().compareTo(new BigDecimal(4)) == 0) {
+				param.setPageSize(200);
+			}
 		}
 		// 附近五公里
 		List<CompanyInfo> companys = companyMapper.nearCompany(
